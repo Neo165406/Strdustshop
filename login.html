@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অ্যাডমিন লগইন — StrDust</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body { background: var(--off-white); }
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: var(--shadow-md); }
+  .login-logo { font-family: var(--font-display); font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 4px; }
+  .login-logo .dot { color: var(--aqua); }
+  .login-sub { text-align: center; color: var(--gray); font-size: 13.5px; margin-bottom: 28px; }
+  .login-error { background: var(--danger-pale); color: var(--danger); font-size: 13px; font-weight: 600; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 16px; display: none; }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">Str<span class="dot">•</span>Dust</div>
+    <p class="login-sub">অ্যাডমিন প্যানেল</p>
+
+    <div class="login-error" id="loginError">ইমেইল বা পাসওয়ার্ড ভুল</div>
+
+    <div class="field">
+      <label>ইমেইল</label>
+      <input type="email" id="email" placeholder="admin@strdust.com">
+    </div>
+    <div class="field">
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+    <button class="btn btn-primary btn-block" id="loginBtn">লগইন করুন</button>
+    <p class="field-hint text-center" style="margin-top:16px;">Firebase Console → Authentication → Users থেকে অ্যাডমিন অ্যাকাউন্ট বানান।</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script>
+  auth.onAuthStateChanged(user => {
+    if (user) window.location.href = "dashboard.html";
+  });
+
+  async function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const btn = document.getElementById("loginBtn");
+    const errorBox = document.getElementById("loginError");
+    errorBox.style.display = "none";
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> লগইন হচ্ছে...`;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      window.location.href = "dashboard.html";
+    } catch (e) {
+      errorBox.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = "লগইন করুন";
+    }
+  }
+
+  document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("password").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
+</script>
+</body>
+</html>

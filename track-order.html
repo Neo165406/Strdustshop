@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অর্ডার ট্র্যাক করুন — StrDust</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .track-box { max-width: 480px; margin: 0 auto; text-align: center; padding: 48px 0 24px; }
+  .track-input-row { display: flex; gap: 10px; margin-top: 20px; }
+  .track-input-row input { flex: 1; text-align: center; font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .order-result { max-width: 640px; margin: 20px auto 0; }
+  .result-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+  .result-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 10px; }
+  .result-items { margin: 24px 0; border-top: 1px solid var(--border); padding-top: 16px; }
+  .result-item-row { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 8px; color: var(--gray); }
+  .result-addr { font-size: 13.5px; color: var(--gray); background: var(--off-white); padding: 14px 16px; border-radius: var(--radius-sm); margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="index.html">হোম</a>
+      <a href="shop.html">সব প্রোডাক্ট</a>
+      <a href="track-order.html" class="active">অর্ডার ট্র্যাক</a>
+    </nav>
+    <div class="header-actions">
+      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="track-box">
+    <span class="eyebrow">অর্ডার স্ট্যাটাস</span>
+    <h1 style="font-size:clamp(24px,3.4vw,32px);margin:8px 0 0;">আপনার অর্ডার ট্র্যাক করুন</h1>
+    <p>চেকআউটের পর পাওয়া ইনভয়েস নাম্বারটি দিন</p>
+    <div class="track-input-row">
+      <input type="text" id="invoiceInput" placeholder="SD-260806-1234">
+      <button class="btn btn-aqua" id="trackBtn">খুঁজুন</button>
+    </div>
+  </div>
+
+  <div class="order-result hidden" id="orderResult"></div>
+  <div class="empty-state hidden" id="notFound">
+    <h3>কোনো অর্ডার পাওয়া যায়নি</h3>
+    <p>ইনভয়েস নাম্বারটি আবার চেক করুন।</p>
+  </div>
+</div>
+
+<footer class="site-footer" style="margin-top:64px;">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span>Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/products.js"></script>
+<script>
+  const STATUS_STEPS = [
+    { key: "pending", label: "গ্রহণ হয়েছে", icon: "📝" },
+    { key: "confirmed", label: "কনফার্ম", icon: "✅" },
+    { key: "shipped", label: "পাঠানো হয়েছে", icon: "🚚" },
+    { key: "delivered", label: "ডেলিভার্ড", icon: "🏠" }
+  ];
+
+  function statusTrackHTML(currentStatus) {
+    if (currentStatus === "cancelled") {
+      return `<p style="text-align:center;color:var(--danger);font-weight:700;">এই অর্ডারটি বাতিল করা হয়েছে</p>`;
+    }
+    const currentIndex = STATUS_STEPS.findIndex(s => s.key === currentStatus);
+    return `<div class="status-track">${STATUS_STEPS.map((s, i) => `
+      <div class="status-step ${i < currentIndex ? "done" : ""} ${i === currentIndex ? "current" : ""}">
+        <div class="status-dot">${i <= currentIndex ? s.icon : ""}</div>
+        <span class="label">${s.label}</span>
+      </div>`).join("")}</div>`;
+  }
+
+  function renderOrder(order) {
+    document.getElementById("notFound").classList.add("hidden");
+    const result = document.getElementById("orderResult");
+    result.classList.remove("hidden");
+    result.innerHTML = `
+      <div class="result-card">
+        <div class="result-head">
+          <div>
+            <div class="eyebrow">ইনভয়েস</div>
+            <div style="font-family:var(--font-mono);font-weight:700;font-size:18px;">${order.invoiceNumber}</div>
+          </div>
+          <span class="pill pill-${order.status}">${STATUS_STEPS.find(s => s.key === order.status)?.label || order.status}</span>
+        </div>
+        ${statusTrackHTML(order.status)}
+        <div class="result-items">
+          ${order.items.map(item => `
+            <div class="result-item-row">
+              <span>${item.name} × ${item.qty}</span>
+              <span style="font-family:var(--font-mono);">${formatTaka(item.qty * item.price)}</span>
+            </div>`).join("")}
+          <div class="summary-row total" style="margin-top:10px;">
+            <span>মোট</span><span class="value">${formatTaka(order.total)}</span>
+          </div>
+        </div>
+        <div class="result-addr">
+          📍 ${order.customerName} · ${order.phone}<br>${order.address}, ${order.city}
+        </div>
+      </div>`;
+  }
+
+  async function trackOrder() {
+    const invoice = document.getElementById("invoiceInput").value.trim().toUpperCase();
+    if (!invoice) return;
+    document.getElementById("orderResult").classList.add("hidden");
+    document.getElementById("notFound").classList.add("hidden");
+    const btn = document.getElementById("trackBtn");
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span>`;
+    try {
+      const snap = await db.collection("orders").where("invoiceNumber", "==", invoice).limit(1).get();
+      if (snap.empty) {
+        document.getElementById("notFound").classList.remove("hidden");
+      } else {
+        renderOrder(snap.docs[0].data());
+      }
+    } catch (e) {
+      document.getElementById("notFound").classList.remove("hidden");
+    }
+    btn.disabled = false;
+    btn.textContent = "খুঁজুন";
+  }
+
+  document.getElementById("trackBtn").addEventListener("click", trackOrder);
+  document.getElementById("invoiceInput").addEventListener("keydown", (e) => { if (e.key === "Enter") trackOrder(); });
+
+  // auto-fill from ?invoice= if arriving via a link
+  const preset = new URLSearchParams(location.search).get("invoice");
+  if (preset) { document.getElementById("invoiceInput").value = preset; trackOrder(); }
+</script>
+</body>
+</html>
