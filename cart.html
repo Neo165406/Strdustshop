@@ -3,12 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StrDust — টি-শার্ট, গ্যাজেট, পারফিউম, জুয়েলারি সব এক জায়গায়</title>
-<meta name="description" content="StrDust — একই কার্টে টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি আর জুয়েলারি। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি।">
-<meta property="og:title" content="StrDust — সব ক্যাটাগরি, এক কার্ট">
-<meta property="og:description" content="টি-শার্ট থেকে জুয়েলারি, সব ক্যাটাগরি একই চেকআউটে। COD সুবিধাসহ ঢাকায় ফাস্ট ডেলিভারি।">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>আপনার কার্ট — StrDust</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,7 +12,7 @@
   <div class="header-inner">
     <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
     <nav class="main-nav">
-      <a href="index.html" class="active">হোম</a>
+      <a href="index.html">হোম</a>
       <a href="shop.html">সব প্রোডাক্ট</a>
       <a href="shop.html?category=tshirt">টি-শার্ট</a>
       <a href="shop.html?category=gadget">গ্যাজেট</a>
@@ -25,7 +20,7 @@
       <a href="track-order.html">অর্ডার ট্র্যাক</a>
     </nav>
     <div class="header-actions">
-      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
+      <a href="cart.html" class="icon-btn active" aria-label="কার্ট">
         🛒
         <span class="cart-badge" data-cart-count style="display:none;">0</span>
       </a>
@@ -34,99 +29,31 @@
   </div>
 </header>
 
-<div class="bestseller-banner hidden" id="bestsellerBanner">
-  <div class="bs-track" id="bsTrack"></div>
+<div class="container" style="padding:32px 20px 64px;">
+  <h1 style="font-size:clamp(24px,3.4vw,32px);margin-bottom:24px;">আপনার কার্ট</h1>
+
+  <div class="two-col" id="cartRoot">
+    <div id="cartLines"></div>
+    <div class="summary-card">
+      <h3 style="margin-bottom:16px;">অর্ডার সামারি</h3>
+      <div class="summary-row"><span>সাবটোটাল</span><span class="value" id="sumSubtotal">৳0</span></div>
+      <div class="summary-row"><span>ডেলিভারি চার্জ</span><span class="value">চেকআউটে হিসাব হবে</span></div>
+      <div class="summary-row total"><span>মোট</span><span class="value" id="sumTotal">৳0</span></div>
+      <a href="checkout.html" class="btn btn-aqua btn-block" id="checkoutBtn" style="margin-top:8px;">চেকআউটে যান</a>
+      <a href="shop.html" class="btn btn-outline btn-block" style="margin-top:10px;">কেনাকাটা চালিয়ে যান</a>
+    </div>
+  </div>
+
+  <div class="empty-state hidden" id="emptyCart">
+    <h3>আপনার কার্ট খালি</h3>
+    <p>এখনো কিছু যোগ করেননি।</p>
+    <a href="shop.html" class="btn btn-aqua" style="margin-top:16px;">কেনাকাটা শুরু করুন</a>
+  </div>
 </div>
-
-<section class="hero">
-  <div class="hero-dust"></div>
-  <div class="hero-inner">
-    <span class="hero-badge" id="heroBadge">🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়</span>
-    <span class="eyebrow anim-1">৬টা ক্যাটাগরি, এক ঠিকানা</span>
-    <h1 class="anim-2">৬টা ক্যাটাগরি,<br><em>একটাই কার্ট</em></h1>
-    <p class="hero-sub anim-3" id="heroSubText">টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
-    <div class="hero-actions anim-4">
-      <a href="shop.html" class="btn btn-aqua">এখনই কেনাকাটা করুন</a>
-      <a href="track-order.html" class="btn btn-outline">অর্ডার ট্র্যাক করুন</a>
-    </div>
-
-    <div class="slider anim-5">
-      <div id="sliderTrack"></div>
-      <div class="slider-dots" id="sliderDots"></div>
-    </div>
-  </div>
-</section>
-
-<section class="constellation">
-  <div class="constellation-head">
-    <span class="eyebrow">ক্যাটাগরি ঘুরে দেখুন</span>
-    <h2>ছড়ানো সব পছন্দ, একসাথে</h2>
-  </div>
-  <div class="node-field" id="nodeField">
-    <svg class="links" id="nodeLinks"></svg>
-    <!-- nodes injected by JS from CATEGORIES so it stays in sync everywhere -->
-  </div>
-</section>
-
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">এই মুহূর্তে ট্রেন্ডিং</span>
-        <h2>ফিচার্ড প্রোডাক্ট</h2>
-      </div>
-      <a href="shop.html">সব দেখুন →</a>
-    </div>
-    <div class="product-grid" id="featuredGrid"></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">নতুন এসেছে</span>
-        <h2>লেটেস্ট আরাইভাল</h2>
-      </div>
-      <a href="shop.html?sort=new">সব দেখুন →</a>
-    </div>
-    <div class="product-grid" id="newGrid"></div>
-  </div>
-</section>
 
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">Str•Dust</div>
-        <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;">একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
-      </div>
-      <div>
-        <h4>ক্যাটাগরি</h4>
-        <ul>
-          <li><a href="shop.html?category=tshirt">টি-শার্ট</a></li>
-          <li><a href="shop.html?category=gadget">গ্যাজেট</a></li>
-          <li><a href="shop.html?category=perfume">পারফিউম</a></li>
-          <li><a href="shop.html?category=watch">ঘড়ি</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>সাহায্য</h4>
-        <ul>
-          <li><a href="track-order.html">অর্ডার ট্র্যাক করুন</a></li>
-          <li><a href="cart.html">আপনার কার্ট</a></li>
-          <li><a href="#">রিটার্ন পলিসি</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>যোগাযোগ</h4>
-        <ul>
-          <li>ঢাকা, বাংলাদেশ</li>
-          <li>hello@strdust.com</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
       <span>© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
       <span>Cash on Delivery সারা বাংলাদেশে</span>
     </div>
@@ -140,91 +67,61 @@
 <script src="cart.js"></script>
 <script src="products.js"></script>
 <script>
-  function buildNodeField() {
-    const field = document.getElementById("nodeField");
-    const svg = document.getElementById("nodeLinks");
-    CATEGORIES.forEach(cat => {
-      const a = document.createElement("a");
-      a.href = `shop.html?category=${cat.id}`;
-      a.className = "node";
-      a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${cat.bn}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
-      field.appendChild(a);
-    });
+  function renderCart() {
+    const cart = getCart();
+    const linesEl = document.getElementById("cartLines");
+    const root = document.getElementById("cartRoot");
+    const empty = document.getElementById("emptyCart");
 
-    // draw faint dashed connectors between adjacent nodes once laid out
-    requestAnimationFrame(() => {
-      const nodes = [...field.querySelectorAll(".node")];
-      const fieldRect = field.getBoundingClientRect();
-      let d = "";
-      nodes.forEach((n, i) => {
-        if (i === 0) return;
-        const a = nodes[i - 1].querySelector(".node-dot").getBoundingClientRect();
-        const b = n.querySelector(".node-dot").getBoundingClientRect();
-        const ax = a.left + a.width / 2 - fieldRect.left, ay = a.top + a.height / 2 - fieldRect.top;
-        const bx = b.left + b.width / 2 - fieldRect.left, by = b.top + b.height / 2 - fieldRect.top;
-        d += `M${ax},${ay} Q${(ax + bx) / 2},${Math.min(ay, by) - 30} ${bx},${by} `;
-      });
-      svg.innerHTML = `<path d="${d}"></path>`;
-    });
-  }
-
-  async function loadCounts() {
-    for (const cat of CATEGORIES) {
-      try {
-        const snap = await db.collection("products").where("category", "==", cat.id).get();
-        const el = document.querySelector(`[data-node-count="${cat.id}"]`);
-        if (el) el.textContent = `${snap.size} প্রোডাক্ট`;
-      } catch (e) { /* firebase not configured yet */ }
+    if (!cart.length) {
+      root.classList.add("hidden");
+      empty.classList.remove("hidden");
+      return;
     }
+    root.classList.remove("hidden");
+    empty.classList.add("hidden");
+
+    linesEl.innerHTML = cart.map(item => {
+      const cat = categoryById(item.category);
+      return `
+      <div class="cart-line" data-id="${item.id}">
+        <img src="${item.image || ""}" alt="${item.name}">
+        <div>
+          <div class="cart-line-cat">${cat.bn}</div>
+          <div class="cart-line-title">${item.name}</div>
+          <span class="remove-line" data-remove="${item.id}">সরিয়ে ফেলুন</span>
+        </div>
+        <div class="qty-control">
+          <button data-minus="${item.id}">−</button>
+          <span>${item.qty}</span>
+          <button data-plus="${item.id}">+</button>
+        </div>
+        <div class="cart-line-price">${formatTaka(item.qty * item.price)}</div>
+      </div>`;
+    }).join("");
+
+    const subtotal = getCartTotal();
+    document.getElementById("sumSubtotal").textContent = formatTaka(subtotal);
+    document.getElementById("sumTotal").textContent = formatTaka(subtotal);
   }
 
-  async function loadHomeGrids() {
-    const featuredGrid = document.getElementById("featuredGrid");
-    const newGrid = document.getElementById("newGrid");
-    renderSkeletons(featuredGrid, 4);
-    renderSkeletons(newGrid, 4);
-    try {
-      const all = await fetchProducts({ max: 40 });
-      const featured = all.filter(p => p.featured).slice(0, 4);
-      renderGrid(featuredGrid, featured.length ? featured : all.slice(0, 4), "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।");
-      renderGrid(newGrid, all.slice(0, 4), "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।");
-    } catch (e) {
-      renderGrid(featuredGrid, []);
-      renderGrid(newGrid, []);
+  document.getElementById("cartLines").addEventListener("click", (e) => {
+    const minus = e.target.closest("[data-minus]");
+    const plus = e.target.closest("[data-plus]");
+    const remove = e.target.closest("[data-remove]");
+    if (minus) {
+      const item = getCart().find(i => i.id === minus.dataset.minus);
+      if (item) updateQty(item.id, item.qty - 1);
     }
-  }
+    if (plus) {
+      const item = getCart().find(i => i.id === plus.dataset.plus);
+      if (item) updateQty(item.id, item.qty + 1);
+    }
+    if (remove) removeFromCart(remove.dataset.remove);
+    renderCart();
+  });
 
-  async function loadBestSellers() {
-    const banner = document.getElementById("bestsellerBanner");
-    const track = document.getElementById("bsTrack");
-    try {
-      const snap = await db.collection("products").where("bestSeller", "==", true).limit(8).get();
-      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (!items.length) return;
-      banner.classList.remove("hidden");
-      track.innerHTML = items.map((p, i) => `
-        <a href="product.html?id=${p.id}" class="bs-item ${i === 0 ? "active" : ""}">
-          <span class="bs-tag">🏆 বেস্ট সেলার</span>
-          ${(p.images && p.images[0]) ? `<img src="${p.images[0]}" alt="">` : ""}
-          <span>${p.name} — ${formatTaka(p.price)}</span>
-        </a>`).join("");
-      if (items.length > 1) {
-        let current = 0;
-        const els = track.querySelectorAll(".bs-item");
-        setInterval(() => {
-          els[current].classList.remove("active");
-          current = (current + 1) % els.length;
-          els[current].classList.add("active");
-        }, 3200);
-      }
-    } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
-  }
-
-  buildNodeField();
-  initHeroSlider();
-  loadHomeGrids();
-  loadCounts();
-  loadBestSellers();
+  renderCart();
 </script>
 </body>
 </html>
