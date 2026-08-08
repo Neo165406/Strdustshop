@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitleTag">প্রোডাক্ট — StrDust</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 <style>
   .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 40px 0 64px; }
   @media (max-width: 860px) { .product-layout { grid-template-columns: 1fr; gap: 24px; } }
@@ -82,9 +82,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/products.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cart.js"></script>
+<script src="products.js"></script>
 <script>
   const productId = new URLSearchParams(location.search).get("id");
   let currentProduct = null;
