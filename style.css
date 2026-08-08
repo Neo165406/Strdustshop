@@ -265,6 +265,41 @@ ul { list-style: none; margin: 0; padding: 0; }
   background-size: 26px 26px;
   mask-image: radial-gradient(ellipse 80% 60% at 60% 30%, black 40%, transparent 100%);
   pointer-events: none;
+  animation: dustDrift 22s linear infinite;
+}
+@keyframes dustDrift {
+  from { background-position: 0 0; }
+  to { background-position: 130px 130px; }
+}
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-badge, .anim-1, .anim-2, .anim-3, .anim-4, .anim-5 {
+  opacity: 0;
+  animation: heroFadeUp 0.7s ease forwards;
+}
+.hero-badge { animation-delay: 0.05s; }
+.anim-1 { animation-delay: 0.05s; }
+.anim-2 { animation-delay: 0.15s; }
+.anim-3 { animation-delay: 0.28s; }
+.anim-4 { animation-delay: 0.4s; }
+.anim-5 { animation-delay: 0.52s; }
+
+.hero-badge {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
 }
 
 .hero-inner {
