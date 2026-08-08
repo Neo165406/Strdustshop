@@ -150,8 +150,15 @@ ul { list-style: none; margin: 0; padding: 0; }
   top: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
 }
 
 .header-inner {
@@ -227,15 +234,17 @@ ul { list-style: none; margin: 0; padding: 0; }
   .main-nav {
     position: fixed;
     inset: 64px 0 0 0;
+    z-index: 150;
     background: var(--white);
     flex-direction: column;
     gap: 0;
     padding: 8px 20px 24px;
     transform: translateY(-110%);
-    transition: transform 0.25s ease;
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
     border-bottom: 1px solid var(--border);
   }
-  .main-nav.open { transform: translateY(0); }
+  .main-nav.open { transform: translateY(0); visibility: visible; }
   .main-nav a { padding: 14px 0; border-bottom: 1px solid var(--border); }
   .nav-toggle {
     display: flex; align-items: center; justify-content: center;
