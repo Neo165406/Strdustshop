@@ -14,6 +14,8 @@
     <a href="#" data-tab="overview" class="tab-link active">📊 ওভারভিউ</a>
     <a href="#" data-tab="products" class="tab-link">🛍️ প্রোডাক্ট</a>
     <a href="#" data-tab="orders" class="tab-link">📦 অর্ডার</a>
+    <a href="#" data-tab="slides" class="tab-link">🎠 স্লাইড</a>
+    <a href="#" data-tab="theme" class="tab-link">🎨 থিম</a>
     <a href="index.html" target="_blank">🔗 স্টোর দেখুন</a>
     <a href="#" id="logoutBtn">🚪 লগআউট</a>
   </aside>
@@ -60,6 +62,42 @@
           <thead><tr><th>ইনভয়েস</th><th>কাস্টমার</th><th>মোট</th><th>স্ট্যাটাস</th><th>তারিখ</th><th></th></tr></thead>
           <tbody id="ordersTableBody"></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- SLIDES (homepage "new arrivals" banner) -->
+    <section id="tab-slides" class="hidden">
+      <div class="admin-topbar">
+        <h1>স্লাইড</h1>
+        <button class="btn btn-aqua" id="newSlideBtn">+ নতুন স্লাইড</button>
+      </div>
+      <p style="color:var(--gray);font-size:13.5px;margin-bottom:16px;">হোমপেজের উপরের স্লাইডারে (নতুন কালেকশন / অফার) এখান থেকে ছবি ও লেখা যোগ করুন।</p>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>স্লাইড</th><th>টাইটেল</th><th>অর্ডার</th><th></th></tr></thead>
+          <tbody id="slidesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- THEME (site-wide accent color + hero text) -->
+    <section id="tab-theme" class="hidden">
+      <div class="admin-topbar"><h1>থিম</h1></div>
+      <p style="color:var(--gray);font-size:13.5px;margin-bottom:16px;">সাইটের মূল রং আর হোমপেজের হিরো টেক্সট এখান থেকে বদলান — সেভ করলে সাথে সাথে পুরো সাইটে প্রয়োগ হবে।</p>
+      <div class="table-card" style="padding:24px;max-width:480px;">
+        <div class="field">
+          <label>মূল রং (Accent Color)</label>
+          <input type="color" id="tAccentColor" value="#0FBFA0" style="height:44px;padding:4px;">
+        </div>
+        <div class="field">
+          <label>হিরো সাব-টেক্সট</label>
+          <textarea id="tHeroSub" rows="3" placeholder="টি-শার্ট, গ্যাজেট, পারফিউম..."></textarea>
+        </div>
+        <div class="field">
+          <label>হিরো ব্যাজ (উপরের ছোট লেখা)</label>
+          <input type="text" id="tHeroBadge" placeholder="🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়">
+        </div>
+        <button class="btn btn-aqua btn-block" id="saveThemeBtn">থিম সেভ করুন</button>
       </div>
     </section>
   </main>
@@ -110,6 +148,11 @@
       </label>
     </div>
     <div class="field">
+      <label style="display:flex;align-items:center;gap:8px;font-weight:700;">
+        <input type="checkbox" id="pBestSeller" style="width:auto;"> 🏆 বেস্ট সেলার ব্যানারে দেখান
+      </label>
+    </div>
+    <div class="field">
       <label>ছবি</label>
       <div class="img-upload" id="imgUploadZone">
         <input type="file" id="imgInput" accept="image/*" multiple style="display:none;">
@@ -118,6 +161,37 @@
       <div class="img-preview-row" id="imgPreviewRow"></div>
     </div>
     <button class="btn btn-aqua btn-block" id="saveProductBtn" style="margin-top:8px;">প্রোডাক্ট সেভ করুন</button>
+  </div>
+</div>
+
+<!-- Slide modal -->
+<div class="modal-overlay" id="slideModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="slideModalTitle">নতুন স্লাইড</h3>
+      <button class="modal-close" id="closeSlideModal">✕</button>
+    </div>
+    <div class="field">
+      <label>ছোট লেখা (Eyebrow)</label>
+      <input type="text" id="sEyebrow" placeholder="নতুন এসেছে">
+    </div>
+    <div class="field">
+      <label>টাইটেল</label>
+      <input type="text" id="sTitle" placeholder="নতুন কালেকশনে সব ক্যাটাগরি এক জায়গায়">
+    </div>
+    <div class="field">
+      <label>অর্ডার (সংখ্যা, ছোট আগে দেখাবে)</label>
+      <input type="number" id="sOrder" value="1" min="0">
+    </div>
+    <div class="field">
+      <label>ছবি (ব্যাকগ্রাউন্ড)</label>
+      <div class="img-upload" id="slideImgUploadZone">
+        <input type="file" id="slideImgInput" accept="image/*" style="display:none;">
+        <span id="slideUploadLabel">📷 ছবি সিলেক্ট করুন</span>
+      </div>
+      <div class="img-preview-row" id="slideImgPreviewRow"></div>
+    </div>
+    <button class="btn btn-aqua btn-block" id="saveSlideBtn" style="margin-top:8px;">স্লাইড সেভ করুন</button>
   </div>
 </div>
 
@@ -155,7 +229,7 @@ document.querySelectorAll(".tab-link").forEach(link => {
     e.preventDefault();
     document.querySelectorAll(".tab-link").forEach(l => l.classList.remove("active"));
     link.classList.add("active");
-    ["overview", "products", "orders"].forEach(t => document.getElementById(`tab-${t}`).classList.toggle("hidden", t !== link.dataset.tab));
+    ["overview", "products", "orders", "slides", "theme"].forEach(t => document.getElementById(`tab-${t}`).classList.toggle("hidden", t !== link.dataset.tab));
   });
 });
 
@@ -188,6 +262,8 @@ function init() {
 
   loadProducts();
   loadOrders();
+  loadSlides();
+  loadTheme();
 }
 
 /* ---------- Products ---------- */
@@ -214,8 +290,8 @@ function renderProductsTable() {
       <td>${p.stock ?? "—"}</td>
       <td>${p.featured ? "⭐" : "—"}</td>
       <td>
-        <button class="btn btn-outline btn-sm" data-edit="${p.id}">Edit</button>
-        <button class="btn btn-danger btn-sm" data-del="${p.id}">Delete</button>
+        <button class="btn btn-outline btn-sm" data-edit="${p.id}">এডিট</button>
+        <button class="btn btn-danger btn-sm" data-del="${p.id}">ডিলিট</button>
       </td>
     </tr>`).join("");
 }
@@ -241,6 +317,7 @@ function openProductModal(id = null) {
     document.getElementById("pOriginalPrice").value = p.originalPrice || "";
     document.getElementById("pDescription").value = p.description || "";
     document.getElementById("pFeatured").checked = !!p.featured;
+    document.getElementById("pBestSeller").checked = !!p.bestSeller;
     currentImages = [...(p.images || [])];
     renderImagePreviews();
   } else {
@@ -249,6 +326,7 @@ function openProductModal(id = null) {
     document.getElementById("pPrice").value = "";
     document.getElementById("pStock").value = 10;
     document.getElementById("pFeatured").checked = false;
+    document.getElementById("pBestSeller").checked = false;
     document.getElementById("pCategory").value = CATEGORIES[0].id;
   }
   document.getElementById("productModal").classList.add("open");
@@ -302,6 +380,7 @@ async function saveProduct() {
   const stock = Number(document.getElementById("pStock").value);
   const description = document.getElementById("pDescription").value.trim();
   const featured = document.getElementById("pFeatured").checked;
+  const bestSeller = document.getElementById("pBestSeller").checked;
 
   if (!name || !price || !category) { showToast("নাম, দাম আর ক্যাটাগরি আবশ্যক"); return; }
 
@@ -309,7 +388,7 @@ async function saveProduct() {
   btn.disabled = true;
   btn.innerHTML = `<span class="spinner"></span> সেভ হচ্ছে...`;
 
-  const data = { name, category, price, originalPrice, stock, description, featured, images: currentImages };
+  const data = { name, category, price, originalPrice, stock, description, featured, bestSeller, images: currentImages };
 
   try {
     if (editingProductId) {
@@ -335,6 +414,155 @@ async function deleteProduct(id) {
   showToast("প্রোডাক্ট ডিলিট হয়েছে");
   loadProducts();
 }
+
+/* ---------- Slides (homepage banner) ---------- */
+let allSlides = [];
+let editingSlideId = null;
+let currentSlideImage = "";
+
+async function loadSlides() {
+  const snap = await db.collection("slides").orderBy("order").get();
+  allSlides = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderSlidesTable();
+}
+
+function renderSlidesTable() {
+  const body = document.getElementById("slidesTableBody");
+  if (!allSlides.length) {
+    body.innerHTML = `<tr><td colspan="4" class="text-center" style="color:var(--gray);padding:30px;">কোনো স্লাইড নেই — হোমপেজে ডিফল্ট স্লাইড দেখাবে</td></tr>`;
+    return;
+  }
+  body.innerHTML = allSlides.map(s => `
+    <tr>
+      <td><div class="row-thumb">${s.image ? `<img src="${s.image}" alt="">` : ""}<span>${s.eyebrow || ""}</span></div></td>
+      <td>${s.title || ""}</td>
+      <td>${s.order ?? "—"}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" data-sedit="${s.id}">এডিট</button>
+        <button class="btn btn-danger btn-sm" data-sdel="${s.id}">ডিলিট</button>
+      </td>
+    </tr>`).join("");
+}
+
+document.getElementById("slidesTableBody").addEventListener("click", (e) => {
+  const edit = e.target.closest("[data-sedit]");
+  const del = e.target.closest("[data-sdel]");
+  if (edit) openSlideModal(edit.dataset.sedit);
+  if (del) deleteSlide(del.dataset.sdel);
+});
+
+function openSlideModal(id = null) {
+  editingSlideId = id;
+  currentSlideImage = "";
+  document.getElementById("slideImgPreviewRow").innerHTML = "";
+  if (id) {
+    const s = allSlides.find(x => x.id === id);
+    document.getElementById("slideModalTitle").textContent = "স্লাইড এডিট করুন";
+    document.getElementById("sEyebrow").value = s.eyebrow || "";
+    document.getElementById("sTitle").value = s.title || "";
+    document.getElementById("sOrder").value = s.order ?? 1;
+    currentSlideImage = s.image || "";
+    renderSlideImagePreview();
+  } else {
+    document.getElementById("slideModalTitle").textContent = "নতুন স্লাইড";
+    document.getElementById("sEyebrow").value = "";
+    document.getElementById("sTitle").value = "";
+    document.getElementById("sOrder").value = allSlides.length + 1;
+  }
+  document.getElementById("slideModal").classList.add("open");
+}
+document.getElementById("newSlideBtn").addEventListener("click", () => openSlideModal());
+document.getElementById("closeSlideModal").addEventListener("click", () => document.getElementById("slideModal").classList.remove("open"));
+
+function renderSlideImagePreview() {
+  document.getElementById("slideImgPreviewRow").innerHTML = currentSlideImage
+    ? `<div style="position:relative;"><img src="${currentSlideImage}"><span id="rmSlideImg" style="position:absolute;top:-6px;right:-6px;background:var(--black);color:#fff;width:18px;height:18px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</span></div>`
+    : "";
+  const rm = document.getElementById("rmSlideImg");
+  if (rm) rm.addEventListener("click", () => { currentSlideImage = ""; renderSlideImagePreview(); });
+}
+
+document.getElementById("slideImgUploadZone").addEventListener("click", () => document.getElementById("slideImgInput").click());
+document.getElementById("slideImgInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const label = document.getElementById("slideUploadLabel");
+  label.innerHTML = `<span class="spinner" style="border-top-color:var(--aqua-dark);border-color:rgba(15,191,160,0.25);"></span> আপলোড হচ্ছে...`;
+  try {
+    currentSlideImage = await uploadToImgbb(file);
+    renderSlideImagePreview();
+  } catch (err) {
+    showToast("ছবি আপলোড ব্যর্থ — imgbb key চেক করুন");
+  }
+  label.textContent = "📷 ছবি সিলেক্ট করুন";
+  e.target.value = "";
+});
+
+async function saveSlide() {
+  const eyebrow = document.getElementById("sEyebrow").value.trim();
+  const title = document.getElementById("sTitle").value.trim();
+  const order = Number(document.getElementById("sOrder").value) || 0;
+  if (!title) { showToast("টাইটেল আবশ্যক"); return; }
+
+  const btn = document.getElementById("saveSlideBtn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> সেভ হচ্ছে...`;
+
+  const data = { eyebrow, title, order, image: currentSlideImage };
+  try {
+    if (editingSlideId) {
+      await db.collection("slides").doc(editingSlideId).update(data);
+    } else {
+      await db.collection("slides").add(data);
+    }
+    document.getElementById("slideModal").classList.remove("open");
+    showToast("স্লাইড সেভ হয়েছে ✅");
+    loadSlides();
+  } catch (e) {
+    showToast("সেভ করা যায়নি — আবার চেষ্টা করুন");
+  }
+  btn.disabled = false;
+  btn.textContent = "স্লাইড সেভ করুন";
+}
+document.getElementById("saveSlideBtn").addEventListener("click", saveSlide);
+
+async function deleteSlide(id) {
+  if (!confirm("এই স্লাইডটি ডিলিট করবেন?")) return;
+  await db.collection("slides").doc(id).delete();
+  showToast("স্লাইড ডিলিট হয়েছে");
+  loadSlides();
+}
+
+/* ---------- Theme (accent color + hero text) ---------- */
+async function loadTheme() {
+  try {
+    const doc = await db.collection("settings").doc("site").get();
+    if (doc.exists) {
+      const t = doc.data();
+      if (t.accentColor) document.getElementById("tAccentColor").value = t.accentColor;
+      if (t.heroSub) document.getElementById("tHeroSub").value = t.heroSub;
+      if (t.heroBadge) document.getElementById("tHeroBadge").value = t.heroBadge;
+    }
+  } catch (e) { /* no settings yet */ }
+}
+
+async function saveTheme() {
+  const accentColor = document.getElementById("tAccentColor").value;
+  const heroSub = document.getElementById("tHeroSub").value.trim();
+  const heroBadge = document.getElementById("tHeroBadge").value.trim();
+  const btn = document.getElementById("saveThemeBtn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> সেভ হচ্ছে...`;
+  try {
+    await db.collection("settings").doc("site").set({ accentColor, heroSub, heroBadge }, { merge: true });
+    showToast("থিম সেভ হয়েছে ✅ — সাইট রিফ্রেশ করলে দেখা যাবে");
+  } catch (e) {
+    showToast("সেভ করা যায়নি — আবার চেষ্টা করুন");
+  }
+  btn.disabled = false;
+  btn.textContent = "থিম সেভ করুন";
+}
+document.getElementById("saveThemeBtn").addEventListener("click", saveTheme);
 
 /* ---------- Orders ---------- */
 async function loadOrders() {
