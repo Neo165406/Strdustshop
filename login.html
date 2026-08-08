@@ -59,6 +59,42 @@
       window.location.href = "dashboard.html";
     } catch (e) {
       errorBox.style.display = "block";
+      errorBox.textContent = e.code + " - " + e.message;
+      btn.disabled = false;
+      btn.textContent = "লগইন করুন";
+    }
+  }
+
+  document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("password").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
+</script>
+</body>
+</html>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+  auth.onAuthStateChanged(user => {
+    if (user) window.location.href = "dashboard.html";
+  });
+
+  async function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const btn = document.getElementById("loginBtn");
+    const errorBox = document.getElementById("loginError");
+    errorBox.style.display = "none";
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> লগইন হচ্ছে...`;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      window.location.href = "dashboard.html";
+    } catch (e) {
+      errorBox.style.display = "block";
       btn.disabled = false;
       btn.textContent = "লগইন করুন";
     }
