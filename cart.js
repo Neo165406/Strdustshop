@@ -1,9 +1,6 @@
 /* ==========================================================================
    Cart — persisted in localStorage so it survives navigation between
-   pages (index → shop → product → cart → checkout). This mirrors how
-   Velmora's cart works. Note: inside Claude's in-chat preview this
-   storage layer may be sandboxed; once deployed to Netlify (or opened
-   as real files in a normal browser) it behaves like any live site.
+   pages (index → shop → product → cart → checkout).
    ========================================================================== */
 
 const CART_KEY = "strdust_cart";
@@ -105,4 +102,20 @@ function formatTaka(amount) {
   return "৳" + Number(amount).toLocaleString("en-BD");
 }
 
+/* Site-wide theme — admin can override accent color + homepage hero text
+   from Dashboard → থিম. Applies on every page load. */
+async function applyTheme() {
+  try {
+    const doc = await db.collection("settings").doc("site").get();
+    if (!doc.exists) return;
+    const t = doc.data();
+    if (t.accentColor) document.documentElement.style.setProperty("--aqua", t.accentColor);
+    const badgeEl = document.getElementById("heroBadge");
+    if (badgeEl && t.heroBadge) badgeEl.textContent = t.heroBadge;
+    const subEl = document.getElementById("heroSubText");
+    if (subEl && t.heroSub) subEl.textContent = t.heroSub;
+  } catch (e) { /* firebase not configured yet, or no theme saved */ }
+}
+
 document.addEventListener("DOMContentLoaded", updateCartBadge);
+document.addEventListener("DOMContentLoaded", applyTheme);
