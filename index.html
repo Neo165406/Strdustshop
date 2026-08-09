@@ -17,14 +17,15 @@
   <div class="header-inner">
     <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
     <nav class="main-nav">
-      <a href="index.html" class="active">হোম</a>
-      <a href="shop.html">সব প্রোডাক্ট</a>
-      <a href="shop.html?category=tshirt">টি-শার্ট</a>
-      <a href="shop.html?category=gadget">গ্যাজেট</a>
-      <a href="shop.html?category=jewelry">জুয়েলারি</a>
-      <a href="track-order.html">অর্ডার ট্র্যাক</a>
+      <a href="index.html" class="active" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
     </nav>
     <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
       <a href="cart.html" class="icon-btn" aria-label="কার্ট">
         🛒
         <span class="cart-badge" data-cart-count style="display:none;">0</span>
@@ -34,16 +35,21 @@
   </div>
 </header>
 
+<div class="bestseller-banner hidden" id="bestsellerBanner">
+  <div class="bs-track" id="bsTrack"></div>
+</div>
+
 <section class="hero">
+  <div class="hero-bg-collage" id="heroBgCollage"></div>
   <div class="hero-dust"></div>
   <div class="hero-inner">
-    <span class="hero-badge">🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়</span>
-    <span class="eyebrow anim-1">৬টা ক্যাটাগরি, এক ঠিকানা</span>
-    <h1 class="anim-2">৬টা ক্যাটাগরি,<br><em>একটাই কার্ট</em></h1>
-    <p class="hero-sub anim-3">টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
+    <span class="hero-badge" id="heroBadge" data-bn="🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়" data-en="🔥 Up to 30% off new collection">🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়</span>
+    <span class="eyebrow anim-1" data-bn="৬টা ক্যাটাগরি, এক ঠিকানা" data-en="6 categories, one address">৬টা ক্যাটাগরি, এক ঠিকানা</span>
+    <h1 class="anim-2"><span data-bn="৬টা ক্যাটাগরি," data-en="6 Categories,">৬টা ক্যাটাগরি,</span><br><em data-bn="একটাই কার্ট" data-en="One Cart">একটাই কার্ট</em></h1>
+    <p class="hero-sub anim-3" id="heroSubText" data-bn="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="T-shirts, gadgets, perfume, pants, watches, jewelry — all in one checkout. 1-3 day delivery inside Dhaka, with cash on delivery.">টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
     <div class="hero-actions anim-4">
-      <a href="shop.html" class="btn btn-aqua">এখনই কেনাকাটা করুন</a>
-      <a href="track-order.html" class="btn btn-outline">অর্ডার ট্র্যাক করুন</a>
+      <a href="shop.html" class="btn btn-aqua" data-bn="এখনই কেনাকাটা করুন" data-en="Shop Now">এখনই কেনাকাটা করুন</a>
+      <a href="track-order.html" class="btn btn-outline" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a>
     </div>
 
     <div class="slider anim-5">
@@ -55,8 +61,8 @@
 
 <section class="constellation">
   <div class="constellation-head">
-    <span class="eyebrow">ক্যাটাগরি ঘুরে দেখুন</span>
-    <h2>ছড়ানো সব পছন্দ, একসাথে</h2>
+    <span class="eyebrow" data-bn="ক্যাটাগরি ঘুরে দেখুন" data-en="Browse Categories">ক্যাটাগরি ঘুরে দেখুন</span>
+    <h2 data-bn="ছড়ানো সব পছন্দ, একসাথে" data-en="Everything scattered, together">ছড়ানো সব পছন্দ, একসাথে</h2>
   </div>
   <div class="node-field" id="nodeField">
     <svg class="links" id="nodeLinks"></svg>
@@ -68,10 +74,10 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">এই মুহূর্তে ট্রেন্ডিং</span>
-        <h2>ফিচার্ড প্রোডাক্ট</h2>
+        <span class="eyebrow" data-bn="এই মুহূর্তে ট্রেন্ডিং" data-en="Trending Right Now">এই মুহূর্তে ট্রেন্ডিং</span>
+        <h2 data-bn="ফিচার্ড প্রোডাক্ট" data-en="Featured Products">ফিচার্ড প্রোডাক্ট</h2>
       </div>
-      <a href="shop.html">সব দেখুন →</a>
+      <a href="shop.html" data-bn="সব দেখুন →" data-en="View All →">সব দেখুন →</a>
     </div>
     <div class="product-grid" id="featuredGrid"></div>
   </div>
@@ -81,10 +87,10 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">নতুন এসেছে</span>
-        <h2>লেটেস্ট আরাইভাল</h2>
+        <span class="eyebrow" data-bn="নতুন এসেছে" data-en="New Arrivals">নতুন এসেছে</span>
+        <h2 data-bn="লেটেস্ট আরাইভাল" data-en="Latest Arrivals">লেটেস্ট আরাইভাল</h2>
       </div>
-      <a href="shop.html?sort=new">সব দেখুন →</a>
+      <a href="shop.html?sort=new" data-bn="সব দেখুন →" data-en="View All →">সব দেখুন →</a>
     </div>
     <div class="product-grid" id="newGrid"></div>
   </div>
@@ -95,36 +101,36 @@
     <div class="footer-grid">
       <div>
         <div class="footer-logo">Str•Dust</div>
-        <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;">একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
+        <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;" data-bn="একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="Fashion, gadgets & lifestyle products in one place — fast delivery inside Dhaka, with cash on delivery.">একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
       </div>
       <div>
-        <h4>ক্যাটাগরি</h4>
+        <h4 data-bn="ক্যাটাগরি" data-en="Categories">ক্যাটাগরি</h4>
         <ul>
-          <li><a href="shop.html?category=tshirt">টি-শার্ট</a></li>
-          <li><a href="shop.html?category=gadget">গ্যাজেট</a></li>
-          <li><a href="shop.html?category=perfume">পারফিউম</a></li>
-          <li><a href="shop.html?category=watch">ঘড়ি</a></li>
+          <li><a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a></li>
+          <li><a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a></li>
+          <li><a href="shop.html?category=perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a></li>
+          <li><a href="shop.html?category=watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a></li>
         </ul>
       </div>
       <div>
-        <h4>সাহায্য</h4>
+        <h4 data-bn="সাহায্য" data-en="Help">সাহায্য</h4>
         <ul>
-          <li><a href="track-order.html">অর্ডার ট্র্যাক করুন</a></li>
-          <li><a href="cart.html">আপনার কার্ট</a></li>
-          <li><a href="#">রিটার্ন পলিসি</a></li>
+          <li><a href="track-order.html" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a></li>
+          <li><a href="cart.html" data-bn="আপনার কার্ট" data-en="Your Cart">আপনার কার্ট</a></li>
+          <li><a href="#" data-bn="রিটার্ন পলিসি" data-en="Return Policy">রিটার্ন পলিসি</a></li>
         </ul>
       </div>
       <div>
-        <h4>যোগাযোগ</h4>
+        <h4 data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</h4>
         <ul>
-          <li>ঢাকা, বাংলাদেশ</li>
+          <li data-bn="ঢাকা, বাংলাদেশ" data-en="Dhaka, Bangladesh">ঢাকা, বাংলাদেশ</li>
           <li>hello@strdust.com</li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
-      <span>Cash on Delivery সারা বাংলাদেশে</span>
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
     </div>
   </div>
 </footer>
@@ -139,11 +145,14 @@
   function buildNodeField() {
     const field = document.getElementById("nodeField");
     const svg = document.getElementById("nodeLinks");
+    const lang = currentLang();
+    field.querySelectorAll(".node").forEach(n => n.remove());
     CATEGORIES.forEach(cat => {
       const a = document.createElement("a");
       a.href = `shop.html?category=${cat.id}`;
       a.className = "node";
-      a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${cat.bn}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
+      const label = lang === "en" ? cat.label : cat.bn;
+      a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${label}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
       field.appendChild(a);
     });
 
@@ -162,14 +171,16 @@
       });
       svg.innerHTML = `<path d="${d}"></path>`;
     });
+    loadCounts();
   }
 
   async function loadCounts() {
+    const lang = currentLang();
     for (const cat of CATEGORIES) {
       try {
         const snap = await db.collection("products").where("category", "==", cat.id).get();
         const el = document.querySelector(`[data-node-count="${cat.id}"]`);
-        if (el) el.textContent = `${snap.size} প্রোডাক্ট`;
+        if (el) el.textContent = lang === "en" ? `${snap.size} products` : `${snap.size} প্রোডাক্ট`;
       } catch (e) { /* firebase not configured yet */ }
     }
   }
@@ -179,21 +190,74 @@
     const newGrid = document.getElementById("newGrid");
     renderSkeletons(featuredGrid, 4);
     renderSkeletons(newGrid, 4);
+    const emptyMsg = currentLang() === "en" ? "Products will show here once added." : "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।";
     try {
       const all = await fetchProducts({ max: 40 });
       const featured = all.filter(p => p.featured).slice(0, 4);
-      renderGrid(featuredGrid, featured.length ? featured : all.slice(0, 4), "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।");
-      renderGrid(newGrid, all.slice(0, 4), "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।");
+      renderGrid(featuredGrid, featured.length ? featured : all.slice(0, 4), emptyMsg);
+      renderGrid(newGrid, all.slice(0, 4), emptyMsg);
     } catch (e) {
       renderGrid(featuredGrid, []);
       renderGrid(newGrid, []);
     }
   }
 
+  async function loadBestSellers() {
+    const banner = document.getElementById("bestsellerBanner");
+    const track = document.getElementById("bsTrack");
+    const bgCollage = document.getElementById("heroBgCollage");
+    try {
+      const snap = await db.collection("products").where("bestSeller", "==", true).limit(8).get();
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (!items.length) { bgCollage.innerHTML = ""; return; }
+      const lang = currentLang();
+      const tag = lang === "en" ? "🏆 BEST SELLER" : "🏆 বেস্ট সেলার";
+
+      banner.classList.remove("hidden");
+      track.innerHTML = items.map((p, i) => `
+        <a href="product.html?id=${p.id}" class="bs-item ${i === 0 ? "active" : ""}">
+          <span class="bs-tag">${tag}</span>
+          ${(p.images && p.images[0]) ? `<img src="${p.images[0]}" alt="">` : ""}
+          <span>${p.name} — ${formatTaka(p.price)}</span>
+        </a>`).join("");
+
+      // Reuse the same items to animate the hero background — no white gap, feels alive
+      const withImages = items.filter(p => p.images && p.images[0]);
+      bgCollage.innerHTML = withImages.map((p, i) =>
+        `<div class="bg-slide ${i === 0 ? "active" : ""}" style="background-image:url('${p.images[0]}')"></div>`
+      ).join("");
+
+      if (items.length > 1) {
+        let current = 0;
+        const els = track.querySelectorAll(".bs-item");
+        setInterval(() => {
+          els[current].classList.remove("active");
+          current = (current + 1) % els.length;
+          els[current].classList.add("active");
+        }, 3200);
+      }
+      if (withImages.length > 1) {
+        let bgCurrent = 0;
+        const bgEls = bgCollage.querySelectorAll(".bg-slide");
+        setInterval(() => {
+          bgEls[bgCurrent].classList.remove("active");
+          bgCurrent = (bgCurrent + 1) % bgEls.length;
+          bgEls[bgCurrent].classList.add("active");
+        }, 4000);
+      }
+    } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
+  }
+
+  document.addEventListener("languagechange", () => {
+    buildNodeField();
+    loadBestSellers();
+  });
+
   buildNodeField();
   initHeroSlider();
   loadHomeGrids();
-  loadCounts();
+  loadBestSellers();
 </script>
 </body>
+</html>
 </html>
