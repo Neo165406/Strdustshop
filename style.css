@@ -267,29 +267,35 @@ ul { list-style: none; margin: 0; padding: 0; }
   overflow: hidden;
   background: var(--black);
 }
-.bs-track { position: relative; height: 54px; }
+.bs-track { position: relative; height: 92px; }
 .bs-item {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
   color: var(--white);
-  font-size: 13px; font-weight: 600;
+  font-size: 16px; font-weight: 700;
   opacity: 0; transform: translateY(8px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-  padding: 0 16px;
+  padding: 0 20px;
   text-align: center;
 }
 .bs-item.active { opacity: 1; transform: translateY(0); }
 .bs-item img {
-  width: 30px; height: 30px; border-radius: 6px; object-fit: cover;
+  width: 60px; height: 60px; border-radius: 10px; object-fit: cover;
   flex-shrink: 0;
+  border: 1.5px solid rgba(255,255,255,0.15);
 }
 .bs-item .bs-tag {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--aqua);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-right: 4px;
+  letter-spacing: 0.06em;
+  margin-right: 6px;
+}
+@media (max-width: 600px) {
+  .bs-track { height: 100px; }
+  .bs-item { font-size: 14px; gap: 12px; flex-wrap: wrap; }
+  .bs-item img { width: 52px; height: 52px; }
 }
 
 /* ==========================================================================
