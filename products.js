@@ -23,17 +23,22 @@ async function fetchProductById(id) {
 function productCardHTML(p) {
   const img = (p.images && p.images[0]) || "";
   const cat = categoryById(p.category);
+  const lang = currentLang();
+  const catLabel = lang === "en" ? cat.label : cat.bn;
   const hasDiscount = p.originalPrice && p.originalPrice > p.price;
   const out = p.stock !== undefined && p.stock <= 0;
+  const outLabel = lang === "en" ? "Out of Stock" : "স্টক নেই";
+  const saleLabel = lang === "en" ? "Sale" : "সেল";
+  const addLabel = lang === "en" ? "Add to cart" : "কার্টে যোগ করুন";
   return `
     <a href="product.html?id=${p.id}" class="card">
       <div class="card-media">
         ${img ? `<img src="${img}" alt="${p.name}" loading="lazy">` : `<div class="skeleton" style="position:absolute;inset:0;"></div>`}
-        ${out ? `<span class="badge badge-out">স্টক নেই</span>` : hasDiscount ? `<span class="badge badge-aqua">সেল</span>` : ""}
-        <span class="card-quickadd" onclick="event.preventDefault(); event.stopPropagation(); quickAdd('${p.id}')" aria-label="কার্টে যোগ করুন">+</span>
+        ${out ? `<span class="badge badge-out">${outLabel}</span>` : hasDiscount ? `<span class="badge badge-aqua">${saleLabel}</span>` : ""}
+        <span class="card-quickadd" onclick="event.preventDefault(); event.stopPropagation(); quickAdd('${p.id}')" aria-label="${addLabel}">+</span>
       </div>
       <div class="card-body">
-        <span class="card-cat">${cat.bn}</span>
+        <span class="card-cat">${catLabel}</span>
         <span class="card-title">${p.name}</span>
         <div class="card-price-row">
           <span class="card-price">${formatTaka(p.price)}</span>
