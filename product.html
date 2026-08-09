@@ -32,14 +32,15 @@
   <div class="header-inner">
     <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
     <nav class="main-nav">
-      <a href="index.html">হোম</a>
-      <a href="shop.html">সব প্রোডাক্ট</a>
-      <a href="shop.html?category=tshirt">টি-শার্ট</a>
-      <a href="shop.html?category=gadget">গ্যাজেট</a>
-      <a href="shop.html?category=jewelry">জুয়েলারি</a>
-      <a href="track-order.html">অর্ডার ট্র্যাক</a>
+      <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
     </nav>
     <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
       <a href="cart.html" class="icon-btn" aria-label="কার্ট">
         🛒
         <span class="cart-badge" data-cart-count style="display:none;">0</span>
@@ -64,7 +65,7 @@
 
   <section class="section" id="relatedSection" style="display:none;">
     <div class="section-head">
-      <div><span class="eyebrow">আরও দেখুন</span><h2>একই ক্যাটাগরির প্রোডাক্ট</h2></div>
+      <div><span class="eyebrow" data-bn="আরও দেখুন" data-en="See More">আরও দেখুন</span><h2 data-bn="একই ক্যাটাগরির প্রোডাক্ট" data-en="More in this category">একই ক্যাটাগরির প্রোডাক্ট</h2></div>
     </div>
     <div class="product-grid" id="relatedGrid"></div>
   </section>
@@ -73,8 +74,8 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-bottom" style="border-top:none;padding-top:0;">
-      <span>© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
-      <span>Cash on Delivery সারা বাংলাদেশে</span>
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
     </div>
   </div>
 </footer>
@@ -106,31 +107,44 @@
 
   function renderInfo(p) {
     const cat = categoryById(p.category);
+    const lang = currentLang();
+    const catLabel = lang === "en" ? cat.label : cat.bn;
     document.getElementById("pageTitleTag").textContent = `${p.name} — StrDust`;
     const hasDiscount = p.originalPrice && p.originalPrice > p.price;
     const inStock = p.stock === undefined || p.stock > 0;
+    const t = lang === "en" ? {
+      desc: "Details for this product will be added soon.",
+      inStock: "✓ In Stock", outStock: "✕ Out of Stock",
+      addToCart: "Add to Cart", buyNow: "Buy Now",
+      usp1: "🚚 1-3 day delivery inside Dhaka", usp2: "💵 Cash on delivery available", usp3: "↩️ Easy exchange if there's an issue"
+    } : {
+      desc: "এই প্রোডাক্টের বিস্তারিত বিবরণ শীঘ্রই যোগ করা হবে।",
+      inStock: "✓ স্টকে আছে", outStock: "✕ স্টকে নেই",
+      addToCart: "কার্টে যোগ করুন", buyNow: "এখনই কিনুন",
+      usp1: "🚚 ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি", usp2: "💵 ক্যাশ অন ডেলিভারি সুবিধা", usp3: "↩️ সমস্যা হলে সহজে এক্সচেঞ্জ"
+    };
     document.getElementById("pdInfo").innerHTML = `
-      <span class="pd-cat">${cat.icon} ${cat.bn}</span>
+      <span class="pd-cat">${cat.icon} ${catLabel}</span>
       <h1 class="pd-title">${p.name}</h1>
       <div class="pd-price-row">
         <span class="pd-price">${formatTaka(p.price)}</span>
         ${hasDiscount ? `<span class="pd-price-old">${formatTaka(p.originalPrice)}</span>` : ""}
       </div>
-      <p class="pd-desc">${p.description || "এই প্রোডাক্টের বিস্তারিত বিবরণ শীঘ্রই যোগ করা হবে।"}</p>
-      <p class="pd-stock ${inStock ? "in" : "out"}">${inStock ? "✓ স্টকে আছে" : "✕ স্টকে নেই"}</p>
+      <p class="pd-desc">${p.description || t.desc}</p>
+      <p class="pd-stock ${inStock ? "in" : "out"}">${inStock ? t.inStock : t.outStock}</p>
       <div class="pd-actions">
         <div class="qty-control">
           <button id="qtyMinus">−</button>
           <span id="qtyVal">1</span>
           <button id="qtyPlus">+</button>
         </div>
-        <button class="btn btn-aqua" id="addToCartBtn" ${inStock ? "" : "disabled"}>কার্টে যোগ করুন</button>
-        <a href="cart.html" class="btn btn-outline" id="buyNowBtn" style="display:none;">এখনই কিনুন</a>
+        <button class="btn btn-aqua" id="addToCartBtn" ${inStock ? "" : "disabled"}>${t.addToCart}</button>
+        <a href="cart.html" class="btn btn-outline" id="buyNowBtn" style="display:none;">${t.buyNow}</a>
       </div>
       <div class="usp-strip">
-        <span>🚚 ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি</span>
-        <span>💵 ক্যাশ অন ডেলিভারি সুবিধা</span>
-        <span>↩️ সমস্যা হলে সহজে এক্সচেঞ্জ</span>
+        <span>${t.usp1}</span>
+        <span>${t.usp2}</span>
+        <span>${t.usp3}</span>
       </div>
     `;
     document.getElementById("qtyMinus").addEventListener("click", () => { if (qty > 1) { qty--; document.getElementById("qtyVal").textContent = qty; } });
@@ -151,14 +165,20 @@
   }
 
   async function load() {
+    const lang = currentLang();
+    const notFoundLabel = lang === "en" ? "Product not found" : "প্রোডাক্ট পাওয়া যায়নি";
+    const notFoundLabel2 = lang === "en" ? "This product could not be found" : "প্রোডাক্টটি খুঁজে পাওয়া যায়নি";
+    const viewAll = lang === "en" ? "View all products →" : "সব প্রোডাক্ট দেখুন →";
+    const loadFailTitle = lang === "en" ? "Couldn't load" : "লোড করা যায়নি";
+    const loadFailSub = lang === "en" ? "Please try again in a moment." : "একটু পর আবার চেষ্টা করুন।";
     if (!productId) {
-      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>প্রোডাক্ট পাওয়া যায়নি</h3><p><a href="shop.html">সব প্রোডাক্ট দেখুন →</a></p></div>`;
+      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${notFoundLabel}</h3><p><a href="shop.html">${viewAll}</a></p></div>`;
       return;
     }
     try {
       const p = await fetchProductById(productId);
       if (!p) {
-        document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>প্রোডাক্টটি খুঁজে পাওয়া যায়নি</h3><p><a href="shop.html">সব প্রোডাক্ট দেখুন →</a></p></div>`;
+        document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${notFoundLabel2}</h3><p><a href="shop.html">${viewAll}</a></p></div>`;
         return;
       }
       currentProduct = p;
@@ -166,9 +186,10 @@
       renderInfo(p);
       loadRelated(p);
     } catch (e) {
-      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>লোড করা যায়নি</h3><p>একটু পর আবার চেষ্টা করুন।</p></div>`;
+      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${loadFailTitle}</h3><p>${loadFailSub}</p></div>`;
     }
   }
+  document.addEventListener("languagechange", load);
   load();
 </script>
 </body>
