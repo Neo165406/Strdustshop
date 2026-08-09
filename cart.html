@@ -1,163 +1,133 @@
-/* ==========================================================================
-   Cart — persisted in localStorage so it survives navigation between
-   pages (index → shop → product → cart → checkout).
-   ========================================================================== */
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আপনার কার্ট — StrDust</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-const CART_KEY = "strdust_cart";
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
+      <a href="cart.html" class="icon-btn active" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="মেনু">☰</button>
+    </div>
+  </div>
+</header>
 
-function getCart() {
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  } catch (e) {
-    return [];
+<div class="container" style="padding:32px 20px 64px;">
+  <h1 style="font-size:clamp(24px,3.4vw,32px);margin-bottom:24px;" data-bn="আপনার কার্ট" data-en="Your Cart">আপনার কার্ট</h1>
+
+  <div class="two-col" id="cartRoot">
+    <div id="cartLines"></div>
+    <div class="summary-card">
+      <h3 style="margin-bottom:16px;" data-bn="অর্ডার সামারি" data-en="Order Summary">অর্ডার সামারি</h3>
+      <div class="summary-row"><span data-bn="সাবটোটাল" data-en="Subtotal">সাবটোটাল</span><span class="value" id="sumSubtotal">৳0</span></div>
+      <div class="summary-row"><span data-bn="ডেলিভারি চার্জ" data-en="Delivery Charge">ডেলিভারি চার্জ</span><span class="value" data-bn="চেকআউটে হিসাব হবে" data-en="Calculated at checkout">চেকআউটে হিসাব হবে</span></div>
+      <div class="summary-row total"><span data-bn="মোট" data-en="Total">মোট</span><span class="value" id="sumTotal">৳0</span></div>
+      <a href="checkout.html" class="btn btn-aqua btn-block" id="checkoutBtn" style="margin-top:8px;" data-bn="চেকআউটে যান" data-en="Go to Checkout">চেকআউটে যান</a>
+      <a href="shop.html" class="btn btn-outline btn-block" style="margin-top:10px;" data-bn="কেনাকাটা চালিয়ে যান" data-en="Continue Shopping">কেনাকাটা চালিয়ে যান</a>
+    </div>
+  </div>
+
+  <div class="empty-state hidden" id="emptyCart">
+    <h3 data-bn="আপনার কার্ট খালি" data-en="Your cart is empty">আপনার কার্ট খালি</h3>
+    <p data-bn="এখনো কিছু যোগ করেননি।" data-en="You haven't added anything yet.">এখনো কিছু যোগ করেননি।</p>
+    <a href="shop.html" class="btn btn-aqua" style="margin-top:16px;" data-bn="কেনাকাটা শুরু করুন" data-en="Start Shopping">কেনাকাটা শুরু করুন</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cart.js"></script>
+<script src="products.js"></script>
+<script>
+  function renderCart() {
+    const cart = getCart();
+    const linesEl = document.getElementById("cartLines");
+    const root = document.getElementById("cartRoot");
+    const empty = document.getElementById("emptyCart");
+    const lang = currentLang();
+    const removeLabel = lang === "en" ? "Remove" : "সরিয়ে ফেলুন";
+
+    if (!cart.length) {
+      root.classList.add("hidden");
+      empty.classList.remove("hidden");
+      return;
+    }
+    root.classList.remove("hidden");
+    empty.classList.add("hidden");
+
+    linesEl.innerHTML = cart.map(item => {
+      const cat = categoryById(item.category);
+      const catLabel = lang === "en" ? cat.label : cat.bn;
+      return `
+      <div class="cart-line" data-id="${item.id}">
+        <img src="${item.image || ""}" alt="${item.name}">
+        <div>
+          <div class="cart-line-cat">${catLabel}</div>
+          <div class="cart-line-title">${item.name}</div>
+          <span class="remove-line" data-remove="${item.id}">${removeLabel}</span>
+        </div>
+        <div class="qty-control">
+          <button data-minus="${item.id}">−</button>
+          <span>${item.qty}</span>
+          <button data-plus="${item.id}">+</button>
+        </div>
+        <div class="cart-line-price">${formatTaka(item.qty * item.price)}</div>
+      </div>`;
+    }).join("");
+
+    const subtotal = getCartTotal();
+    document.getElementById("sumSubtotal").textContent = formatTaka(subtotal);
+    document.getElementById("sumTotal").textContent = formatTaka(subtotal);
   }
-}
 
-function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateCartBadge();
-}
+  document.addEventListener("languagechange", renderCart);
 
-function addToCart(product, qty = 1) {
-  const cart = getCart();
-  const existing = cart.find(item => item.id === product.id);
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: (product.images && product.images[0]) || "",
-      category: product.category,
-      qty: qty
-    });
-  }
-  saveCart(cart);
-  showToast(`${product.name} কার্টে যোগ হয়েছে`);
-}
-
-function updateQty(productId, qty) {
-  let cart = getCart();
-  if (qty <= 0) {
-    cart = cart.filter(item => item.id !== productId);
-  } else {
-    const item = cart.find(i => i.id === productId);
-    if (item) item.qty = qty;
-  }
-  saveCart(cart);
-}
-
-function removeFromCart(productId) {
-  const cart = getCart().filter(item => item.id !== productId);
-  saveCart(cart);
-}
-
-function clearCart() {
-  localStorage.removeItem(CART_KEY);
-  updateCartBadge();
-}
-
-function getCartCount() {
-  return getCart().reduce((sum, item) => sum + item.qty, 0);
-}
-
-function getCartTotal() {
-  return getCart().reduce((sum, item) => sum + item.qty * item.price, 0);
-}
-
-function updateCartBadge() {
-  document.querySelectorAll("[data-cart-count]").forEach(el => {
-    const count = getCartCount();
-    el.textContent = count;
-    el.style.display = count > 0 ? "flex" : "none";
+  document.getElementById("cartLines").addEventListener("click", (e) => {
+    const minus = e.target.closest("[data-minus]");
+    const plus = e.target.closest("[data-plus]");
+    const remove = e.target.closest("[data-remove]");
+    if (minus) {
+      const item = getCart().find(i => i.id === minus.dataset.minus);
+      if (item) updateQty(item.id, item.qty - 1);
+    }
+    if (plus) {
+      const item = getCart().find(i => i.id === plus.dataset.plus);
+      if (item) updateQty(item.id, item.qty + 1);
+    }
+    if (remove) removeFromCart(remove.dataset.remove);
+    renderCart();
   });
-}
 
-/* Toast + invoice helpers used across pages */
-
-function showToast(message) {
-  let toast = document.querySelector(".toast");
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.className = "toast";
-    document.body.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.classList.add("show");
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
-}
-
-function generateInvoiceNumber() {
-  const now = new Date();
-  const y = now.getFullYear().toString().slice(-2);
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  const rand = Math.floor(1000 + Math.random() * 9000);
-  return `SD-${y}${m}${d}-${rand}`;
-}
-
-function formatTaka(amount) {
-  return "৳" + Number(amount).toLocaleString("en-BD");
-}
-
-/* Site-wide theme — admin can override accent color + homepage hero text
-   from Dashboard → থিম. Applies on every page load. */
-async function applyTheme() {
-  try {
-    const doc = await db.collection("settings").doc("site").get();
-    if (!doc.exists) return;
-    const t = doc.data();
-    if (t.accentColor) document.documentElement.style.setProperty("--aqua", t.accentColor);
-    const badgeEl = document.getElementById("heroBadge");
-    if (badgeEl && t.heroBadge) badgeEl.textContent = t.heroBadge;
-    const subEl = document.getElementById("heroSubText");
-    if (subEl && t.heroSub) subEl.textContent = t.heroSub;
-  } catch (e) { /* firebase not configured yet, or no theme saved */ }
-}
-
-/* -------------------------------------------------------------------------
-   Bengali / English toggle — shared across every page. Elements with
-   data-bn + data-en attributes get swapped automatically; pages/sections
-   that don't have those attributes yet simply stay as-is.
-   ------------------------------------------------------------------------- */
-function currentLang() {
-  return localStorage.getItem("strdust_lang") || "bn";
-}
-
-function applyStaticTranslations(lang) {
-  document.querySelectorAll("[data-bn]").forEach(el => {
-    const val = lang === "en" ? (el.dataset.en ?? el.dataset.bn) : el.dataset.bn;
-    el.innerHTML = val;
-  });
-  document.querySelectorAll("[data-bn-ph]").forEach(el => {
-    el.placeholder = lang === "en" ? (el.dataset.enPh ?? el.dataset.bnPh) : el.dataset.bnPh;
-  });
-  document.documentElement.lang = lang === "en" ? "en" : "bn";
-}
-
-function setLanguage(lang) {
-  localStorage.setItem("strdust_lang", lang);
-  applyStaticTranslations(lang);
-  const btn = document.getElementById("langToggle");
-  if (btn) btn.textContent = lang === "en" ? "বাং" : "EN";
-  document.dispatchEvent(new CustomEvent("languagechange", { detail: { lang } }));
-}
-
-function toggleLanguage() {
-  setLanguage(currentLang() === "bn" ? "en" : "bn");
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lang = currentLang();
-  applyStaticTranslations(lang);
-  const btn = document.getElementById("langToggle");
-  if (btn) {
-    btn.textContent = lang === "en" ? "বাং" : "EN";
-    btn.addEventListener("click", toggleLanguage);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", updateCartBadge);
-document.addEventListener("DOMContentLoaded", applyTheme);
+  renderCart();
+</script>
+</body>
+</html>
