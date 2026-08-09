@@ -205,11 +205,10 @@
   async function loadBestSellers() {
     const banner = document.getElementById("bestsellerBanner");
     const track = document.getElementById("bsTrack");
-    const bgCollage = document.getElementById("heroBgCollage");
     try {
       const snap = await db.collection("products").where("bestSeller", "==", true).limit(8).get();
       const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (!items.length) { bgCollage.innerHTML = ""; return; }
+      if (!items.length) return;
       const lang = currentLang();
       const tag = lang === "en" ? "🏆 BEST SELLER" : "🏆 বেস্ট সেলার";
 
@@ -218,14 +217,8 @@
         <a href="product.html?id=${p.id}" class="bs-item ${i === 0 ? "active" : ""}">
           <span class="bs-tag">${tag}</span>
           ${(p.images && p.images[0]) ? `<img src="${p.images[0]}" alt="">` : ""}
-          <span>${p.name} — ${formatTaka(p.price)}</span>
+          <span class="bs-name">${p.name} — ${formatTaka(p.price)}</span>
         </a>`).join("");
-
-      // Reuse the same items to animate the hero background — no white gap, feels alive
-      const withImages = items.filter(p => p.images && p.images[0]);
-      bgCollage.innerHTML = withImages.map((p, i) =>
-        `<div class="bg-slide ${i === 0 ? "active" : ""}" style="background-image:url('${p.images[0]}')"></div>`
-      ).join("");
 
       if (items.length > 1) {
         let current = 0;
@@ -236,6 +229,22 @@
           els[current].classList.add("active");
         }, 3200);
       }
+    } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
+  }
+
+  // Hero background — always shows the newest products (not tied to bestSeller
+  // flag) so the hero never looks empty, even before anything is marked "best seller".
+  async function loadHeroBackground() {
+    const bgCollage = document.getElementById("heroBgCollage");
+    try {
+      const items = await fetchProducts({ sort: "new", max: 8 });
+      const withImages = items.filter(p => p.images && p.images[0]);
+      if (!withImages.length) { bgCollage.innerHTML = ""; return; }
+
+      bgCollage.innerHTML = withImages.map((p, i) =>
+        `<div class="bg-slide ${i === 0 ? "active" : ""}" style="background-image:url('${p.images[0]}')"></div>`
+      ).join("");
+
       if (withImages.length > 1) {
         let bgCurrent = 0;
         const bgEls = bgCollage.querySelectorAll(".bg-slide");
@@ -245,7 +254,7 @@
           bgEls[bgCurrent].classList.add("active");
         }, 4000);
       }
-    } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
+    } catch (e) { /* firebase not configured yet, or no products yet */ }
   }
 
   document.addEventListener("languagechange", () => {
@@ -257,7 +266,7 @@
   initHeroSlider();
   loadHomeGrids();
   loadBestSellers();
+  loadHeroBackground();
 </script>
 </body>
-</html>
 </html>
