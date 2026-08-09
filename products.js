@@ -117,7 +117,11 @@ async function initHeroSlider() {
   const dotEls = dotsWrap.querySelectorAll("button");
 
   function goTo(i) {
-    slideEls[current].classList.remove("active");
+    const priorIndex = current;
+    slideEls.forEach((el, idx) => {
+      el.classList.remove("active", "prev");
+      if (idx === priorIndex) el.classList.add("prev");
+    });
     dotEls[current].classList.remove("active");
     current = i;
     slideEls[current].classList.add("active");
