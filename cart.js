@@ -117,5 +117,47 @@ async function applyTheme() {
   } catch (e) { /* firebase not configured yet, or no theme saved */ }
 }
 
+/* -------------------------------------------------------------------------
+   Bengali / English toggle — shared across every page. Elements with
+   data-bn + data-en attributes get swapped automatically; pages/sections
+   that don't have those attributes yet simply stay as-is.
+   ------------------------------------------------------------------------- */
+function currentLang() {
+  return localStorage.getItem("strdust_lang") || "bn";
+}
+
+function applyStaticTranslations(lang) {
+  document.querySelectorAll("[data-bn]").forEach(el => {
+    const val = lang === "en" ? (el.dataset.en ?? el.dataset.bn) : el.dataset.bn;
+    el.innerHTML = val;
+  });
+  document.querySelectorAll("[data-bn-ph]").forEach(el => {
+    el.placeholder = lang === "en" ? (el.dataset.enPh ?? el.dataset.bnPh) : el.dataset.bnPh;
+  });
+  document.documentElement.lang = lang === "en" ? "en" : "bn";
+}
+
+function setLanguage(lang) {
+  localStorage.setItem("strdust_lang", lang);
+  applyStaticTranslations(lang);
+  const btn = document.getElementById("langToggle");
+  if (btn) btn.textContent = lang === "en" ? "বাং" : "EN";
+  document.dispatchEvent(new CustomEvent("languagechange", { detail: { lang } }));
+}
+
+function toggleLanguage() {
+  setLanguage(currentLang() === "bn" ? "en" : "bn");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lang = currentLang();
+  applyStaticTranslations(lang);
+  const btn = document.getElementById("langToggle");
+  if (btn) {
+    btn.textContent = lang === "en" ? "বাং" : "EN";
+    btn.addEventListener("click", toggleLanguage);
+  }
+});
+
 document.addEventListener("DOMContentLoaded", updateCartBadge);
 document.addEventListener("DOMContentLoaded", applyTheme);
