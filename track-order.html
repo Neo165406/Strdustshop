@@ -23,11 +23,12 @@
   <div class="header-inner">
     <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
     <nav class="main-nav">
-      <a href="index.html">হোম</a>
-      <a href="shop.html">সব প্রোডাক্ট</a>
-      <a href="track-order.html" class="active">অর্ডার ট্র্যাক</a>
+      <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="track-order.html" class="active" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
     </nav>
     <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
       <a href="cart.html" class="icon-btn" aria-label="কার্ট">
         🛒
         <span class="cart-badge" data-cart-count style="display:none;">0</span>
@@ -38,27 +39,27 @@
 
 <div class="container">
   <div class="track-box">
-    <span class="eyebrow">অর্ডার স্ট্যাটাস</span>
-    <h1 style="font-size:clamp(24px,3.4vw,32px);margin:8px 0 0;">আপনার অর্ডার ট্র্যাক করুন</h1>
-    <p>চেকআউটের পর পাওয়া ইনভয়েস নাম্বারটি দিন</p>
+    <span class="eyebrow" data-bn="অর্ডার স্ট্যাটাস" data-en="Order Status">অর্ডার স্ট্যাটাস</span>
+    <h1 style="font-size:clamp(24px,3.4vw,32px);margin:8px 0 0;" data-bn="আপনার অর্ডার ট্র্যাক করুন" data-en="Track Your Order">আপনার অর্ডার ট্র্যাক করুন</h1>
+    <p data-bn="চেকআউটের পর পাওয়া ইনভয়েস নাম্বারটি দিন" data-en="Enter the invoice number you got after checkout">চেকআউটের পর পাওয়া ইনভয়েস নাম্বারটি দিন</p>
     <div class="track-input-row">
       <input type="text" id="invoiceInput" placeholder="SD-260806-1234">
-      <button class="btn btn-aqua" id="trackBtn">খুঁজুন</button>
+      <button class="btn btn-aqua" id="trackBtn" data-bn="খুঁজুন" data-en="Search">খুঁজুন</button>
     </div>
   </div>
 
   <div class="order-result hidden" id="orderResult"></div>
   <div class="empty-state hidden" id="notFound">
-    <h3>কোনো অর্ডার পাওয়া যায়নি</h3>
-    <p>ইনভয়েস নাম্বারটি আবার চেক করুন।</p>
+    <h3 data-bn="কোনো অর্ডার পাওয়া যায়নি" data-en="No order found">কোনো অর্ডার পাওয়া যায়নি</h3>
+    <p data-bn="ইনভয়েস নাম্বারটি আবার চেক করুন।" data-en="Please double-check the invoice number.">ইনভয়েস নাম্বারটি আবার চেক করুন।</p>
   </div>
 </div>
 
 <footer class="site-footer" style="margin-top:64px;">
   <div class="container">
     <div class="footer-bottom" style="border-top:none;padding-top:0;">
-      <span>© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
-      <span>Cash on Delivery সারা বাংলাদেশে</span>
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
     </div>
   </div>
 </footer>
@@ -70,26 +71,40 @@
 <script src="cart.js"></script>
 <script src="products.js"></script>
 <script>
-  const STATUS_STEPS = [
+  const STATUS_STEPS_BN = [
     { key: "pending", label: "গ্রহণ হয়েছে", icon: "📝" },
     { key: "confirmed", label: "কনফার্ম", icon: "✅" },
     { key: "shipped", label: "পাঠানো হয়েছে", icon: "🚚" },
     { key: "delivered", label: "ডেলিভার্ড", icon: "🏠" }
   ];
+  const STATUS_STEPS_EN = [
+    { key: "pending", label: "Received", icon: "📝" },
+    { key: "confirmed", label: "Confirmed", icon: "✅" },
+    { key: "shipped", label: "Shipped", icon: "🚚" },
+    { key: "delivered", label: "Delivered", icon: "🏠" }
+  ];
+  function statusSteps() { return currentLang() === "en" ? STATUS_STEPS_EN : STATUS_STEPS_BN; }
 
   function statusTrackHTML(currentStatus) {
+    const STEPS = statusSteps();
     if (currentStatus === "cancelled") {
-      return `<p style="text-align:center;color:var(--danger);font-weight:700;">এই অর্ডারটি বাতিল করা হয়েছে</p>`;
+      const msg = currentLang() === "en" ? "This order has been cancelled" : "এই অর্ডারটি বাতিল করা হয়েছে";
+      return `<p style="text-align:center;color:var(--danger);font-weight:700;">${msg}</p>`;
     }
-    const currentIndex = STATUS_STEPS.findIndex(s => s.key === currentStatus);
-    return `<div class="status-track">${STATUS_STEPS.map((s, i) => `
+    const currentIndex = STEPS.findIndex(s => s.key === currentStatus);
+    return `<div class="status-track">${STEPS.map((s, i) => `
       <div class="status-step ${i < currentIndex ? "done" : ""} ${i === currentIndex ? "current" : ""}">
         <div class="status-dot">${i <= currentIndex ? s.icon : ""}</div>
         <span class="label">${s.label}</span>
       </div>`).join("")}</div>`;
   }
 
+  let lastOrder = null;
   function renderOrder(order) {
+    lastOrder = order;
+    const lang = currentLang();
+    const invoiceLabel = lang === "en" ? "Invoice" : "ইনভয়েস";
+    const totalLabel = lang === "en" ? "Total" : "মোট";
     document.getElementById("notFound").classList.add("hidden");
     const result = document.getElementById("orderResult");
     result.classList.remove("hidden");
@@ -97,10 +112,10 @@
       <div class="result-card">
         <div class="result-head">
           <div>
-            <div class="eyebrow">ইনভয়েস</div>
+            <div class="eyebrow">${invoiceLabel}</div>
             <div style="font-family:var(--font-mono);font-weight:700;font-size:18px;">${order.invoiceNumber}</div>
           </div>
-          <span class="pill pill-${order.status}">${STATUS_STEPS.find(s => s.key === order.status)?.label || order.status}</span>
+          <span class="pill pill-${order.status}">${statusSteps().find(s => s.key === order.status)?.label || order.status}</span>
         </div>
         ${statusTrackHTML(order.status)}
         <div class="result-items">
@@ -110,7 +125,7 @@
               <span style="font-family:var(--font-mono);">${formatTaka(item.qty * item.price)}</span>
             </div>`).join("")}
           <div class="summary-row total" style="margin-top:10px;">
-            <span>মোট</span><span class="value">${formatTaka(order.total)}</span>
+            <span>${totalLabel}</span><span class="value">${formatTaka(order.total)}</span>
           </div>
         </div>
         <div class="result-addr">
@@ -120,6 +135,7 @@
   }
 
   async function trackOrder() {
+    const lang = currentLang();
     const invoice = document.getElementById("invoiceInput").value.trim().toUpperCase();
     if (!invoice) return;
     document.getElementById("orderResult").classList.add("hidden");
@@ -138,11 +154,15 @@
       document.getElementById("notFound").classList.remove("hidden");
     }
     btn.disabled = false;
-    btn.textContent = "খুঁজুন";
+    btn.textContent = lang === "en" ? "Search" : "খুঁজুন";
   }
 
   document.getElementById("trackBtn").addEventListener("click", trackOrder);
   document.getElementById("invoiceInput").addEventListener("keydown", (e) => { if (e.key === "Enter") trackOrder(); });
+
+  document.addEventListener("languagechange", () => {
+    if (lastOrder) renderOrder(lastOrder);
+  });
 
   // auto-fill from ?invoice= if arriving via a link
   const preset = new URLSearchParams(location.search).get("invoice");
