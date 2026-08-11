@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /login.html
+Disallow: /dashboard.html
+
+Sitemap: https://strdustshop.vercel.app/sitemap.xml
