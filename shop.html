@@ -3,8 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>সব প্রোডাক্ট — StrDust</title>
-<meta name="description" content="StrDust-এ টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি আর জুয়েলারি — ক্যাটাগরি অনুযায়ী ফিল্টার করে দেখুন।">
+<title>সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, গ্যাজেট, জুয়েলারি</title>
+<meta name="description" content="StrDust-এ টি-শার্ট, গ্যাজেট, অরিজিনাল পারফিউম, প্যান্ট, ঘড়ি আর জুয়েলারি — ক্যাটাগরি অনুযায়ী ফিল্টার করে দেখুন। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://strdustshop.vercel.app/shop.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="সব প্রোডাক্ট — StrDust">
+<meta property="og:description" content="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি ও জুয়েলারি — সব ক্যাটাগরি এক জায়গায়। ঢাকায় ফাস্ট ডেলিভারি ও COD সুবিধাসহ।">
+<meta property="og:url" content="https://strdustshop.vercel.app/shop.html">
+<meta property="og:image" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+<meta property="og:site_name" content="StrDust">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="সব প্রোডাক্ট — StrDust">
+<meta name="twitter:description" content="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি ও জুয়েলারি — সব ক্যাটাগরি এক জায়গায়।">
+<meta name="twitter:image" content="https://strdustshop.vercel.app/og-image.jpg">
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -84,6 +100,27 @@
   const sortSelect = document.getElementById("sortSelect");
   sortSelect.value = activeSort;
 
+  // SEO: keep <title> and meta description in sync with the active category filter
+  function updateShopSeo() {
+    const lang = currentLang();
+    if (activeCategory) {
+      const cat = categoryById(activeCategory);
+      const catLabel = lang === "en" ? cat.label : cat.bn;
+      const title = lang === "en"
+        ? `${catLabel} — StrDust | Buy Online in Bangladesh`
+        : `${catLabel} কিনুন — StrDust | অনলাইন শপ বাংলাদেশ`;
+      const desc = lang === "en"
+        ? `Shop ${catLabel} at StrDust — original quality, fast delivery inside Dhaka, cash on delivery available.`
+        : `StrDust থেকে ${catLabel} কিনুন — অরিজিনাল কোয়ালিটি, ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।`;
+      document.title = title;
+      document.querySelector('meta[name="description"]').setAttribute("content", desc);
+    } else {
+      document.title = "সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, গ্যাজেট, জুয়েলারি";
+      document.querySelector('meta[name="description"]').setAttribute("content",
+        "StrDust-এ টি-শার্ট, গ্যাজেট, অরিজিনাল পারফিউম, প্যান্ট, ঘড়ি আর জুয়েলারি — ক্যাটাগরি অনুযায়ী ফিল্টার করে দেখুন। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।");
+    }
+  }
+
   function setActiveChip() {
     const lang = currentLang();
     document.querySelectorAll(".chip").forEach(chip => {
@@ -96,6 +133,7 @@
     document.getElementById("pageEyebrow").textContent = activeCategory
       ? (lang === "en" ? "Category" : "ক্যাটাগরি")
       : (lang === "en" ? "All Products" : "সব প্রোডাক্ট");
+    updateShopSeo();
   }
 
   async function loadShop() {
