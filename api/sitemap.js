@@ -61,6 +61,6 @@ module.exports = async (req, res) => {
     res.status(200).send(xml);
   } catch (err) {
     console.error("Sitemap generation failed:", err);
-    res.status(500).send("Sitemap generation failed");
+    res.status(500).send("Sitemap generation failed: " + err.message);
   }
 };
