@@ -851,3 +851,46 @@ tr:last-child td { border-bottom: none; }
 .text-center { text-align: center; }
 .mt-0 { margin-top: 0; }
 .hidden { display: none !important; }
+
+/* ===== StrDust Brand Header Theme (Navy + Cyan + Gold) ===== */
+.site-header {
+  background-color: #0A0E1A;
+  border-bottom: 1px solid rgba(60, 190, 230, 0.15);
+}
+
+.logo {
+  color: #EBF0F5;
+  font-weight: 800;
+}
+
+.logo .dot {
+  color: #E6AF3C; /* gold accent dot between Str and Dust */
+}
+
+.main-nav a {
+  color: #C7D0DC;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: #3CBEE6;
+}
+
+.header-actions .lang-toggle {
+  background-color: rgba(60, 190, 230, 0.1);
+  color: #3CBEE6;
+  border: 1px solid rgba(60, 190, 230, 0.3);
+}
+
+.header-actions .icon-btn {
+  color: #EBF0F5;
+}
+
+.cart-badge {
+  background-color: #E6AF3C;
+  color: #0A0E1A;
+}
+
+.nav-toggle {
+  color: #EBF0F5;
+}
