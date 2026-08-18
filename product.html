@@ -41,11 +41,25 @@
   .pd-price { font-family: var(--font-mono); font-size: 26px; font-weight: 700; }
   .pd-price-old { font-family: var(--font-mono); font-size: 16px; color: var(--gray-light); text-decoration: line-through; }
   .pd-desc { font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
-  .pd-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+  .pd-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
   .pd-stock { font-size: 13px; font-weight: 700; margin-bottom: 20px; }
   .pd-stock.in { color: var(--aqua-dark); }
   .pd-stock.out { color: var(--danger); }
   .usp-strip { display: flex; flex-direction: column; gap: 10px; padding: 18px; background: var(--off-white); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 13.5px; font-weight: 600; }
+
+  /* Variant selectors — size chart (tshirt/pant) + ml/decant (perfume) */
+  .pd-variant-block { margin-bottom: 22px; }
+  .pd-variant-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: block; }
+  .pd-variant-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pd-chip {
+    padding: 9px 16px; border-radius: 8px; border: 1.5px solid var(--border);
+    background: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pd-chip.active { background: var(--aqua); border-color: var(--aqua); color: #fff; }
+  .pd-chip.disabled { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+  .pd-variant-hint { font-size: 12px; color: var(--danger); margin-top: 8px; display: none; }
+  .pd-variant-hint.show { display: block; }
 </style>
 </head>
 <body>
@@ -113,6 +127,11 @@
   let currentProduct = null;
   let qty = 1;
 
+  // Variant selection state — only one of these is relevant per product,
+  // depending on whether it has p.sizes (tshirt/pant) or p.variants (perfume ml)
+  let selectedSize = null;
+  let selectedMlVariant = null; // { ml, price }
+
   function renderGallery(images) {
     const main = document.getElementById("galleryMain");
     const thumbs = document.getElementById("galleryThumbs");
@@ -174,12 +193,71 @@
     document.getElementById("productSchema").textContent = JSON.stringify(schema);
   }
 
+  // ---- Variant selector HTML: size chips for tshirt/pant, ml chips for perfume ----
+  function variantBlockHTML(p, lang) {
+    if (p.sizes && p.sizes.length) {
+      const label = lang === "en" ? "Select Size" : "সাইজ সিলেক্ট করুন";
+      const hint = lang === "en" ? "Please select a size" : "প্রথমে একটি সাইজ সিলেক্ট করুন";
+      return `
+        <div class="pd-variant-block">
+          <span class="pd-variant-label">${label}</span>
+          <div class="pd-variant-row" id="sizeRow">
+            ${p.sizes.map(s => `<button type="button" class="pd-chip" data-size="${s}">${s}</button>`).join("")}
+          </div>
+          <p class="pd-variant-hint" id="sizeHint">${hint}</p>
+        </div>`;
+    }
+    if (p.variants && p.variants.length) {
+      const label = lang === "en" ? "Select Size (ml)" : "ML সিলেক্ট করুন";
+      const hint = lang === "en" ? "Please select an ml option" : "প্রথমে একটি ML অপশন সিলেক্ট করুন";
+      return `
+        <div class="pd-variant-block">
+          <span class="pd-variant-label">${label}</span>
+          <div class="pd-variant-row" id="mlRow">
+            ${p.variants.map(v => `<button type="button" class="pd-chip" data-ml="${v.ml}" data-price="${v.price}">${v.ml}ml — ${formatTaka(v.price)}</button>`).join("")}
+          </div>
+          <p class="pd-variant-hint" id="mlHint">${hint}</p>
+        </div>`;
+    }
+    return "";
+  }
+
+  function bindVariantEvents(p) {
+    const sizeRow = document.getElementById("sizeRow");
+    if (sizeRow) {
+      sizeRow.addEventListener("click", (e) => {
+        const chip = e.target.closest(".pd-chip");
+        if (!chip) return;
+        selectedSize = chip.dataset.size;
+        sizeRow.querySelectorAll(".pd-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        document.getElementById("sizeHint").classList.remove("show");
+      });
+    }
+    const mlRow = document.getElementById("mlRow");
+    if (mlRow) {
+      mlRow.addEventListener("click", (e) => {
+        const chip = e.target.closest(".pd-chip");
+        if (!chip) return;
+        selectedMlVariant = { ml: Number(chip.dataset.ml), price: Number(chip.dataset.price) };
+        mlRow.querySelectorAll(".pd-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        document.getElementById("mlHint").classList.remove("show");
+        // Reflect the chosen variant's price in the main price display
+        document.getElementById("pdPriceMain").textContent = formatTaka(selectedMlVariant.price);
+      });
+    }
+  }
+
   function renderInfo(p) {
     const cat = categoryById(p.category);
     const lang = currentLang();
     const catLabel = lang === "en" ? cat.label : cat.bn;
 
     updateSeoTags(p, catLabel);
+
+    selectedSize = null;
+    selectedMlVariant = null;
 
     const hasDiscount = p.originalPrice && p.originalPrice > p.price;
     const inStock = p.stock === undefined || p.stock > 0;
@@ -194,14 +272,18 @@
       addToCart: "কার্টে যোগ করুন", buyNow: "এখনই কিনুন",
       usp1: "🚚 ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি", usp2: "💵 ক্যাশ অন ডেলিভারি সুবিধা", usp3: "↩️ সমস্যা হলে সহজে এক্সচেঞ্জ"
     };
+
+    // Default price shown is the base p.price — for perfume with ml variants,
+    // this updates live once the customer picks an ml option (see bindVariantEvents)
     document.getElementById("pdInfo").innerHTML = `
       <span class="pd-cat">${cat.icon} ${catLabel}</span>
       <h1 class="pd-title">${p.name}</h1>
       <div class="pd-price-row">
-        <span class="pd-price">${formatTaka(p.price)}</span>
+        <span class="pd-price" id="pdPriceMain">${formatTaka(p.price)}</span>
         ${hasDiscount ? `<span class="pd-price-old">${formatTaka(p.originalPrice)}</span>` : ""}
       </div>
       <p class="pd-desc">${p.description || t.desc}</p>
+      ${variantBlockHTML(p, lang)}
       <p class="pd-stock ${inStock ? "in" : "out"}">${inStock ? t.inStock : t.outStock}</p>
       <div class="pd-actions">
         <div class="qty-control">
@@ -218,10 +300,30 @@
         <span>${t.usp3}</span>
       </div>
     `;
+    bindVariantEvents(p);
+    qty = 1;
     document.getElementById("qtyMinus").addEventListener("click", () => { if (qty > 1) { qty--; document.getElementById("qtyVal").textContent = qty; } });
     document.getElementById("qtyPlus").addEventListener("click", () => { qty++; document.getElementById("qtyVal").textContent = qty; });
     document.getElementById("addToCartBtn").addEventListener("click", () => {
-      addToCart(p, qty);
+      // Require a size selection before adding to cart, if this product has sizes
+      if (p.sizes && p.sizes.length) {
+        if (!selectedSize) { document.getElementById("sizeHint").classList.add("show"); return; }
+      }
+      // Require an ml selection before adding to cart, if this product has ml variants
+      if (p.variants && p.variants.length) {
+        if (!selectedMlVariant) { document.getElementById("mlHint").classList.add("show"); return; }
+      }
+
+      // Build the cart item — for variants, price/name/id are adjusted so
+      // different sizes/ml options of the same product stack as separate cart lines
+      let cartProduct = { ...p };
+      if (selectedSize) {
+        cartProduct = { ...p, id: `${p.id}__${selectedSize}`, name: `${p.name} (${selectedSize})` };
+      } else if (selectedMlVariant) {
+        cartProduct = { ...p, id: `${p.id}__${selectedMlVariant.ml}ml`, name: `${p.name} (${selectedMlVariant.ml}ml)`, price: selectedMlVariant.price };
+      }
+
+      addToCart(cartProduct, qty);
       document.getElementById("buyNowBtn").style.display = "inline-flex";
     });
   }
