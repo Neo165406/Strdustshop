@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>অ্যাডমিন ড্যাশবোর্ড — StrDust</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Added for size chart + ML/decant variant fields — safe to move into style.css */
+  .size-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .size-chip{
+    padding:8px 16px;border-radius:8px;border:1.5px solid var(--border,#ddd);
+    background:#fff;font-size:13px;font-weight:600;cursor:pointer;
+    transition:all .15s ease;
+  }
+  .size-chip.active{background:var(--aqua,#0FBFA0);border-color:var(--aqua,#0FBFA0);color:#fff;}
+  #mlRows .field-row{display:flex;gap:10px;}
+  #mlRows .field-row .field{flex:1;}
+</style>
 </head>
 <body>
 
@@ -138,6 +150,22 @@
         <input type="number" id="pOriginalPrice" placeholder="সেল দেখাতে চাইলে">
       </div>
     </div>
+
+    <!-- SIZE CHART — shown only for টি-শার্ট / প্যান্ট -->
+    <div class="field" id="sizeChartField" style="display:none;">
+      <label>সাইজ চার্ট — যেসব সাইজ পাওয়া যায় সিলেক্ট করুন</label>
+      <div class="size-chip-row" id="sizeChipRow"></div>
+      <p style="font-size:12px;color:var(--gray);margin-top:6px;">কাস্টমার প্রোডাক্ট পেজে এখান থেকে সাইজ বেছে অর্ডার করবে।</p>
+    </div>
+
+    <!-- ML / DECANT PRICING — shown only for পারফিউম -->
+    <div class="field" id="mlVariantField" style="display:none;">
+      <label>ML অনুযায়ী দাম (ডিক্যান্ট)</label>
+      <div id="mlRows"></div>
+      <button type="button" class="btn btn-outline btn-sm" id="addMlRowBtn" style="margin-top:8px;">+ ML অপশন যোগ করুন</button>
+      <p style="font-size:12px;color:var(--gray);margin-top:6px;">প্রতিটা ML সাইজের জন্য আলাদা দাম সেট করুন — যেমন 3ml, 5ml, 10ml, ফুল বোতল। উপরের "দাম" ফিল্ডটি ডিফল্ট/ফুল-বোতল দাম হিসেবে থাকবে।</p>
+    </div>
+
     <div class="field">
       <label>বিবরণ</label>
       <textarea id="pDescription" rows="3" placeholder="প্রোডাক্ট সম্পর্কে সংক্ষেপে লিখুন"></textarea>
@@ -240,9 +268,20 @@ let editingProductId = null;
 let currentImages = [];
 let productCategoryFilter = "";
 
+/* Size charts per category — edit this list to change what shows up */
+const SIZE_CHARTS = {
+  tshirt: ["S", "M", "L", "XL", "XXL"],
+  pant: ["28", "30", "32", "34", "36", "38"]
+};
+let selectedSizes = [];
+
+/* ML/decant rows for perfume — [{ ml: 5, price: 300 }, ...] */
+let mlRows = [];
+
 function init() {
   const catSelect = document.getElementById("pCategory");
   catSelect.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.icon} ${c.bn}</option>`).join("");
+  catSelect.addEventListener("change", () => toggleVariantFields(catSelect.value));
 
   const catFilterBar = document.querySelector(".filter-bar");
   CATEGORIES.forEach(c => {
@@ -265,6 +304,73 @@ function init() {
   loadSlides();
   loadTheme();
 }
+
+/* ---------- Variant fields: size chart (tshirt/pant) + ml rows (perfume) ---------- */
+function toggleVariantFields(category) {
+  const sizeField = document.getElementById("sizeChartField");
+  const mlField = document.getElementById("mlVariantField");
+
+  if (SIZE_CHARTS[category]) {
+    sizeField.style.display = "block";
+    mlField.style.display = "none";
+    renderSizeChips(category);
+  } else if (category === "perfume") {
+    sizeField.style.display = "none";
+    mlField.style.display = "block";
+    renderMlRows();
+  } else {
+    sizeField.style.display = "none";
+    mlField.style.display = "none";
+  }
+}
+
+function renderSizeChips(category) {
+  const sizes = SIZE_CHARTS[category] || [];
+  document.getElementById("sizeChipRow").innerHTML = sizes.map(s => `
+    <button type="button" class="size-chip ${selectedSizes.includes(s) ? "active" : ""}" data-size="${s}">${s}</button>
+  `).join("");
+}
+document.getElementById("sizeChipRow").addEventListener("click", (e) => {
+  const chip = e.target.closest(".size-chip");
+  if (!chip) return;
+  const size = chip.dataset.size;
+  if (selectedSizes.includes(size)) {
+    selectedSizes = selectedSizes.filter(s => s !== size);
+  } else {
+    selectedSizes.push(size);
+  }
+  chip.classList.toggle("active");
+});
+
+function renderMlRows() {
+  document.getElementById("mlRows").innerHTML = mlRows.map((row, i) => `
+    <div class="field-row" style="align-items:flex-end;margin-bottom:8px;" data-mlrow="${i}">
+      <div class="field" style="margin-bottom:0;">
+        <label style="font-size:12px;">ML</label>
+        <input type="number" min="1" value="${row.ml}" data-mlinput="${i}" placeholder="যেমন: ৫">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label style="font-size:12px;">দাম (৳)</label>
+        <input type="number" min="0" value="${row.price}" data-mlprice="${i}" placeholder="যেমন: ৩০০">
+      </div>
+      <button type="button" class="btn btn-danger btn-sm" data-mlremove="${i}" style="height:44px;">✕</button>
+    </div>
+  `).join("");
+}
+document.getElementById("addMlRowBtn").addEventListener("click", () => {
+  mlRows.push({ ml: "", price: "" });
+  renderMlRows();
+});
+document.getElementById("mlRows").addEventListener("click", (e) => {
+  const rm = e.target.closest("[data-mlremove]");
+  if (rm) { mlRows.splice(Number(rm.dataset.mlremove), 1); renderMlRows(); }
+});
+document.getElementById("mlRows").addEventListener("input", (e) => {
+  const mlIn = e.target.closest("[data-mlinput]");
+  const priceIn = e.target.closest("[data-mlprice]");
+  if (mlIn) mlRows[Number(mlIn.dataset.mlinput)].ml = Number(mlIn.value);
+  if (priceIn) mlRows[Number(priceIn.dataset.mlprice)].price = Number(priceIn.value);
+});
 
 /* ---------- Products ---------- */
 async function loadProducts() {
@@ -306,6 +412,8 @@ document.getElementById("productsTableBody").addEventListener("click", (e) => {
 function openProductModal(id = null) {
   editingProductId = id;
   currentImages = [];
+  selectedSizes = [];
+  mlRows = [];
   document.getElementById("imgPreviewRow").innerHTML = "";
   if (id) {
     const p = allProducts.find(x => x.id === id);
@@ -319,6 +427,8 @@ function openProductModal(id = null) {
     document.getElementById("pFeatured").checked = !!p.featured;
     document.getElementById("pBestSeller").checked = !!p.bestSeller;
     currentImages = [...(p.images || [])];
+    selectedSizes = [...(p.sizes || [])];
+    mlRows = (p.variants || []).map(v => ({ ...v }));
     renderImagePreviews();
   } else {
     document.getElementById("productModalTitle").textContent = "নতুন প্রোডাক্ট";
@@ -329,6 +439,7 @@ function openProductModal(id = null) {
     document.getElementById("pBestSeller").checked = false;
     document.getElementById("pCategory").value = CATEGORIES[0].id;
   }
+  toggleVariantFields(document.getElementById("pCategory").value);
   document.getElementById("productModal").classList.add("open");
 }
 document.getElementById("newProductBtn").addEventListener("click", () => openProductModal());
@@ -384,16 +495,37 @@ async function saveProduct() {
 
   if (!name || !price || !category) { showToast("নাম, দাম আর ক্যাটাগরি আবশ্যক"); return; }
 
+  // Validate ml rows for perfume — every row needs both ml and price filled in
+  if (category === "perfume" && mlRows.some(r => !r.ml || !r.price)) {
+    showToast("প্রতিটা ML রো-তে ML আর দাম দুটোই দিন");
+    return;
+  }
+
   const btn = document.getElementById("saveProductBtn");
   btn.disabled = true;
   btn.innerHTML = `<span class="spinner"></span> সেভ হচ্ছে...`;
 
   const data = { name, category, price, originalPrice, stock, description, featured, bestSeller, images: currentImages };
 
+  // Attach the right variant field based on category, clear the other
+  if (SIZE_CHARTS[category]) {
+    data.sizes = selectedSizes;
+    data.variants = firebase.firestore.FieldValue.delete();
+  } else if (category === "perfume") {
+    data.variants = mlRows.map(r => ({ ml: Number(r.ml), price: Number(r.price) })).sort((a, b) => a.ml - b.ml);
+    data.sizes = firebase.firestore.FieldValue.delete();
+  } else {
+    data.sizes = firebase.firestore.FieldValue.delete();
+    data.variants = firebase.firestore.FieldValue.delete();
+  }
+
   try {
     if (editingProductId) {
       await db.collection("products").doc(editingProductId).update(data);
     } else {
+      // FieldValue.delete() only works on update(), not add() — strip those keys on new docs
+      if (!SIZE_CHARTS[category]) delete data.sizes;
+      if (category !== "perfume") delete data.variants;
       data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
       await db.collection("products").add(data);
     }
