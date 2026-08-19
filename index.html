@@ -9,7 +9,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <meta name="google-site-verification" content="qpPh9ovC9WDyz4GYHje5bpqpxvVpQ8ylJoPrxz3At0k" />
-<meta name="google-site-verification" content="qpPh9ovC9WDyz4GYHje5bpqpxvVpQ8ylJoPrxz3At0k" />
 
 <!-- Primary SEO -->
 <title>StrDust — অনলাইন শপ বাংলাদেশ | টি-শার্ট, পারফিউম, গ্যাজেট, জুয়েলারি</title>
@@ -72,7 +71,8 @@
     </div>
   </div>
 </header>
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
     <span class="mm-logo">Str<span class="dot">•</span>Dust</span>
@@ -181,7 +181,8 @@
     <div class="product-grid" id="featuredGrid"></div>
   </div>
 </section>
-  <section class="section">
+
+<section class="section">
   <div class="container">
     <div class="category-grid" id="categoryGrid"></div>
   </div>
@@ -361,17 +362,69 @@
     } catch (e) { /* firebase not configured yet, or no products yet */ }
   }
 
+  // Self-contained fallback: only defines buildCategoryGrid if products.js
+  // hasn't already provided one. This means the page can never crash on a
+  // missing function again, regardless of what's in products.js.
+  if (typeof buildCategoryGrid !== "function") {
+    window.buildCategoryGrid = function () {
+      const grid = document.getElementById("categoryGrid");
+      if (!grid) return;
+      const lang = currentLang();
+      grid.innerHTML = CATEGORIES.map(cat => {
+        const label = lang === "en" ? cat.label : cat.bn;
+        return `<a href="shop.html?category=${cat.id}" class="cat-grid-item">
+          <span class="cat-grid-icon">${cat.icon}</span>
+          <span>${label}</span>
+        </a>`;
+      }).join("");
+    };
+  }
+
+  // Self-contained fallback: wires up the ☰ button and mobile menu directly
+  // here, so it works even if products.js never got this code pasted in.
+  // Guarded with a flag so it can't double-bind if products.js *does* have it.
+  if (!window.__strdustMobileMenuBound) {
+    window.__strdustMobileMenuBound = true;
+    document.addEventListener("DOMContentLoaded", () => {
+      const menu = document.getElementById("mobileMenu");
+      const overlay = document.getElementById("mobileMenuOverlay");
+      const toggle = document.querySelector(".nav-toggle");
+      const closeBtn = document.getElementById("mmClose");
+      if (!menu || !overlay || !toggle) return;
+
+      function openMenu() { menu.classList.add("open"); overlay.classList.add("open"); }
+      function closeMenu() {
+        menu.classList.remove("open"); overlay.classList.remove("open");
+        document.querySelectorAll(".mm-sub").forEach(s => s.classList.remove("open"));
+      }
+
+      toggle.addEventListener("click", openMenu);
+      closeBtn?.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+
+      document.querySelectorAll(".mm-item[data-target]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.getElementById(btn.dataset.target)?.classList.add("open");
+        });
+      });
+
+      document.querySelectorAll(".mm-back").forEach(btn => {
+        btn.addEventListener("click", () => btn.closest(".mm-sub")?.classList.remove("open"));
+      });
+    });
+  }
+
   document.addEventListener("languagechange", () => {
     buildNodeField();
     loadBestSellers();
   });
 
-buildNodeField();
-buildCategoryGrid();
-initHeroSlider();
-loadHomeGrids();
-loadBestSellers();
-loadHeroBackground();
+  buildNodeField();
+  buildCategoryGrid();
+  initHeroSlider();
+  loadHomeGrids();
+  loadBestSellers();
+  loadHeroBackground();
 </script>
 </body>
 </html>
