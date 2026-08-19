@@ -1,4 +1,4 @@
-/* ==========================================================================
+k/* ==========================================================================
    StrDust — Design System
    Concept: scattered categories, one marketplace. The name "StrDust" is
    fragments drawn together — so the nav/category layer is treated as a
@@ -903,9 +903,7 @@ tr:last-child td { border-bottom: none; }
 .cat-grid-item { text-align: center; text-decoration: none; color: inherit; }
 .cat-grid-item img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 8px; }
 .cat-grid-item span { display: block; font-size: 14px; font-weight: 600; }
-Here's the CSS — paste this into `style.css`:
 
-```css
 .mobile-menu-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.4);
   z-index: 998; display: none;
