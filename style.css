@@ -238,20 +238,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 @media (max-width: 860px) {
   .main-nav {
-    position: fixed;
-    inset: 64px 0 0 0;
-    z-index: 150;
-    background: var(--white);
-    flex-direction: column;
-    gap: 0;
-    padding: 8px 20px 24px;
-    transform: translateY(-110%);
-    visibility: hidden;
-    transition: transform 0.25s ease, visibility 0.25s;
-    border-bottom: 1px solid var(--border);
+    display: none;
   }
-  .main-nav.open { transform: translateY(0); visibility: visible; }
-  .main-nav a { padding: 14px 0; border-bottom: 1px solid var(--border); }
   .nav-toggle {
     display: flex; align-items: center; justify-content: center;
     width: 40px; height: 40px;
@@ -260,6 +248,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     background: var(--white);
   }
 }
+
 
 /* Best seller top banner — cross-fades between marked products */
 .bestseller-banner {
