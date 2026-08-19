@@ -1,7 +1,7 @@
 /* ==========================================================================
    Product fetch + render helpers shared by index / shop / product pages
    ========================================================================== */
-
+ 
 async function fetchProducts({ category = null, sort = "new", max = 60 } = {}) {
   let ref = db.collection("products");
   if (category) ref = ref.where("category", "==", category);
