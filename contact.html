@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+
+<!-- Primary SEO -->
+<title>যোগাযোগ করুন — StrDust | Contact Us</title>
+<meta name="description" content="StrDust-এর সাথে যোগাযোগ করুন — অর্ডার, প্রোডাক্ট বা যেকোনো প্রশ্নের জন্য আমাদের মেসেজ করুন বা কল করুন। ঢাকা, বাংলাদেশ।">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://strdustshop.vercel.app/contact.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="যোগাযোগ করুন — StrDust">
+<meta property="og:description" content="অর্ডার, প্রোডাক্ট বা যেকোনো প্রশ্নের জন্য StrDust-কে মেসেজ করুন।">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://strdustshop.vercel.app/contact.html">
+<meta property="og:image" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+<meta property="og:site_name" content="StrDust">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  /* ===== Contact page specific styles (matches site's aqua/black/white system) ===== */
+  .contact-hero {
+    padding: 60px 20px 30px;
+    text-align: center;
+    background: #fafafa;
+  }
+  .contact-hero h1 { margin: 8px 0 10px; }
+  .contact-hero p { color: #666; max-width: 44ch; margin: 0 auto; }
+
+  .contact-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  @media (min-width: 768px) {
+    .contact-wrap { grid-template-columns: 1fr 1.2fr; align-items: start; }
+  }
+
+  .contact-cards { display: flex; flex-direction: column; gap: 14px; }
+  .contact-card {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px; border: 1px solid #eee; border-radius: 14px;
+    text-decoration: none; color: inherit; transition: border-color 0.2s ease;
+  }
+  .contact-card:hover { border-color: var(--aqua, #00c9a7); }
+  .contact-card .icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,201,167,0.12); display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .contact-card h4 { margin: 0 0 4px; font-size: 15px; }
+  .contact-card span { color: #666; font-size: 14px; }
+
+  .contact-form {
+    background: #fff; border: 1px solid #eee; border-radius: 16px;
+    padding: 24px;
+  }
+  .contact-form h3 { margin: 0 0 18px; }
+  .form-field { margin-bottom: 14px; }
+  .form-field label { display: block; font-size: 13px; margin-bottom: 6px; color: #555; }
+  .form-field input, .form-field textarea {
+    width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 10px;
+    font-size: 15px; font-family: inherit; resize: vertical;
+  }
+  .form-field textarea { min-height: 110px; }
+  .form-submit {
+    width: 100%; padding: 14px; border: none; border-radius: 10px;
+    background: var(--aqua, #00c9a7); color: #fff; font-weight: 700;
+    font-size: 15px; cursor: pointer;
+  }
+  .form-submit:active { opacity: 0.85; }
+  .form-note { font-size: 12px; color: #888; margin-top: 10px; text-align: center; }
+
+  /* ===== Mobile menu (same component used across the site) ===== */
+  .mobile-menu-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 998; display: none;
+  }
+  .mobile-menu-overlay.open { display: block; }
+  .mobile-menu {
+    position: fixed; top: 0; right: -100%; width: 85%; max-width: 380px; height: 100%;
+    background: #fff; z-index: 999; transition: right 0.3s ease;
+    overflow-y: auto; font-family: inherit;
+  }
+  .mobile-menu.open { right: 0; }
+  .mm-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px; border-bottom: 1px solid #eee;
+  }
+  .mm-logo { font-weight: 800; font-size: 18px; }
+  .mm-close { background: none; border: none; font-size: 22px; cursor: pointer; }
+  .mm-list { display: flex; flex-direction: column; }
+  .mm-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px; border: none; background: none; text-align: left;
+    font-size: 17px; font-weight: 700; text-transform: uppercase;
+    border-bottom: 1px solid #eee; text-decoration: none; color: #000;
+    width: 100%; cursor: pointer; font-family: inherit;
+  }
+  .mm-arrow { font-size: 22px; color: #999; }
+  .mm-sub {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #fff; transform: translateX(100%); transition: transform 0.3s ease;
+    padding: 20px; display: flex; flex-direction: column;
+  }
+  .mm-sub.open { transform: translateX(0); }
+  .mm-sub h3 { margin: 10px 0 20px; font-size: 20px; }
+  .mm-sub a {
+    padding: 14px 0; border-bottom: 1px solid #eee;
+    text-decoration: none; color: #000; font-size: 16px;
+  }
+  .mm-back {
+    background: none; border: none; font-size: 16px; text-align: left;
+    padding: 0 0 10px; cursor: pointer; color: #666; font-family: inherit;
+  }
+  .mm-footer {
+    padding: 20px; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 12px;
+  }
+  .mm-footer a { color: #000; text-decoration: none; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="contact.html" class="active" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
+      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="মেনু">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Mobile menu (identical component used on index.html) ===== -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-top">
+    <span class="mm-logo">Str<span class="dot">•</span>Dust</span>
+    <button class="mm-close" id="mmClose">✕</button>
+  </div>
+
+  <div class="mm-list" id="mmList">
+    <button class="mm-item" data-target="mm-men"><span>MEN</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-women"><span>WOMEN</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-perfume"><span>PERFUME</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-gadgets"><span>GADGETS</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-jewelry"><span>JEWELRY</span><span class="mm-arrow">›</span></button>
+    <a href="shop.html?sort=new" class="mm-item"><span>NEW & TRENDING</span><span class="mm-arrow">›</span></a>
+    <a href="shop.html?tag=sale" class="mm-item"><span>SALE</span><span class="mm-arrow">›</span></a>
+    <a href="contact.html" class="mm-item"><span>CONTACT US</span><span class="mm-arrow">›</span></a>
+  </div>
+
+  <div class="mm-sub" id="mm-men">
+    <button class="mm-back">‹ Back</button>
+    <h3>MEN</h3>
+    <a href="shop.html?tag=men&tag=tshirt">T-Shirts</a>
+    <a href="shop.html?tag=men&tag=pants">Pants</a>
+    <a href="shop.html?tag=men&tag=watch">Watches</a>
+    <a href="shop.html?tag=men&tag=perfume">Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-women">
+    <button class="mm-back">‹ Back</button>
+    <h3>WOMEN</h3>
+    <a href="shop.html?tag=women&tag=tshirt">T-Shirts</a>
+    <a href="shop.html?tag=women&tag=jewelry">Jewelry</a>
+    <a href="shop.html?tag=women&tag=watch">Watches</a>
+    <a href="shop.html?tag=women&tag=perfume">Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-perfume">
+    <button class="mm-back">‹ Back</button>
+    <h3>PERFUME</h3>
+    <a href="shop.html?category=perfume">All Perfume</a>
+    <a href="shop.html?category=perfume&tag=men">Men's Perfume</a>
+    <a href="shop.html?category=perfume&tag=women">Women's Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-gadgets">
+    <button class="mm-back">‹ Back</button>
+    <h3>GADGETS</h3>
+    <a href="shop.html?category=gadget">All Gadgets</a>
+  </div>
+
+  <div class="mm-sub" id="mm-jewelry">
+    <button class="mm-back">‹ Back</button>
+    <h3>JEWELRY</h3>
+    <a href="shop.html?category=jewelry">All Jewelry</a>
+  </div>
+
+  <div class="mm-footer">
+    <a href="track-order.html">Order Tracker</a>
+    <a href="cart.html">Your Cart</a>
+  </div>
+</div>
+
+<!-- ===== Page content ===== -->
+<section class="contact-hero">
+  <span class="eyebrow" data-bn="আমরা এখানে আছি" data-en="We're here for you">আমরা এখানে আছি</span>
+  <h1 data-bn="যোগাযোগ করুন" data-en="Contact Us">যোগাযোগ করুন</h1>
+  <p data-bn="অর্ডার নিয়ে প্রশ্ন, প্রোডাক্ট সাজেশন বা যেকোনো কিছু — নিচের যেকোনো মাধ্যমে আমাদের জানান।" data-en="Questions about an order, product suggestions, or anything else — reach us through any of the options below.">অর্ডার নিয়ে প্রশ্ন, প্রোডাক্ট সাজেশন বা যেকোনো কিছু — নিচের যেকোনো মাধ্যমে আমাদের জানান।</p>
+</section>
+
+<section class="contact-wrap">
+  <div class="contact-cards">
+    <a href="https://wa.me/8801XXXXXXXXX" target="_blank" class="contact-card">
+      <span class="icon">💬</span>
+      <div>
+        <h4 data-bn="হোয়াটসঅ্যাপ" data-en="WhatsApp">হোয়াটসঅ্যাপ</h4>
+        <span data-bn="দ্রুততম উত্তর পেতে মেসেজ করুন" data-en="Fastest way to reach us">দ্রুততম উত্তর পেতে মেসেজ করুন</span>
+      </div>
+    </a>
+
+    <a href="tel:+8801XXXXXXXXX" class="contact-card">
+      <span class="icon">📞</span>
+      <div>
+        <h4 data-bn="ফোন" data-en="Phone">ফোন</h4>
+        <span>+880 1XX-XXXXXXX</span>
+      </div>
+    </a>
+
+    <a href="mailto:hello@strdust.com" class="contact-card">
+      <span class="icon">✉️</span>
+      <div>
+        <h4 data-bn="ইমেইল" data-en="Email">ইমেইল</h4>
+        <span>hello@strdust.com</span>
+      </div>
+    </a>
+
+    <div class="contact-card">
+      <span class="icon">📍</span>
+      <div>
+        <h4 data-bn="লোকেশন" data-en="Location">লোকেশন</h4>
+        <span data-bn="ঢাকা, বাংলাদেশ" data-en="Dhaka, Bangladesh">ঢাকা, বাংলাদেশ</span>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <span class="icon">🕒</span>
+      <div>
+        <h4 data-bn="সাপোর্ট সময়" data-en="Support Hours">সাপোর্ট সময়</h4>
+        <span data-bn="প্রতিদিন সকাল ১০টা – রাত ১০টা" data-en="Daily, 10 AM – 10 PM">প্রতিদিন সকাল ১০টা – রাত ১০টা</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <h3 data-bn="মেসেজ পাঠান" data-en="Send a Message">মেসেজ পাঠান</h3>
+    <form id="contactForm">
+      <div class="form-field">
+        <label data-bn="নাম" data-en="Name">নাম</label>
+        <input type="text" id="cfName" required>
+      </div>
+      <div class="form-field">
+        <label data-bn="ফোন নম্বর" data-en="Phone Number">ফোন নম্বর</label>
+        <input type="tel" id="cfPhone" required>
+      </div>
+      <div class="form-field">
+        <label data-bn="মেসেজ" data-en="Message">মেসেজ</label>
+        <textarea id="cfMessage" required></textarea>
+      </div>
+      <button type="submit" class="form-submit" data-bn="হোয়াটসঅ্যাপে পাঠান" data-en="Send via WhatsApp">হোয়াটসঅ্যাপে পাঠান</button>
+      <p class="form-note" data-bn="সাবমিট করলে হোয়াটসঅ্যাপ খুলে যাবে, আপনার মেসেজসহ।" data-en="Submitting opens WhatsApp with your message pre-filled.">সাবমিট করলে হোয়াটসঅ্যাপ খুলে যাবে, আপনার মেসেজসহ।</p>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Str•Dust</div>
+        <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;" data-bn="একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="Fashion, gadgets & lifestyle products in one place — fast delivery inside Dhaka, with cash on delivery.">একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
+      </div>
+      <div>
+        <h4 data-bn="ক্যাটাগরি" data-en="Categories">ক্যাটাগরি</h4>
+        <ul>
+          <li><a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a></li>
+          <li><a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a></li>
+          <li><a href="shop.html?category=perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a></li>
+          <li><a href="shop.html?category=watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-bn="সাহায্য" data-en="Help">সাহায্য</h4>
+        <ul>
+          <li><a href="track-order.html" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a></li>
+          <li><a href="cart.html" data-bn="আপনার কার্ট" data-en="Your Cart">আপনার কার্ট</a></li>
+          <li><a href="contact.html" data-bn="যোগাযোগ করুন" data-en="Contact Us">যোগাযোগ করুন</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</h4>
+        <ul>
+          <li data-bn="ঢাকা, বাংলাদেশ" data-en="Dhaka, Bangladesh">ঢাকা, বাংলাদেশ</li>
+          <li>hello@strdust.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cart.js"></script>
+<script src="products.js"></script>
+
+<script>
+  // Mobile menu open/close (skip this block if you've already added it to products.js —
+  // running it twice is harmless since it just re-attaches the same listeners once)
+  document.addEventListener("DOMContentLoaded", () => {
+    const menu = document.getElementById("mobileMenu");
+    const overlay = document.getElementById("mobileMenuOverlay");
+    const toggle = document.querySelector(".nav-toggle");
+    const closeBtn = document.getElementById("mmClose");
+
+    function openMenu() { menu.classList.add("open"); overlay.classList.add("open"); }
+    function closeMenu() {
+      menu.classList.remove("open"); overlay.classList.remove("open");
+      document.querySelectorAll(".mm-sub").forEach(s => s.classList.remove("open"));
+    }
+
+    toggle?.addEventListener("click", openMenu);
+    closeBtn?.addEventListener("click", closeMenu);
+    overlay?.addEventListener("click", closeMenu);
+
+    document.querySelectorAll(".mm-item[data-target]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.getElementById(btn.dataset.target).classList.add("open");
+      });
+    });
+
+    document.querySelectorAll(".mm-back").forEach(btn => {
+      btn.addEventListener("click", () => btn.closest(".mm-sub").classList.remove("open"));
+    });
+  });
+
+  // Contact form -> saves to Firestore "messages" collection, then opens WhatsApp
+  document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = e.target.querySelector(".form-submit");
+    const name = document.getElementById("cfName").value.trim();
+    const phone = document.getElementById("cfPhone").value.trim();
+    const msg = document.getElementById("cfMessage").value.trim();
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = currentLang() === "en" ? "Sending..." : "পাঠানো হচ্ছে...";
+
+    try {
+      await db.collection("messages").add({
+        name,
+        phone,
+        message: msg,
+        status: "new",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) {
+      // Firestore write failing shouldn't block WhatsApp as a fallback channel
+      console.error("Could not save message to Firestore:", err);
+    }
+
+    const text = encodeURIComponent(`নাম: ${name}\nফোন: ${phone}\n\n${msg}`);
+    window.open(`https://wa.me/8801XXXXXXXXX?text=${text}`, "_blank");
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+    e.target.reset();
+  });
+</script>
+
+</body>
+</html>
