@@ -134,3 +134,15 @@ async function initHeroSlider() {
     setInterval(() => goTo((current + 1) % slides.length), 5000);
   }
 }
+function buildCategoryGrid() {
+  const grid = document.getElementById("categoryGrid");
+  if (!grid) return;
+  const lang = currentLang();
+  grid.innerHTML = CATEGORIES.map(cat => {
+    const label = lang === "en" ? cat.label : cat.bn;
+    return `<a href="shop.html?category=${cat.id}" class="cat-grid-item">
+      <img src="${cat.thumb || ''}" alt="${label}" onerror="this.style.display='none'">
+      <span>${label}</span>
+    </a>`;
+  }).join("");
+}
