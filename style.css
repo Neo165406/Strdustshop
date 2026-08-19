@@ -894,3 +894,12 @@ tr:last-child td { border-bottom: none; }
 .nav-toggle {
   color: #EBF0F5;
 }
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 16px 0;
+}
+.cat-grid-item { text-align: center; text-decoration: none; color: inherit; }
+.cat-grid-item img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 8px; }
+.cat-grid-item span { display: block; font-size: 14px; font-weight: 600; }
