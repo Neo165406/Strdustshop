@@ -1,5 +1,15 @@
 {
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
-  ]
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    {
+      "source": "/product.html",
+      "has": [{ "type": "query", "key": "id" }],
+      "destination": "/api/product"
+    }
+  ],
+  "functions": {
+    "api/product.js": {
+      "includeFiles": "product.html"
+    }
+  }
 }
