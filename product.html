@@ -132,15 +132,15 @@
   let selectedSize = null;
   let selectedMlVariant = null; // { ml, price }
 
-  function renderGallery(images) {
+  function renderGallery(images, name) {
     const main = document.getElementById("galleryMain");
     const thumbs = document.getElementById("galleryThumbs");
     main.classList.remove("skeleton");
     if (!images.length) { main.innerHTML = ""; thumbs.innerHTML = ""; return; }
-    main.innerHTML = `<img src="${images[0]}" alt="">`;
-    thumbs.innerHTML = images.map((img, i) => `<img src="${img}" class="${i === 0 ? "active" : ""}" data-i="${i}">`).join("");
+    main.innerHTML = `<img src="${images[0]}" alt="${name}">`;
+    thumbs.innerHTML = images.map((img, i) => `<img src="${img}" alt="${name} — thumbnail ${i + 1}" class="${i === 0 ? "active" : ""}" data-i="${i}">`).join("");
     thumbs.querySelectorAll("img").forEach(t => t.addEventListener("click", () => {
-      main.innerHTML = `<img src="${images[t.dataset.i]}" alt="">`;
+      main.innerHTML = `<img src="${images[t.dataset.i]}" alt="${name}">`;
       thumbs.querySelectorAll("img").forEach(x => x.classList.remove("active"));
       t.classList.add("active");
     }));
@@ -355,7 +355,7 @@
         return;
       }
       currentProduct = p;
-      renderGallery(p.images || []);
+      renderGallery(p.images || [], p.name);
       renderInfo(p);
       loadRelated(p);
     } catch (e) {
