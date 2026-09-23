@@ -1,7 +1,25 @@
 /* ==========================================================================
    Product fetch + render helpers shared by index / shop / product pages
    ========================================================================== */
- 
+
+// Turns a product name (Bengali, English, or mixed) into a URL-safe slug
+// for use in clean product URLs: /product/{id}/{slug}. Keeps letters from
+// any script and digits, collapses everything else to hyphens. Shared with
+// the server-side copies in api/product.js and api/sitemap.js.
+function slugify(str) {
+  return String(str || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+function productUrl(p) {
+  const slug = slugify(p.name);
+  return `/product/${p.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
+}
+
 async function fetchProducts({ category = null, sort = "new", max = 60 } = {}) {
   let ref = db.collection("products");
   if (category) ref = ref.where("category", "==", category);
@@ -31,7 +49,7 @@ function productCardHTML(p) {
   const saleLabel = lang === "en" ? "Sale" : "সেল";
   const addLabel = lang === "en" ? "Add to cart" : "কার্টে যোগ করুন";
   return `
-    <a href="product.html?id=${p.id}" class="card">
+    <a href="${productUrl(p)}" class="card">
       <div class="card-media">
         ${img ? `<img src="${img}" alt="${p.name}" loading="lazy">` : `<div class="skeleton" style="position:absolute;inset:0;"></div>`}
         ${out ? `<span class="badge badge-out">${outLabel}</span>` : hasDiscount ? `<span class="badge badge-aqua">${saleLabel}</span>` : ""}
