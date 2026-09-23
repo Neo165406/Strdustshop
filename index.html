@@ -319,7 +319,7 @@
 
       banner.classList.remove("hidden");
       track.innerHTML = items.map((p, i) => `
-        <a href="product.html?id=${p.id}" class="bs-item ${i === 0 ? "active" : ""}">
+        <a href="${productUrl(p)}" class="bs-item ${i === 0 ? "active" : ""}">
           <span class="bs-tag">${tag}</span>
           ${(p.images && p.images[0]) ? `<img src="${p.images[0]}" alt="${p.name}">` : ""}
           <span class="bs-name">${p.name} — ${formatTaka(p.price)}</span>
