@@ -20,7 +20,7 @@ const auth = firebase.auth();
    Get a free key at api.imgbb.com, paste it here. */
 const IMGBB_API_KEY = "867905756e321b49b3863490c9714674";
 
-/* The 6 categories StrDust sells. Adding a 7th later? Add it here —
+/* The categories StrDust sells. Adding a new one later? Add it here —
    every page (nav, filters, admin dropdown) reads from this one list. */
 const CATEGORIES = [
   { id: "tshirt",   label: "T-Shirt",   bn: "টি-শার্ট",  icon: "👕" },
@@ -28,10 +28,10 @@ const CATEGORIES = [
   { id: "perfume",  label: "Perfume",   bn: "পারফিউম",   icon: "🧴" },
   { id: "pant",     label: "Pants",     bn: "প্যান্ট",    icon: "👖" },
   { id: "watch",    label: "Watches",   bn: "ঘড়ি",      icon: "⌚" },
-  { id: "jewelry",  label: "Jewelry",   bn: "জুয়েলারি",  icon: "💎" }
+  { id: "jewelry",  label: "Jewelry",   bn: "জুয়েলারি",  icon: "💎" },
+  { id: "footwear", label: "Footwear",  bn: "জুতা",      icon: "👞" }
 ];
 
 function categoryById(id) {
   return CATEGORIES.find(c => c.id === id) || { label: id, bn: id, icon: "🛍️" };
 }
-
