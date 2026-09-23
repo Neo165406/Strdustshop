@@ -1,1 +1,380 @@
-SEE_FILE_/tmp/product_final.html
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Default/fallback SEO meta (will be overwritten by JS once product loads) -->
+<title id="pageTitleTag">প্রোডাক্ট — StrDust</title>
+<meta name="description" id="metaDescTag" content="StrDust-এ পাবেন অরিজিনাল পারফিউম, টি-শার্ট, গ্যাজেট, জুয়েলারি ও আরও অনেক কিছু। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।">
+<meta name="robots" content="index, follow">
+<link rel="canonical" id="canonicalTag" href="https://strdustshop.vercel.app/product.html">
+<meta name="theme-color" content="#0d9488">
+<meta name="author" content="StrDust">
+<meta name="geo.region" content="BD-13">
+<meta name="geo.placename" content="Dhaka">
+
+<meta property="og:type" content="product">
+<meta property="og:title" id="ogTitleTag" content="প্রোডাক্ট — StrDust">
+<meta property="og:description" id="ogDescTag" content="StrDust থেকে অরিজিনাল প্রোডাক্ট কিনুন, ঢাকায় ফাস্ট ডেলিভারি ও COD সুবিধাসহ।">
+<meta property="og:image" id="ogImageTag" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta property="og:image:alt" content="StrDust প্রোডাক্ট">
+<meta property="og:url" id="ogUrlTag" content="https://strdustshop.vercel.app/product.html">
+<meta property="og:locale" content="bn_BD">
+<meta property="og:site_name" content="StrDust">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="twTitleTag" content="প্রোডাক্ট — StrDust">
+<meta name="twitter:description" id="twDescTag" content="StrDust থেকে অরিজিনাল প্রোডাক্ট কিনুন, ঢাকায় ফাস্ট ডেলিভারি ও COD সুবিধাসহ।">
+<meta name="twitter:image" id="twImageTag" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta name="twitter:image:alt" content="StrDust প্রোডাক্ট">
+
+<!-- Product structured data, filled in by JS -->
+<script type="application/ld+json" id="productSchema"></script>
+
+<link rel="stylesheet" href="/style.css">
+<style>
+  .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 40px 0 64px; }
+  @media (max-width: 860px) { .product-layout { grid-template-columns: 1fr; gap: 24px; } }
+  .gallery-main { aspect-ratio: 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--off-white); border: 1px solid var(--border); margin-bottom: 12px; }
+  .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-thumbs { display: flex; gap: 10px; }
+  .gallery-thumbs img { width: 68px; height: 68px; object-fit: cover; border-radius: var(--radius-sm); border: 1.5px solid var(--border); cursor: pointer; }
+  .gallery-thumbs img.active { border-color: var(--aqua); }
+  .pd-cat { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--aqua-dark); font-weight: 700; }
+  .pd-title { font-size: clamp(24px,3vw,32px); margin: 8px 0 12px; }
+  .pd-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+  .pd-price { font-family: var(--font-mono); font-size: 26px; font-weight: 700; }
+  .pd-price-old { font-family: var(--font-mono); font-size: 16px; color: var(--gray-light); text-decoration: line-through; }
+  .pd-desc { font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+  .pd-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .pd-stock { font-size: 13px; font-weight: 700; margin-bottom: 20px; }
+  .pd-stock.in { color: var(--aqua-dark); }
+  .pd-stock.out { color: var(--danger); }
+  .usp-strip { display: flex; flex-direction: column; gap: 10px; padding: 18px; background: var(--off-white); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 13.5px; font-weight: 600; }
+
+  /* Variant selectors — size chart (tshirt/pant) + ml/decant (perfume) */
+  .pd-variant-block { margin-bottom: 22px; }
+  .pd-variant-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: block; }
+  .pd-variant-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pd-chip {
+    padding: 9px 16px; border-radius: 8px; border: 1.5px solid var(--border);
+    background: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pd-chip.active { background: var(--aqua); border-color: var(--aqua); color: #fff; }
+  .pd-chip.disabled { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+  .pd-variant-hint { font-size: 12px; color: var(--danger); margin-top: 8px; display: none; }
+  .pd-variant-hint.show { display: block; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="/" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="/shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="/shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="/shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="/shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="/track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
+      <a href="/cart.html" class="icon-btn" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="মেনু">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="productRoot" class="product-layout">
+    <div>
+      <div class="gallery-main skeleton" id="galleryMain"></div>
+      <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+    <div id="pdInfo">
+      <div class="skeleton" style="height:14px;width:30%;margin-bottom:12px;"></div>
+      <div class="skeleton" style="height:28px;width:70%;margin-bottom:12px;"></div>
+      <div class="skeleton" style="height:20px;width:40%;"></div>
+    </div>
+  </div>
+
+  <section class="section" id="relatedSection" style="display:none;">
+    <div class="section-head">
+      <div><span class="eyebrow" data-bn="আরও দেখুন" data-en="See More">আরও দেখুন</span><h2 data-bn="একই ক্যাটাগরির প্রোডাক্ট" data-en="More in this category">একই ক্যাটাগরির প্রোডাক্ট</h2></div>
+    </div>
+    <div class="product-grid" id="relatedGrid"></div>
+  </section>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="/cart.js"></script>
+<script src="/products.js"></script>
+<script>
+  // Supports both URL forms: the clean /product/{id}/{slug} path and the
+  // legacy /product.html?id={id} query string (kept working for old links).
+  function getProductIdFromUrl() {
+    const qsId = new URLSearchParams(location.search).get("id");
+    if (qsId) return qsId;
+    const parts = location.pathname.split("/").filter(Boolean);
+    if (parts[0] === "product" && parts[1]) return decodeURIComponent(parts[1]);
+    return null;
+  }
+  const productId = getProductIdFromUrl();
+  let currentProduct = null;
+  let qty = 1;
+
+  // Variant selection state — only one of these is relevant per product,
+  // depending on whether it has p.sizes (tshirt/pant) or p.variants (perfume ml)
+  let selectedSize = null;
+  let selectedMlVariant = null; // { ml, price }
+
+  function renderGallery(images, name) {
+    const main = document.getElementById("galleryMain");
+    const thumbs = document.getElementById("galleryThumbs");
+    main.classList.remove("skeleton");
+    if (!images.length) { main.innerHTML = ""; thumbs.innerHTML = ""; return; }
+    main.innerHTML = `<img src="${images[0]}" alt="${name}">`;
+    thumbs.innerHTML = images.map((img, i) => `<img src="${img}" alt="${name} — thumbnail ${i + 1}" class="${i === 0 ? "active" : ""}" data-i="${i}">`).join("");
+    thumbs.querySelectorAll("img").forEach(t => t.addEventListener("click", () => {
+      main.innerHTML = `<img src="${images[t.dataset.i]}" alt="${name}">`;
+      thumbs.querySelectorAll("img").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+    }));
+  }
+
+  // ---- SEO: update <title>, meta description, canonical, OG/Twitter tags,
+  // and JSON-LD product schema once we know which product this page is showing.
+  function updateSeoTags(p, catLabel) {
+    const slug = slugify(p.name);
+    const pageUrl = `https://strdustshop.vercel.app/product/${p.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
+    const image = (p.images && p.images[0]) ? p.images[0] : "https://strdustshop.vercel.app/og-image.jpg";
+
+    const title = `${p.name} — ${catLabel} | StrDust`;
+    const rawDesc = p.description
+      ? p.description.replace(/\s+/g, " ").trim()
+      : `${p.name} কিনুন StrDust থেকে, দাম ${formatTaka(p.price)}। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।`;
+    const desc = (rawDesc.length > 155 ? rawDesc.slice(0, 152) + "..." : rawDesc);
+
+    document.title = title;
+    document.getElementById("pageTitleTag").textContent = title;
+    document.getElementById("metaDescTag").setAttribute("content", desc);
+    document.getElementById("canonicalTag").setAttribute("href", pageUrl);
+
+    document.getElementById("ogTitleTag").setAttribute("content", title);
+    document.getElementById("ogDescTag").setAttribute("content", desc);
+    document.getElementById("ogImageTag").setAttribute("content", image);
+    document.getElementById("ogUrlTag").setAttribute("content", pageUrl);
+
+    document.getElementById("twTitleTag").setAttribute("content", title);
+    document.getElementById("twDescTag").setAttribute("content", desc);
+    document.getElementById("twImageTag").setAttribute("content", image);
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": p.name,
+      "description": desc,
+      "image": (p.images && p.images.length) ? p.images : [image],
+      "sku": p.id,
+      "category": catLabel,
+      "offers": {
+        "@type": "Offer",
+        "url": pageUrl,
+        "priceCurrency": "BDT",
+        "price": p.price,
+        "availability": (p.stock === undefined || p.stock > 0)
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock"
+      }
+    };
+    document.getElementById("productSchema").textContent = JSON.stringify(schema);
+  }
+
+  // ---- Variant selector HTML: size chips for tshirt/pant, ml chips for perfume ----
+  function variantBlockHTML(p, lang) {
+    if (p.sizes && p.sizes.length) {
+      const label = lang === "en" ? "Select Size" : "সাইজ সিলেক্ট করুন";
+      const hint = lang === "en" ? "Please select a size" : "প্রথমে একটি সাইজ সিলেক্ট করুন";
+      return `
+        <div class="pd-variant-block">
+          <span class="pd-variant-label">${label}</span>
+          <div class="pd-variant-row" id="sizeRow">
+            ${p.sizes.map(s => `<button type="button" class="pd-chip" data-size="${s}">${s}</button>`).join("")}
+          </div>
+          <p class="pd-variant-hint" id="sizeHint">${hint}</p>
+        </div>`;
+    }
+    if (p.variants && p.variants.length) {
+      const label = lang === "en" ? "Select Size (ml)" : "ML সিলেক্ট করুন";
+      const hint = lang === "en" ? "Please select an ml option" : "প্রথমে একটি ML অপশন সিলেক্ট করুন";
+      return `
+        <div class="pd-variant-block">
+          <span class="pd-variant-label">${label}</span>
+          <div class="pd-variant-row" id="mlRow">
+            ${p.variants.map(v => `<button type="button" class="pd-chip" data-ml="${v.ml}" data-price="${v.price}">${v.ml}ml — ${formatTaka(v.price)}</button>`).join("")}
+          </div>
+          <p class="pd-variant-hint" id="mlHint">${hint}</p>
+        </div>`;
+    }
+    return "";
+  }
+
+  function bindVariantEvents(p) {
+    const sizeRow = document.getElementById("sizeRow");
+    if (sizeRow) {
+      sizeRow.addEventListener("click", (e) => {
+        const chip = e.target.closest(".pd-chip");
+        if (!chip) return;
+        selectedSize = chip.dataset.size;
+        sizeRow.querySelectorAll(".pd-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        document.getElementById("sizeHint").classList.remove("show");
+      });
+    }
+    const mlRow = document.getElementById("mlRow");
+    if (mlRow) {
+      mlRow.addEventListener("click", (e) => {
+        const chip = e.target.closest(".pd-chip");
+        if (!chip) return;
+        selectedMlVariant = { ml: Number(chip.dataset.ml), price: Number(chip.dataset.price) };
+        mlRow.querySelectorAll(".pd-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        document.getElementById("mlHint").classList.remove("show");
+        // Reflect the chosen variant's price in the main price display
+        document.getElementById("pdPriceMain").textContent = formatTaka(selectedMlVariant.price);
+      });
+    }
+  }
+
+  function renderInfo(p) {
+    const cat = categoryById(p.category);
+    const lang = currentLang();
+    const catLabel = lang === "en" ? cat.label : cat.bn;
+
+    updateSeoTags(p, catLabel);
+
+    selectedSize = null;
+    selectedMlVariant = null;
+
+    const hasDiscount = p.originalPrice && p.originalPrice > p.price;
+    const inStock = p.stock === undefined || p.stock > 0;
+    const t = lang === "en" ? {
+      desc: "Details for this product will be added soon.",
+      inStock: "✓ In Stock", outStock: "✕ Out of Stock",
+      addToCart: "Add to Cart", buyNow: "Buy Now",
+      usp1: "🚚 1-3 day delivery inside Dhaka", usp2: "💵 Cash on delivery available", usp3: "↩️ Easy exchange if there's an issue"
+    } : {
+      desc: "এই প্রোডাক্টের বিস্তারিত বিবরণ শীঘ্রই যোগ করা হবে।",
+      inStock: "✓ স্টকে আছে", outStock: "✕ স্টকে নেই",
+      addToCart: "কার্টে যোগ করুন", buyNow: "এখনই কিনুন",
+      usp1: "🚚 ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি", usp2: "💵 ক্যাশ অন ডেলিভারি সুবিধা", usp3: "↩️ সমস্যা হলে সহজে এক্সচেঞ্জ"
+    };
+
+    document.getElementById("pdInfo").innerHTML = `
+      <span class="pd-cat">${cat.icon} ${catLabel}</span>
+      <h1 class="pd-title">${p.name}</h1>
+      <div class="pd-price-row">
+        <span class="pd-price" id="pdPriceMain">${formatTaka(p.price)}</span>
+        ${hasDiscount ? `<span class="pd-price-old">${formatTaka(p.originalPrice)}</span>` : ""}
+      </div>
+      <p class="pd-desc">${p.description || t.desc}</p>
+      ${variantBlockHTML(p, lang)}
+      <p class="pd-stock ${inStock ? "in" : "out"}">${inStock ? t.inStock : t.outStock}</p>
+      <div class="pd-actions">
+        <div class="qty-control">
+          <button id="qtyMinus">−</button>
+          <span id="qtyVal">1</span>
+          <button id="qtyPlus">+</button>
+        </div>
+        <button class="btn btn-aqua" id="addToCartBtn" ${inStock ? "" : "disabled"}>${t.addToCart}</button>
+        <a href="/cart.html" class="btn btn-outline" id="buyNowBtn" style="display:none;">${t.buyNow}</a>
+      </div>
+      <div class="usp-strip">
+        <span>${t.usp1}</span>
+        <span>${t.usp2}</span>
+        <span>${t.usp3}</span>
+      </div>
+    `;
+    bindVariantEvents(p);
+    qty = 1;
+    document.getElementById("qtyMinus").addEventListener("click", () => { if (qty > 1) { qty--; document.getElementById("qtyVal").textContent = qty; } });
+    document.getElementById("qtyPlus").addEventListener("click", () => { qty++; document.getElementById("qtyVal").textContent = qty; });
+    document.getElementById("addToCartBtn").addEventListener("click", () => {
+      if (p.sizes && p.sizes.length) {
+        if (!selectedSize) { document.getElementById("sizeHint").classList.add("show"); return; }
+      }
+      if (p.variants && p.variants.length) {
+        if (!selectedMlVariant) { document.getElementById("mlHint").classList.add("show"); return; }
+      }
+
+      let cartProduct = { ...p };
+      if (selectedSize) {
+        cartProduct = { ...p, id: `${p.id}__${selectedSize}`, name: `${p.name} (${selectedSize})` };
+      } else if (selectedMlVariant) {
+        cartProduct = { ...p, id: `${p.id}__${selectedMlVariant.ml}ml`, name: `${p.name} (${selectedMlVariant.ml}ml)`, price: selectedMlVariant.price };
+      }
+
+      addToCart(cartProduct, qty);
+      document.getElementById("buyNowBtn").style.display = "inline-flex";
+    });
+  }
+
+  async function loadProduct() {
+    const lang = currentLang();
+    const notFoundLabel = lang === "en" ? "Product not found" : "প্রোডাক্ট পাওয়া যায়নি";
+    const viewAll = lang === "en" ? "View all products" : "সব প্রোডাক্ট দেখুন";
+    if (!productId) {
+      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${notFoundLabel}</h3><p><a href="/shop.html">${viewAll}</a></p></div>`;
+      return;
+    }
+    try {
+      const doc = await db.collection("products").doc(productId).get();
+      if (!doc.exists) {
+        const notFoundLabel2 = lang === "en" ? "Product not found" : "প্রোডাক্ট পাওয়া যায়নি";
+        document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${notFoundLabel2}</h3><p><a href="/shop.html">${viewAll}</a></p></div>`;
+        return;
+      }
+      currentProduct = { id: doc.id, ...doc.data() };
+      renderGallery(currentProduct.images || [], currentProduct.name);
+      renderInfo(currentProduct);
+      loadRelated(currentProduct.category, currentProduct.id);
+    } catch (e) {
+      console.error(e);
+      document.getElementById("pdInfo").innerHTML = `<div class="empty-state"><h3>${notFoundLabel}</h3></div>`;
+    }
+  }
+
+  async function loadRelated(category, excludeId) {
+    try {
+      const snap = await db.collection("products").where("category", "==", category).limit(8).get();
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.id !== excludeId).slice(0, 4);
+      if (!items.length) return;
+      document.getElementById("relatedSection").style.display = "block";
+      renderGrid(document.getElementById("relatedGrid"), items);
+    } catch (e) {}
+  }
+
+  loadProduct();
+  window.addEventListener("langchange", () => { if (currentProduct) renderInfo(currentProduct); });
+</script>
+</body>
+</html>
