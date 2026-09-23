@@ -36,6 +36,18 @@ function escapeXml(str) {
     .replace(/'/g, "&apos;");
 }
 
+// Turns a product name (Bengali, English, or mixed) into a URL-safe slug
+// for the clean /product/{id}/{slug} URL. Mirrors the copies in products.js
+// and api/product.js.
+function slugify(str) {
+  return String(str || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
 function urlEntry(loc, changefreq, priority) {
   return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
@@ -45,9 +57,12 @@ module.exports = async (req, res) => {
     const db = admin.firestore();
     const snapshot = await db.collection("products").get();
 
-    const productEntries = snapshot.docs.map((doc) =>
-      urlEntry(`${SITE_URL}/product.html?id=${doc.id}`, "weekly", "0.8")
-    );
+    const productEntries = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      const slug = slugify(data.name);
+      const loc = `${SITE_URL}/product/${doc.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
+      return urlEntry(loc, "weekly", "0.8");
+    });
 
     const staticEntries = STATIC_PAGES.map((p) =>
       urlEntry(`${SITE_URL}${p.loc}`, p.changefreq, p.priority)
