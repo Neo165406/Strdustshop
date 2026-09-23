@@ -47,8 +47,190 @@
 }
 </script>
 <link rel="stylesheet" href="style.css">
+
+<style>
+  /* ===== Contact page specific styles (matches site's aqua/black/white system) ===== */
+  .contact-hero {
+    padding: 60px 20px 30px;
+    text-align: center;
+    background: #fafafa;
+  }
+  .contact-hero h1 { margin: 8px 0 10px; }
+  .contact-hero p { color: #666; max-width: 44ch; margin: 0 auto; }
+
+  .contact-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  @media (min-width: 768px) {
+    .contact-wrap { grid-template-columns: 1fr 1.2fr; align-items: start; }
+  }
+
+  .contact-cards { display: flex; flex-direction: column; gap: 14px; }
+  .contact-card {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px; border: 1px solid #eee; border-radius: 14px;
+    text-decoration: none; color: inherit; transition: border-color 0.2s ease;
+  }
+  .contact-card:hover { border-color: var(--aqua, #00c9a7); }
+  .contact-card .icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,201,167,0.12); display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .contact-card h4 { margin: 0 0 4px; font-size: 15px; }
+  .contact-card span { color: #666; font-size: 14px; }
+
+  .contact-form {
+    background: #fff; border: 1px solid #eee; border-radius: 16px;
+    padding: 24px;
+  }
+  .contact-form h3 { margin: 0 0 18px; }
+  .form-field { margin-bottom: 14px; }
+  .form-field label { display: block; font-size: 13px; margin-bottom: 6px; color: #555; }
+  .form-field input, .form-field textarea {
+    width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 10px;
+    font-size: 15px; font-family: inherit; resize: vertical;
+  }
+  .form-field textarea { min-height: 110px; }
+  .form-submit {
+    width: 100%; padding: 14px; border: none; border-radius: 10px;
+    background: var(--aqua, #0d9488); color: #fff; font-size: 15px; font-weight: 600;
+    cursor: pointer;
+  }
+  .form-submit:hover { opacity: 0.9; }
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
 </head>
 <body>
-<!-- BODY_FROM_FILE -->
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
+      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="মেনু">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="contact-hero">
+  <span class="eyebrow" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</span>
+  <h1 data-bn="আমাদের সাথে যোগাযোগ করুন" data-en="Get in Touch">আমাদের সাথে যোগাযোগ করুন</h1>
+  <p data-bn="অর্ডার, প্রোডাক্ট বা যেকোনো প্রশ্নের জন্য নিচের ফর্ম বা হোয়াটসঅ্যাপ ব্যবহার করুন।" data-en="Use the form or WhatsApp below for orders, products or any questions.">অর্ডার, প্রোডাক্ট বা যেকোনো প্রশ্নের জন্য নিচের ফর্ম বা হোয়াটসঅ্যাপ ব্যবহার করুন।</p>
+</section>
+
+<div class="contact-wrap">
+  <div class="contact-cards">
+    <a class="contact-card" href="https://wa.me/8801XXXXXXXXX" target="_blank" rel="noopener">
+      <div class="icon">💬</div>
+      <div>
+        <h4 data-bn="WhatsApp" data-en="WhatsApp">WhatsApp</h4>
+        <span data-bn="সরাসরি মেসেজ করুন" data-en="Message us directly">সরাসরি মেসেজ করুন</span>
+      </div>
+    </a>
+    <a class="contact-card" href="mailto:hello@strdust.com">
+      <div class="icon">✉️</div>
+      <div>
+        <h4 data-bn="ইমেইল" data-en="Email">ইমেইল</h4>
+        <span>hello@strdust.com</span>
+      </div>
+    </a>
+    <div class="contact-card">
+      <div class="icon">📍</div>
+      <div>
+        <h4 data-bn="লোকেশন" data-en="Location">লোকেশন</h4>
+        <span data-bn="ঢাকা, বাংলাদেশ" data-en="Dhaka, Bangladesh">ঢাকা, বাংলাদেশ</span>
+      </div>
+    </div>
+  </div>
+
+  <form class="contact-form" id="contactForm">
+    <h3 data-bn="মেসেজ পাঠান" data-en="Send a Message">মেসেজ পাঠান</h3>
+    <div class="form-field">
+      <label data-bn="নাম" data-en="Name">নাম</label>
+      <input type="text" id="cName" required placeholder="আপনার নাম">
+    </div>
+    <div class="form-field">
+      <label data-bn="মোবাইল" data-en="Phone">মোবাইল</label>
+      <input type="tel" id="cPhone" required placeholder="01XXXXXXXXX">
+    </div>
+    <div class="form-field">
+      <label data-bn="মেসেজ" data-en="Message">মেসেজ</label>
+      <textarea id="cMsg" required placeholder="আপনার প্রশ্ন বা মেসেজ লিখুন..."></textarea>
+    </div>
+    <button type="submit" class="form-submit" id="cSubmit" data-bn="পাঠান" data-en="Send">পাঠান</button>
+  </form>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cart.js"></script>
+<script>
+  document.getElementById("langToggle")?.addEventListener("click", function() {
+    const isEn = document.documentElement.lang === "en";
+    document.documentElement.lang = isEn ? "bn" : "en";
+    this.textContent = isEn ? "EN" : "বাং";
+    document.querySelectorAll("[data-bn]").forEach(el => {
+      el.textContent = isEn ? el.dataset.bn : el.dataset.en;
+    });
+  });
+
+  document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("cName").value.trim();
+    const phone = document.getElementById("cPhone").value.trim();
+    const msg = document.getElementById("cMsg").value.trim();
+    const submitBtn = document.getElementById("cSubmit");
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "...";
+
+    try {
+      await db.collection("messages").add({
+        name, phone, message: msg,
+        status: "new",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) {
+      console.error("Could not save message to Firestore:", err);
+    }
+
+    const text = encodeURIComponent(`নাম: ${name}\nফোন: ${phone}\n\n${msg}`);
+    window.open(`https://wa.me/8801XXXXXXXXX?text=${text}`, "_blank");
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+    e.target.reset();
+  });
+</script>
+
 </body>
 </html>
