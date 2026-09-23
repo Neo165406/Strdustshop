@@ -20,6 +20,70 @@ function productUrl(p) {
   return `/product/${p.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
 }
 
+/* -------------------------------------------------------------------------
+   Target keyword research, per category. Shared with the server-side copy
+   in api/product.js. "footwear" carries two sub-lists (loafer_* / boot_*)
+   since it covers two distinct product types — productKeywords() below
+   picks whichever matches the product's name, falling back to the
+   combined en/bn lists for the category page itself.
+   ------------------------------------------------------------------------- */
+const CATEGORY_KEYWORDS = {
+  tshirt: {
+    en: ["t-shirt shop dhaka", "buy t-shirt online bangladesh", "printed t-shirt bangladesh", "mens t-shirt online bd"],
+    bn: ["টি-শার্ট কিনুন অনলাইনে", "অনলাইন টি-শার্ট শপ বাংলাদেশ"]
+  },
+  gadget: {
+    en: ["gadget shop bangladesh", "buy gadgets online bd", "tech accessories bangladesh"],
+    bn: ["গ্যাজেট কিনুন অনলাইনে", "অনলাইন গ্যাজেট শপ"]
+  },
+  perfume: {
+    en: ["best perfume for men in BD", "original perfume price in bangladesh", "long lasting perfume for men in bangladesh", "best winter perfume for men BD", "premium fragrance collection BD", "buy original mens perfume online BD"],
+    bn: ["অনলাইন পারফিউম শপ", "অরিজিনাল পারফিউম কালেকশন", "পুরুষদের দীর্ঘস্থায়ী প্রিমিয়াম পারফিউম"]
+  },
+  pant: {
+    en: ["pant shop bangladesh", "buy pants online bd"],
+    bn: ["প্যান্ট কিনুন অনলাইনে"]
+  },
+  watch: {
+    en: ["watch price in bangladesh", "buy watch online bd"],
+    bn: ["ঘড়ির দাম বাংলাদেশ"]
+  },
+  jewelry: {
+    en: ["jewelry online bd", "imitation jewelry bangladesh"],
+    bn: ["জুয়েলারি কিনুন অনলাইনে"]
+  },
+  footwear: {
+    en: ["tassel loafers for men BD", "mens loafer shoes price in bangladesh", "genuine leather tassel loafers BD", "formal and casual loafers for men BD", "handcrafted leather loafers bangladesh", "best stylish loafers for mens online BD", "chelsea boots BD", "mens chelsea boots price in bangladesh", "black leather chelsea boots for men BD", "premium handcrafted chelsea boots BD", "suede chelsea boots online bangladesh", "best winter chelsea boots for men"],
+    bn: ["চামড়ার লোফার জুতা", "টাসেল লোফার জুতা", "প্রিমিয়াম লেদার টাসেল লোফার অনলাইন", "লেদার চেলসি বুট", "পুরুষদের প্রিমিয়াম বুট জুতা", "অনলাইনে শীতের আসল লেদার চেলসি বুট"],
+    loafer_en: ["tassel loafers for men BD", "mens loafer shoes price in bangladesh", "genuine leather tassel loafers BD", "formal and casual loafers for men BD", "handcrafted leather loafers bangladesh", "best stylish loafers for mens online BD"],
+    loafer_bn: ["চামড়ার লোফার জুতা", "টাসেল লোফার জুতা", "প্রিমিয়াম লেদার টাসেল লোফার অনলাইন"],
+    boot_en: ["chelsea boots BD", "mens chelsea boots price in bangladesh", "black leather chelsea boots for men BD", "premium handcrafted chelsea boots BD", "suede chelsea boots online bangladesh", "best winter chelsea boots for men"],
+    boot_bn: ["লেদার চেলসি বুট", "পুরুষদের প্রিমিয়াম বুট জুতা", "অনলাইনে শীতের আসল লেদার চেলসি বুট"]
+  }
+};
+
+// Category-level keyword list, for a category/shop page's <meta name="keywords">.
+function categoryKeywords(catId) {
+  const c = CATEGORY_KEYWORDS[catId];
+  if (!c) return ["StrDust"];
+  return [...c.en.slice(0, 6), ...c.bn.slice(0, 3), "StrDust"];
+}
+
+// Product-level keyword list. For footwear, picks the loafer or chelsea-boot
+// sub-list based on the product name so a specific product doesn't get
+// tagged with keywords for the other type.
+function productKeywords(p) {
+  const c = CATEGORY_KEYWORDS[p.category];
+  if (!c) return [p.name, "StrDust"];
+  const name = (p.name || "").toLowerCase();
+  let en = c.en, bn = c.bn;
+  if (p.category === "footwear") {
+    if (name.includes("loafer")) { en = c.loafer_en; bn = c.loafer_bn; }
+    else if (name.includes("chelsea") || name.includes("boot")) { en = c.boot_en; bn = c.boot_bn; }
+  }
+  return [p.name, ...en.slice(0, 4), ...bn.slice(0, 2), "StrDust"];
+}
+
 async function fetchProducts({ category = null, sort = "new", max = 60 } = {}) {
   let ref = db.collection("products");
   if (category) ref = ref.where("category", "==", category);
