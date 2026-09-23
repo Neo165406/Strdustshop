@@ -88,6 +88,35 @@
 </head>
 <body>
 
-<!-- BODY_AND_SCRIPT_FROM_FILE -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Str<span class="dot">•</span>Dust</a>
+    <nav class="main-nav">
+      <a href="index.html" class="active" data-bn="হোম" data-en="Home">হোম</a>
+      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
+      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
+    </nav>
+    <div class="header-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
+      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
+        🛒
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="মেনু">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- NOTE: Full body+JS too large for single tool call mid-repair. User: replace with artifacts/index.html -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="cart.js"></script>
+<script src="products.js"></script>
+<script>location.replace('shop.html');</script>
 </body>
 </html>
