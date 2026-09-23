@@ -13,7 +13,61 @@ const CATEGORY_LABELS = {
   pant: "প্যান্ট",
   watch: "ঘড়ি",
   jewelry: "জুয়েলারি",
+  footwear: "জুতা",
 };
+
+// Target keyword research, per category — mirrors CATEGORY_KEYWORDS in
+// products.js. Kept in sync manually since this runs server-side.
+const CATEGORY_KEYWORDS = {
+  tshirt: {
+    en: ["t-shirt shop dhaka", "buy t-shirt online bangladesh", "printed t-shirt bangladesh", "mens t-shirt online bd"],
+    bn: ["টি-শার্ট কিনুন অনলাইনে", "অনলাইন টি-শার্ট শপ বাংলাদেশ"]
+  },
+  gadget: {
+    en: ["gadget shop bangladesh", "buy gadgets online bd", "tech accessories bangladesh"],
+    bn: ["গ্যাজেট কিনুন অনলাইনে", "অনলাইন গ্যাজেট শপ"]
+  },
+  perfume: {
+    en: ["best perfume for men in BD", "original perfume price in bangladesh", "long lasting perfume for men in bangladesh", "best winter perfume for men BD", "premium fragrance collection BD", "buy original mens perfume online BD"],
+    bn: ["অনলাইন পারফিউম শপ", "অরিজিনাল পারফিউম কালেকশন", "পুরুষদের দীর্ঘস্থায়ী প্রিমিয়াম পারফিউম"]
+  },
+  pant: {
+    en: ["pant shop bangladesh", "buy pants online bd"],
+    bn: ["প্যান্ট কিনুন অনলাইনে"]
+  },
+  watch: {
+    en: ["watch price in bangladesh", "buy watch online bd"],
+    bn: ["ঘড়ির দাম বাংলাদেশ"]
+  },
+  jewelry: {
+    en: ["jewelry online bd", "imitation jewelry bangladesh"],
+    bn: ["জুয়েলারি কিনুন অনলাইনে"]
+  },
+  footwear: {
+    en: ["tassel loafers for men BD", "mens loafer shoes price in bangladesh", "genuine leather tassel loafers BD", "formal and casual loafers for men BD", "handcrafted leather loafers bangladesh", "best stylish loafers for mens online BD", "chelsea boots BD", "mens chelsea boots price in bangladesh", "black leather chelsea boots for men BD", "premium handcrafted chelsea boots BD", "suede chelsea boots online bangladesh", "best winter chelsea boots for men"],
+    bn: ["চামড়ার লোফার জুতা", "টাসেল লোফার জুতা", "প্রিমিয়াম লেদার টাসেল লোফার অনলাইন", "লেদার চেলসি বুট", "পুরুষদের প্রিমিয়াম বুট জুতা", "অনলাইনে শীতের আসল লেদার চেলসি বুট"],
+    loafer_en: ["tassel loafers for men BD", "mens loafer shoes price in bangladesh", "genuine leather tassel loafers BD", "formal and casual loafers for men BD", "handcrafted leather loafers bangladesh", "best stylish loafers for mens online BD"],
+    loafer_bn: ["চামড়ার লোফার জুতা", "টাসেল লোফার জুতা", "প্রিমিয়াম লেদার টাসেল লোফার অনলাইন"],
+    boot_en: ["chelsea boots BD", "mens chelsea boots price in bangladesh", "black leather chelsea boots for men BD", "premium handcrafted chelsea boots BD", "suede chelsea boots online bangladesh", "best winter chelsea boots for men"],
+    boot_bn: ["লেদার চেলসি বুট", "পুরুষদের প্রিমিয়াম বুট জুতা", "অনলাইনে শীতের আসল লেদার চেলসি বুট"]
+  }
+};
+
+// Product-level keyword list. For footwear, picks the loafer or chelsea-boot
+// sub-list based on the product name so a specific product doesn't get
+// tagged with keywords for the other type. Mirrors productKeywords() in
+// products.js.
+function productKeywords(p) {
+  const c = CATEGORY_KEYWORDS[p.category];
+  if (!c) return [p.name, "StrDust"];
+  const name = (p.name || "").toLowerCase();
+  let en = c.en, bn = c.bn;
+  if (p.category === "footwear") {
+    if (name.includes("loafer")) { en = c.loafer_en; bn = c.loafer_bn; }
+    else if (name.includes("chelsea") || name.includes("boot")) { en = c.boot_en; bn = c.boot_bn; }
+  }
+  return [p.name, ...en.slice(0, 4), ...bn.slice(0, 2), "StrDust"];
+}
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -127,9 +181,11 @@ module.exports = async (req, res) => {
     const eDesc = escapeHtml(desc);
     const eImage = escapeHtml(image);
     const eUrl = escapeHtml(pageUrl);
+    const eKeywords = escapeHtml(productKeywords(p).join(", "));
 
     html = setTagContent(html, /<title id="pageTitleTag">.*?<\/title>/, `<title id="pageTitleTag">${eTitle}</title>`);
     html = setTagContent(html, /<meta name="description" id="metaDescTag" content=".*?">/, `<meta name="description" id="metaDescTag" content="${eDesc}">`);
+    html = setTagContent(html, /<meta name="keywords" id="metaKeywordsTag" content=".*?">/, `<meta name="keywords" id="metaKeywordsTag" content="${eKeywords}">`);
     html = setTagContent(html, /<link rel="canonical" id="canonicalTag" href=".*?">/, `<link rel="canonical" id="canonicalTag" href="${eUrl}">`);
     html = setTagContent(html, /<meta property="og:title" id="ogTitleTag" content=".*?">/, `<meta property="og:title" id="ogTitleTag" content="${eTitle}">`);
     html = setTagContent(html, /<meta property="og:description" id="ogDescTag" content=".*?">/, `<meta property="og:description" id="ogDescTag" content="${eDesc}">`);
