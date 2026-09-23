@@ -7,6 +7,7 @@
 <!-- Default/fallback SEO meta (will be overwritten by JS once product loads) -->
 <title id="pageTitleTag">প্রোডাক্ট — StrDust</title>
 <meta name="description" id="metaDescTag" content="StrDust-এ পাবেন অরিজিনাল পারফিউম, টি-শার্ট, গ্যাজেট, জুয়েলারি ও আরও অনেক কিছু। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।">
+<meta name="keywords" id="metaKeywordsTag" content="StrDust, buy premium mens shoes online bangladesh, mens luxury footwear and fragrance BD, অরিজিনাল লেদার জুতা ও পারফিউম অনলাইন শপ">
 <meta name="robots" content="index, follow">
 <link rel="canonical" id="canonicalTag" href="https://strdustshop.vercel.app/product.html">
 <meta name="theme-color" content="#0d9488">
@@ -178,6 +179,9 @@
     document.getElementById("pageTitleTag").textContent = title;
     document.getElementById("metaDescTag").setAttribute("content", desc);
     document.getElementById("canonicalTag").setAttribute("href", pageUrl);
+
+    const kwEl = document.getElementById("metaKeywordsTag");
+    if (kwEl) kwEl.setAttribute("content", productKeywords(p).join(", "));
 
     document.getElementById("ogTitleTag").setAttribute("content", title);
     document.getElementById("ogDescTag").setAttribute("content", desc);
