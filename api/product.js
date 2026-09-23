@@ -39,6 +39,19 @@ function formatTaka(n) {
   return `৳${Number(n || 0).toLocaleString("en-US")}`;
 }
 
+// Turns a product name (Bengali, English, or mixed) into a URL-safe slug.
+// Keeps letters from any script and digits, collapses everything else to
+// hyphens. Not guaranteed unique on its own — the product id in the path
+// is what's actually authoritative for lookups.
+function slugify(str) {
+  return String(str || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
 // Swap the value of one specific tag in the static template for the real,
 // per-product value. Each replace targets a tag by its unique id attribute
 // so this can't accidentally touch an unrelated tag with similar content.
@@ -82,7 +95,8 @@ module.exports = async (req, res) => {
 
     const p = { id: doc.id, ...doc.data() };
     const catLabel = CATEGORY_LABELS[p.category] || p.category || "";
-    const pageUrl = `${SITE_URL}/product.html?id=${p.id}`;
+    const slug = slugify(p.name);
+    const pageUrl = `${SITE_URL}/product/${p.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
     const image = (p.images && p.images[0]) ? p.images[0] : `${SITE_URL}/og-image.jpg`;
 
     const title = `${p.name} — ${catLabel} | StrDust`;
