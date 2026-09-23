@@ -110,13 +110,362 @@
   </div>
 </header>
 
-<!-- NOTE: Full body+JS too large for single tool call mid-repair. User: replace with artifacts/index.html -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-top">
+    <span class="mm-logo">Str<span class="dot">•</span>Dust</span>
+    <button class="mm-close" id="mmClose">✕</button>
+  </div>
+
+  <div class="mm-list" id="mmList">
+    <button class="mm-item" data-target="mm-men"><span>MEN</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-women"><span>WOMEN</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-perfume"><span>PERFUME</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-gadgets"><span>GADGETS</span><span class="mm-arrow">›</span></button>
+    <button class="mm-item" data-target="mm-jewelry"><span>JEWELRY</span><span class="mm-arrow">›</span></button>
+    <a href="shop.html?sort=new" class="mm-item"><span>NEW & TRENDING</span><span class="mm-arrow">›</span></a>
+    <a href="shop.html?tag=sale" class="mm-item"><span>SALE</span><span class="mm-arrow">›</span></a>
+    <a href="contact.html" class="mm-item"><span>CONTACT US</span><span class="mm-arrow">›</span></a>
+  </div>
+
+  <div class="mm-sub" id="mm-men">
+    <button class="mm-back">‹ Back</button>
+    <h3>MEN</h3>
+    <a href="shop.html?tag=men&tag=tshirt">T-Shirts</a>
+    <a href="shop.html?tag=men&tag=pants">Pants</a>
+    <a href="shop.html?tag=men&tag=watch">Watches</a>
+    <a href="shop.html?tag=men&tag=perfume">Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-women">
+    <button class="mm-back">‹ Back</button>
+    <h3>WOMEN</h3>
+    <a href="shop.html?tag=women&tag=tshirt">T-Shirts</a>
+    <a href="shop.html?tag=women&tag=jewelry">Jewelry</a>
+    <a href="shop.html?tag=women&tag=watch">Watches</a>
+    <a href="shop.html?tag=women&tag=perfume">Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-perfume">
+    <button class="mm-back">‹ Back</button>
+    <h3>PERFUME</h3>
+    <a href="shop.html?category=perfume">All Perfume</a>
+    <a href="shop.html?category=perfume&tag=men">Men's Perfume</a>
+    <a href="shop.html?category=perfume&tag=women">Women's Perfume</a>
+  </div>
+
+  <div class="mm-sub" id="mm-gadgets">
+    <button class="mm-back">‹ Back</button>
+    <h3>GADGETS</h3>
+    <a href="shop.html?category=gadget">All Gadgets</a>
+  </div>
+
+  <div class="mm-sub" id="mm-jewelry">
+    <button class="mm-back">‹ Back</button>
+    <h3>JEWELRY</h3>
+    <a href="shop.html?category=jewelry">All Jewelry</a>
+  </div>
+
+  <div class="mm-footer">
+    <a href="track-order.html">Order Tracker</a>
+    <a href="cart.html">Your Cart</a>
+  </div>
+</div>
+
+<div class="bestseller-banner hidden" id="bestsellerBanner">
+  <div class="bs-track" id="bsTrack"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-bg-collage" id="heroBgCollage"></div>
+  <div class="hero-dust"></div>
+  <div class="hero-inner">
+    <span class="hero-badge" id="heroBadge" data-bn="🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়" data-en="🔥 Up to 30% off new collection">🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়</span>
+    <span class="eyebrow anim-1" data-bn="৬টা ক্যাটাগরি, এক ঠিকানা" data-en="6 categories, one address">৬টা ক্যাটাগরি, এক ঠিকানা</span>
+    <h1 class="anim-2"><span data-bn="৬টা ক্যাটাগরি," data-en="6 Categories,">৬টা ক্যাটাগরি,</span><br><em data-bn="একটাই কার্ট" data-en="One Cart">একটাই কার্ট</em></h1>
+    <p class="hero-sub anim-3" id="heroSubText" data-bn="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="T-shirts, gadgets, perfume, pants, watches, jewelry — all in one checkout. 1-3 day delivery inside Dhaka, with cash on delivery.">টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
+    <div class="hero-actions anim-4">
+      <a href="shop.html" class="btn btn-aqua" data-bn="এখনই কেনাকাটা করুন" data-en="Shop Now">এখনই কেনাকাটা করুন</a>
+      <a href="track-order.html" class="btn btn-outline" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a>
+    </div>
+
+    <div class="slider anim-5">
+      <div id="sliderTrack"></div>
+      <div class="slider-dots" id="sliderDots"></div>
+    </div>
+  </div>
+</section>
+
+<section class="constellation">
+  <div class="constellation-head">
+    <span class="eyebrow" data-bn="ক্যাটাগরি ঘুরে দেখুন" data-en="Browse Categories">ক্যাটাগরি ঘুরে দেখুন</span>
+    <h2 data-bn="ছড়ানো সব পছন্দ, একসাথে" data-en="Everything scattered, together">ছড়ানো সব পছন্দ, একসাথে</h2>
+  </div>
+  <div class="node-field" id="nodeField">
+    <svg class="links" id="nodeLinks"></svg>
+    <!-- nodes injected by JS from CATEGORIES so it stays in sync everywhere -->
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" data-bn="এই মুহূর্তে ট্রেন্ডিং" data-en="Trending Right Now">এই মুহূর্তে ট্রেন্ডিং</span>
+        <h2 data-bn="ফিচার্ড প্রোডাক্ট" data-en="Featured Products">ফিচার্ড প্রোডাক্ট</h2>
+      </div>
+      <a href="shop.html" data-bn="সব দেখুন →" data-en="View All →">সব দেখুন →</a>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="category-grid" id="categoryGrid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" data-bn="নতুন এসেছে" data-en="New Arrivals">নতুন এসেছে</span>
+        <h2 data-bn="লেটেস্ট আরাইভাল" data-en="Latest Arrivals">লেটেস্ট আরাইভাল</h2>
+      </div>
+      <a href="shop.html?sort=new" data-bn="সব দেখুন →" data-en="View All →">সব দেখুন →</a>
+    </div>
+    <div class="product-grid" id="newGrid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Str•Dust</div>
+        <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;" data-bn="একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="Fashion, gadgets & lifestyle products in one place — fast delivery inside Dhaka, with cash on delivery.">একই জায়গায় ফ্যাশন, গ্যাজেট আর লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
+      </div>
+      <div>
+        <h4 data-bn="ক্যাটাগরি" data-en="Categories">ক্যাটাগরি</h4>
+        <ul>
+          <li><a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a></li>
+          <li><a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a></li>
+          <li><a href="shop.html?category=perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a></li>
+          <li><a href="shop.html?category=pant" data-bn="প্যান্ট" data-en="Pants">প্যান্ট</a></li>
+          <li><a href="shop.html?category=watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a></li>
+          <li><a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-bn="সাহায্য" data-en="Help">সাহায্য</h4>
+        <ul>
+          <li><a href="track-order.html" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a></li>
+          <li><a href="cart.html" data-bn="আপনার কার্ট" data-en="Your Cart">আপনার কার্ট</a></li>
+          <li><a href="contact.html" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</a></li>
+          <li><a href="#" data-bn="রিটার্ন পলিসি" data-en="Return Policy">রিটার্ন পলিসি</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</h4>
+        <ul>
+          <li data-bn="ঢাকা, বাংলাদেশ" data-en="Dhaka, Bangladesh">ঢাকা, বাংলাদেশ</li>
+          <li>hello@strdust.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-bn="© ২০২৬ StrDust. সর্বস্বত্ব সংরক্ষিত।" data-en="© 2026 StrDust. All rights reserved.">© 2026 StrDust. সর্বস্বত্ব সংরক্ষিত।</span>
+      <span data-bn="Cash on Delivery সারা বাংলাদেশে" data-en="Cash on Delivery all over Bangladesh">Cash on Delivery সারা বাংলাদেশে</span>
+    </div>
+  </div>
+</footer>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="cart.js"></script>
 <script src="products.js"></script>
-<script>location.replace('shop.html');</script>
+<script>
+  function buildNodeField() {
+    const field = document.getElementById("nodeField");
+    const svg = document.getElementById("nodeLinks");
+    const lang = currentLang();
+    field.querySelectorAll(".node").forEach(n => n.remove());
+    CATEGORIES.forEach(cat => {
+      const a = document.createElement("a");
+      a.href = `shop.html?category=${cat.id}`;
+      a.className = "node";
+      const label = lang === "en" ? cat.label : cat.bn;
+      a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${label}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
+      field.appendChild(a);
+    });
+
+    // draw faint dashed connectors between adjacent nodes once laid out
+    requestAnimationFrame(() => {
+      const nodes = [...field.querySelectorAll(".node")];
+      const fieldRect = field.getBoundingClientRect();
+      let d = "";
+      nodes.forEach((n, i) => {
+        if (i === 0) return;
+        const a = nodes[i - 1].querySelector(".node-dot").getBoundingClientRect();
+        const b = n.querySelector(".node-dot").getBoundingClientRect();
+        const ax = a.left + a.width / 2 - fieldRect.left, ay = a.top + a.height / 2 - fieldRect.top;
+        const bx = b.left + b.width / 2 - fieldRect.left, by = b.top + b.height / 2 - fieldRect.top;
+        d += `M${ax},${ay} Q${(ax + bx) / 2},${Math.min(ay, by) - 30} ${bx},${by} `;
+      });
+      svg.innerHTML = `<path d="${d}"></path>`;
+    });
+    loadCounts();
+  }
+
+  async function loadCounts() {
+    const lang = currentLang();
+    for (const cat of CATEGORIES) {
+      try {
+        const snap = await db.collection("products").where("category", "==", cat.id).get();
+        const el = document.querySelector(`[data-node-count="${cat.id}"]`);
+        if (el) el.textContent = lang === "en" ? `${snap.size} products` : `${snap.size} প্রোডাক্ট`;
+      } catch (e) { /* firebase not configured yet */ }
+    }
+  }
+
+  async function loadHomeGrids() {
+    const featuredGrid = document.getElementById("featuredGrid");
+    const newGrid = document.getElementById("newGrid");
+    renderSkeletons(featuredGrid, 4);
+    renderSkeletons(newGrid, 4);
+    const emptyMsg = currentLang() === "en" ? "Products will show here once added." : "প্রোডাক্ট যোগ হলে এখানে দেখা যাবে।";
+    try {
+      const all = await fetchProducts({ max: 40 });
+      const featured = all.filter(p => p.featured).slice(0, 4);
+      renderGrid(featuredGrid, featured.length ? featured : all.slice(0, 4), emptyMsg);
+      renderGrid(newGrid, all.slice(0, 4), emptyMsg);
+    } catch (e) {
+      renderGrid(featuredGrid, []);
+      renderGrid(newGrid, []);
+    }
+  }
+
+  async function loadBestSellers() {
+    const banner = document.getElementById("bestsellerBanner");
+    const track = document.getElementById("bsTrack");
+    try {
+      const snap = await db.collection("products").where("bestSeller", "==", true).limit(8).get();
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (!items.length) return;
+      const lang = currentLang();
+      const tag = lang === "en" ? "🏆 BEST SELLER" : "🏆 বেস্ট সেলার";
+
+      banner.classList.remove("hidden");
+      track.innerHTML = items.map((p, i) => `
+        <a href="${productUrl(p)}" class="bs-item ${i === 0 ? "active" : ""}">
+          <span class="bs-tag">${tag}</span>
+          ${(p.images && p.images[0]) ? `<img src="${p.images[0]}" alt="${p.name}">` : ""}
+          <span class="bs-name">${p.name} — ${formatTaka(p.price)}</span>
+        </a>`).join("");
+
+      if (items.length > 1) {
+        let current = 0;
+        const els = track.querySelectorAll(".bs-item");
+        setInterval(() => {
+          els[current].classList.remove("active");
+          current = (current + 1) % els.length;
+          els[current].classList.add("active");
+        }, 3200);
+      }
+    } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
+  }
+
+  // Hero background — always shows the newest products (not tied to bestSeller
+  // flag) so the hero never looks empty, even before anything is marked "best seller".
+  async function loadHeroBackground() {
+    const bgCollage = document.getElementById("heroBgCollage");
+    try {
+      const items = await fetchProducts({ sort: "new", max: 8 });
+      const withImages = items.filter(p => p.images && p.images[0]);
+      if (!withImages.length) { bgCollage.innerHTML = ""; return; }
+
+      bgCollage.innerHTML = withImages.map((p, i) =>
+        `<div class="bg-slide ${i === 0 ? "active" : ""}" style="background-image:url('${p.images[0]}')"></div>`
+      ).join("");
+
+      if (withImages.length > 1) {
+        let bgCurrent = 0;
+        const bgEls = bgCollage.querySelectorAll(".bg-slide");
+        setInterval(() => {
+          bgEls[bgCurrent].classList.remove("active");
+          bgCurrent = (bgCurrent + 1) % bgEls.length;
+          bgEls[bgCurrent].classList.add("active");
+        }, 4000);
+      }
+    } catch (e) { /* firebase not configured yet, or no products yet */ }
+  }
+
+  // Self-contained fallback: only defines buildCategoryGrid if products.js
+  // hasn't already provided one. This means the page can never crash on a
+  // missing function again, regardless of what's in products.js.
+  if (typeof buildCategoryGrid !== "function") {
+    window.buildCategoryGrid = function () {
+      const grid = document.getElementById("categoryGrid");
+      if (!grid) return;
+      const lang = currentLang();
+      grid.innerHTML = CATEGORIES.map(cat => {
+        const label = lang === "en" ? cat.label : cat.bn;
+        return `<a href="shop.html?category=${cat.id}" class="cat-grid-item">
+          <span class="cat-grid-icon">${cat.icon}</span>
+          <span>${label}</span>
+        </a>`;
+      }).join("");
+    };
+  }
+
+  // Self-contained fallback: wires up the ☰ button and mobile menu directly
+  // here, so it works even if products.js never got this code pasted in.
+  // Guarded with a flag so it can't double-bind if products.js *does* have it.
+  if (!window.__strdustMobileMenuBound) {
+    window.__strdustMobileMenuBound = true;
+    document.addEventListener("DOMContentLoaded", () => {
+      const menu = document.getElementById("mobileMenu");
+      const overlay = document.getElementById("mobileMenuOverlay");
+      const toggle = document.querySelector(".nav-toggle");
+      const closeBtn = document.getElementById("mmClose");
+      if (!menu || !overlay || !toggle) return;
+
+      function openMenu() { menu.classList.add("open"); overlay.classList.add("open"); }
+      function closeMenu() {
+        menu.classList.remove("open"); overlay.classList.remove("open");
+        document.querySelectorAll(".mm-sub").forEach(s => s.classList.remove("open"));
+      }
+
+      toggle.addEventListener("click", openMenu);
+      closeBtn?.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+
+      document.querySelectorAll(".mm-item[data-target]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.getElementById(btn.dataset.target)?.classList.add("open");
+        });
+      });
+
+      document.querySelectorAll(".mm-back").forEach(btn => {
+        btn.addEventListener("click", () => btn.closest(".mm-sub")?.classList.remove("open"));
+      });
+    });
+  }
+
+  document.addEventListener("languagechange", () => {
+    buildNodeField();
+    loadBestSellers();
+  });
+
+  buildNodeField();
+  buildCategoryGrid();
+  initHeroSlider();
+  loadHomeGrids();
+  loadBestSellers();
+  loadHeroBackground();
+</script>
 </body>
 </html>
