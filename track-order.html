@@ -7,12 +7,17 @@
 <meta name="description" content="StrDust থেকে করা অর্ডারের বর্তমান স্ট্যাটাস ট্র্যাক করুন — শুধু ইনভয়েস নাম্বার দিয়ে, সহজে ও দ্রুত।">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://strdustshop.vercel.app/track-order.html">
+<meta name="theme-color" content="#0d9488">
+<meta name="author" content="StrDust">
+<meta name="geo.region" content="BD-13">
+<meta name="geo.placename" content="Dhaka">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="অর্ডার ট্র্যাক করুন — StrDust">
 <meta property="og:description" content="ইনভয়েস নাম্বার দিয়ে আপনার StrDust অর্ডারের বর্তমান স্ট্যাটাস চেক করুন।">
 <meta property="og:url" content="https://strdustshop.vercel.app/track-order.html">
 <meta property="og:image" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta property="og:image:alt" content="StrDust — বাংলাদেশের অনলাইন শপ">
 <meta property="og:locale" content="bn_BD">
 <meta property="og:site_name" content="StrDust">
 
@@ -20,6 +25,7 @@
 <meta name="twitter:title" content="অর্ডার ট্র্যাক করুন — StrDust">
 <meta name="twitter:description" content="ইনভয়েস নাম্বার দিয়ে আপনার StrDust অর্ডারের বর্তমান স্ট্যাটাস চেক করুন।">
 <meta name="twitter:image" content="https://strdustshop.vercel.app/og-image.jpg">
+<meta name="twitter:image:alt" content="StrDust — বাংলাদেশের অনলাইন শপ">
 
 <link rel="stylesheet" href="style.css">
 <style>
@@ -181,7 +187,6 @@
     if (lastOrder) renderOrder(lastOrder);
   });
 
-  // auto-fill from ?invoice= if arriving via a link
   const preset = new URLSearchParams(location.search).get("invoice");
   if (preset) { document.getElementById("invoiceInput").value = preset; trackOrder(); }
 </script>
