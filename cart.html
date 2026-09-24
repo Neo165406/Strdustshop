@@ -18,6 +18,16 @@
 <meta name="geo.region" content="BD-13">
 <meta name="geo.placename" content="Dhaka">
 <link rel="stylesheet" href="style.css">
+<style>
+  .cart-line-ph { width: 80px; height: 80px; border-radius: var(--radius-sm); background: var(--aqua-pale); border: 1px solid var(--border); }
+  .cart-line .remove-line { background: none; border: none; padding: 0; font-family: inherit; cursor: pointer; }
+  @media (max-width: 600px) {
+    .cart-line { grid-template-columns: 64px 1fr; gap: 10px 12px; }
+    .cart-line img, .cart-line-ph { width: 64px; height: 64px; }
+    .cart-line .qty-control { grid-column: 2; justify-self: start; }
+    .cart-line .cart-line-price { grid-column: 2; text-align: left; }
+  }
+</style>
 </head>
 <body>
 
@@ -81,15 +91,76 @@
 <script src="cart.js"></script>
 <script src="products.js"></script>
 <script>
-  document.getElementById('langToggle')?.addEventListener('click', function() {
-    const isEn = document.documentElement.lang === 'en';
-    document.documentElement.lang = isEn ? 'bn' : 'en';
-    this.textContent = isEn ? 'EN' : 'বাং';
-    document.querySelectorAll('[data-bn]').forEach(el => {
-      el.textContent = isEn ? el.dataset.bn : el.dataset.en;
-    });
+  /* Language toggle is handled globally in cart.js — no page-level handler
+     here (a second one made every click toggle twice). */
+
+  function esc(v) {
+    return String(v ?? "").replace(/[&<>"']/g, c => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+    ));
+  }
+
+  function renderCart() {
+    const cart = getCart();
+    const lang = currentLang();
+    const root = document.getElementById("cartRoot");
+    const emptyBox = document.getElementById("emptyCart");
+
+    // Empty cart → show empty state instead of a ৳0 summary
+    if (!cart.length) {
+      root.classList.add("hidden");
+      emptyBox.classList.remove("hidden");
+      return;
+    }
+    root.classList.remove("hidden");
+    emptyBox.classList.add("hidden");
+
+    // Cart lines
+    document.getElementById("cartLines").innerHTML = cart.map(item => {
+      const id = esc(item.id);
+      const lineTotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
+      const img = item.image
+        ? `<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy" onerror="this.style.visibility='hidden'">`
+        : `<div class="cart-line-ph"></div>`;
+      return `
+        <div class="cart-line">
+          ${img}
+          <div>
+            <div class="cart-line-title">${esc(item.name)}</div>
+            <div class="cart-line-cat">${esc(item.category)}</div>
+            <button type="button" class="remove-line" data-act="remove" data-id="${id}">${lang === "en" ? "Remove" : "সরান"}</button>
+          </div>
+          <div class="qty-control">
+            <button type="button" data-act="dec" data-id="${id}" aria-label="−">−</button>
+            <span>${Number(item.qty) || 0}</span>
+            <button type="button" data-act="inc" data-id="${id}" aria-label="+">+</button>
+          </div>
+          <div class="cart-line-price">${formatTaka(lineTotal)}</div>
+        </div>`;
+    }).join("");
+
+    // Order summary — delivery is added at checkout, so total = subtotal here
+    const subtotal = getCartTotal();
+    document.getElementById("sumSubtotal").textContent = formatTaka(subtotal);
+    document.getElementById("sumTotal").textContent = formatTaka(subtotal);
+  }
+
+  // Qty +/- and remove (event delegation, works after every re-render)
+  document.getElementById("cartLines").addEventListener("click", e => {
+    const btn = e.target.closest("[data-act]");
+    if (!btn) return;
+    const item = getCart().find(i => String(i.id) === btn.dataset.id);
+    if (!item) return;
+    if (btn.dataset.act === "inc") updateQty(item.id, item.qty + 1);
+    else if (btn.dataset.act === "dec") updateQty(item.id, item.qty - 1); // hits 0 → removed
+    else if (btn.dataset.act === "remove") removeFromCart(item.id);
+    renderCart();
   });
-  // cart render handled by cart.js
+
+  document.addEventListener("languagechange", renderCart);
+  window.addEventListener("pageshow", e => { if (e.persisted) renderCart(); }); // back/forward cache
+
+  renderCart();
 </script>
 </body>
 </html>
