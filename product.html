@@ -285,11 +285,13 @@
       desc: "Details for this product will be added soon.",
       inStock: "✓ In Stock", outStock: "✕ Out of Stock",
       addToCart: "Add to Cart", buyNow: "Buy Now",
+      addedToast: "Added to cart",
       usp1: "🚚 1-3 day delivery inside Dhaka", usp2: "💵 Cash on delivery available", usp3: "↩️ Easy exchange if there's an issue"
     } : {
       desc: "এই প্রোডাক্টের বিস্তারিত বিবরণ শীঘ্রই যোগ করা হবে।",
       inStock: "✓ স্টকে আছে", outStock: "✕ স্টকে নেই",
       addToCart: "কার্টে যোগ করুন", buyNow: "এখনই কিনুন",
+      addedToast: "কার্টে যোগ হয়েছে",
       usp1: "🚚 ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি", usp2: "💵 ক্যাশ অন ডেলিভারি সুবিধা", usp3: "↩️ সমস্যা হলে সহজে এক্সচেঞ্জ"
     };
 
@@ -309,8 +311,8 @@
           <span id="qtyVal">1</span>
           <button id="qtyPlus">+</button>
         </div>
-        <button class="btn btn-aqua" id="addToCartBtn" ${inStock ? "" : "disabled"}>${t.addToCart}</button>
-        <a href="/cart.html" class="btn btn-outline" id="buyNowBtn" style="display:none;">${t.buyNow}</a>
+        <button class="btn btn-outline" id="addToCartBtn" ${inStock ? "" : "disabled"}>${t.addToCart}</button>
+        <button class="btn btn-aqua" id="buyNowBtn" ${inStock ? "" : "disabled"}>${t.buyNow}</button>
       </div>
       <div class="usp-strip">
         <span>${t.usp1}</span>
@@ -322,23 +324,36 @@
     qty = 1;
     document.getElementById("qtyMinus").addEventListener("click", () => { if (qty > 1) { qty--; document.getElementById("qtyVal").textContent = qty; } });
     document.getElementById("qtyPlus").addEventListener("click", () => { qty++; document.getElementById("qtyVal").textContent = qty; });
+
+    // Shared by both Add to Cart and Buy Now: validates the required variant
+    // (size / ml) is picked, and builds the cart line item for it. Returns
+    // null (and shows the inline hint) if a required variant isn't selected yet.
+    function buildCartProduct() {
+      if (p.sizes && p.sizes.length && !selectedSize) {
+        document.getElementById("sizeHint").classList.add("show");
+        return null;
+      }
+      if (p.variants && p.variants.length && !selectedMlVariant) {
+        document.getElementById("mlHint").classList.add("show");
+        return null;
+      }
+      if (selectedSize) return { ...p, id: `${p.id}__${selectedSize}`, name: `${p.name} (${selectedSize})` };
+      if (selectedMlVariant) return { ...p, id: `${p.id}__${selectedMlVariant.ml}ml`, name: `${p.name} (${selectedMlVariant.ml}ml)`, price: selectedMlVariant.price };
+      return { ...p };
+    }
+
     document.getElementById("addToCartBtn").addEventListener("click", () => {
-      if (p.sizes && p.sizes.length) {
-        if (!selectedSize) { document.getElementById("sizeHint").classList.add("show"); return; }
-      }
-      if (p.variants && p.variants.length) {
-        if (!selectedMlVariant) { document.getElementById("mlHint").classList.add("show"); return; }
-      }
-
-      let cartProduct = { ...p };
-      if (selectedSize) {
-        cartProduct = { ...p, id: `${p.id}__${selectedSize}`, name: `${p.name} (${selectedSize})` };
-      } else if (selectedMlVariant) {
-        cartProduct = { ...p, id: `${p.id}__${selectedMlVariant.ml}ml`, name: `${p.name} (${selectedMlVariant.ml}ml)`, price: selectedMlVariant.price };
-      }
-
+      const cartProduct = buildCartProduct();
+      if (!cartProduct) return;
       addToCart(cartProduct, qty);
-      document.getElementById("buyNowBtn").style.display = "inline-flex";
+      if (typeof showToast === "function") showToast(t.addedToast);
+    });
+
+    document.getElementById("buyNowBtn").addEventListener("click", () => {
+      const cartProduct = buildCartProduct();
+      if (!cartProduct) return;
+      addToCart(cartProduct, qty);
+      location.href = "/checkout.html";
     });
   }
 
