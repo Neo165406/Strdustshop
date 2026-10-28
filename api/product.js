@@ -153,11 +153,15 @@ module.exports = async (req, res) => {
     const pageUrl = `${SITE_URL}/product/${p.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
     const image = (p.images && p.images[0]) ? p.images[0] : `${SITE_URL}/og-image.jpg`;
 
-    const title = `${p.name} — ${catLabel} | StrDust`;
-    const rawDesc = p.description
+    const title = `${p.name} Price in Bangladesh | StrDust`;
+    const sourceDesc = p.description
       ? String(p.description).replace(/\s+/g, " ").trim()
-      : `${p.name} কিনুন StrDust থেকে, দাম ${formatTaka(p.price)}। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।`;
-    const desc = rawDesc.length > 155 ? rawDesc.slice(0, 152) + "..." : rawDesc;
+      : `${p.name} কিনুন StrDust থেকে।`;
+    const purchaseDetails = `দাম ${formatTaka(p.price)}। বাংলাদেশে ডেলিভারি ও ক্যাশ অন ডেলিভারি সুবিধা।`;
+    const rawDesc = sourceDesc.includes(formatTaka(p.price))
+      ? sourceDesc
+      : `${sourceDesc} ${purchaseDetails}`;
+    const desc = rawDesc.length > 155 ? rawDesc.slice(0, 152).trimEnd() + "..." : rawDesc;
 
     const inStock = p.stock === undefined || p.stock > 0;
     const schema = {
