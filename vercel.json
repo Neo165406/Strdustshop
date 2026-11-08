@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/category/:category", "destination": "/api/category?category=:category" },
     {
       "source": "/product.html",
       "has": [{ "type": "query", "key": "id" }],
