@@ -2,29 +2,39 @@ const admin = require("firebase-admin");
 
 const SITE_URL = "https://strdustshop.vercel.app";
 
-// Static pages that always exist, regardless of products
+// Only include canonical, indexable landing pages here.
+// Category filters currently live at /shop.html?category=... and the
+// shop page canonicalizes those variants to /shop.html, so listing them
+// separately would create duplicate canonical URLs.
+// Order tracking is a utility page, not a search landing page.
 const STATIC_PAGES = [
   { loc: "/", changefreq: "daily", priority: "1.0" },
   { loc: "/shop.html", changefreq: "daily", priority: "0.9" },
-  { loc: "/shop.html?category=tshirt", changefreq: "weekly", priority: "0.7" },
-  { loc: "/shop.html?category=gadget", changefreq: "weekly", priority: "0.7" },
-  { loc: "/shop.html?category=perfume", changefreq: "weekly", priority: "0.7" },
-  { loc: "/shop.html?category=pant", changefreq: "weekly", priority: "0.7" },
-  { loc: "/shop.html?category=watch", changefreq: "weekly", priority: "0.7" },
-  { loc: "/shop.html?category=jewelry", changefreq: "weekly", priority: "0.7" },
-  { loc: "/track-order.html", changefreq: "monthly", priority: "0.4" },
 ];
 
-// Initialize Firebase Admin once (Vercel reuses the function instance across requests)
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      // Vercel env vars store \n as literal characters, so convert back to real newlines
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    }),
-  });
+// Initialize Firebase Admin lazily so missing Vercel environment variables
+// produce a controlled 500 response instead of a module-load crash.
+function getFirestore() {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+  if (!projectId || !clientEmail || !privateKey) {
+    throw new Error("Firebase Admin environment variables are not configured");
+  }
+
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        // Vercel env vars may store newline characters as literal \\n.
+        privateKey: privateKey.replace(/\\\\n/g, "\\n"),
+      }),
+    });
+  }
+
+  return admin.firestore();
 }
 
 function escapeXml(str) {
@@ -36,14 +46,13 @@ function escapeXml(str) {
     .replace(/'/g, "&apos;");
 }
 
-// Turns a product name (Bengali, English, or mixed) into a URL-safe slug
-// for the clean /product/{id}/{slug} URL. Mirrors the copies in products.js
-// and api/product.js.
+// Keeps Bengali, English, and mixed product names URL-safe.
+// The product id remains authoritative; the slug is descriptive only.
 function slugify(str) {
   return String(str || "")
     .trim()
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/[^\\p{L}\\p{N}]+/gu, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
 }
@@ -54,28 +63,32 @@ function urlEntry(loc, changefreq, priority) {
 
 module.exports = async (req, res) => {
   try {
-    const db = admin.firestore();
+    const db = getFirestore();
     const snapshot = await db.collection("products").get();
 
+    // The storefront currently renders every document in the products
+    // collection, so include every product document rather than guessing
+    // at an unpublished/active field that the app does not consistently use.
     const productEntries = snapshot.docs.map((doc) => {
-      const data = doc.data();
+      const data = doc.data() || {};
       const slug = slugify(data.name);
       const loc = `${SITE_URL}/product/${doc.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
       return urlEntry(loc, "weekly", "0.8");
     });
 
-    const staticEntries = STATIC_PAGES.map((p) =>
-      urlEntry(`${SITE_URL}${p.loc}`, p.changefreq, p.priority)
+    const staticEntries = STATIC_PAGES.map((page) =>
+      urlEntry(`${SITE_URL}${page.loc}`, page.changefreq, page.priority)
     );
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticEntries.join("\n")}\n${productEntries.join("\n")}\n</urlset>`;
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticEntries.concat(productEntries).join("\n")}\n</urlset>`;
 
-    res.setHeader("Content-Type", "application/xml");
-    // Cache for 1 hour at the edge, serve stale for a day while revalidating in background
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
     res.status(200).send(xml);
   } catch (err) {
-    console.error("Sitemap generation failed:", err);
-    res.status(500).send("Sitemap generation failed: " + err.message);
+    console.error("Sitemap generation failed:", err.message);
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "no-store");
+    res.status(500).send("Sitemap generation failed. Check the server configuration.");
   }
 };
