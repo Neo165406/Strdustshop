@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
     const canonical = SITE_URL + "/category/" + category;
     const intro = config.descBn;
     let html = template;
-    html = html.replace(/<title>.*?<\\/title>/, "<title>" + escapeHtml(title) + "</title>");
+    html = html.replace(/<title>.*?<\/title>/, "<title>" + escapeHtml(title) + "</title>");
     html = html.replace(/<meta name="description" content=".*?">/, '<meta name="description" content="' + escapeHtml(config.descBn) + '">');
     html = html.replace(/<link rel="canonical" href=".*?">/, '<link rel="canonical" href="' + canonical + '">');
     html = html.replace(/<meta property="og:title" content=".*?">/, '<meta property="og:title" content="' + escapeHtml(title) + '">');
@@ -80,8 +80,8 @@ module.exports = async (req, res) => {
     html = html.replace(/<meta property="og:url" content=".*?">/, '<meta property="og:url" content="' + canonical + '">');
     html = html.replace(/<meta name="twitter:title" content=".*?">/, '<meta name="twitter:title" content="' + escapeHtml(title) + '">');
     html = html.replace(/<meta name="twitter:description" content=".*?">/, '<meta name="twitter:description" content="' + escapeHtml(config.descBn) + '">');
-    html = html.replace(/<h1[^>]*id="pageTitle"[^>]*>.*?<\\/h1>/, '<h1 style="margin:6px 0 10px;font-size:clamp(24px,3.4vw,32px);" id="pageTitle">' + escapeHtml(config.bn) + '</h1>');
-    html = html.replace(/<p id="pageIntro"[^>]*>.*?<\\/p>/, '<p id="pageIntro" style="max-width:62ch;color:var(--gray-light,#6b7280);font-size:14.5px;line-height:1.6;margin:0 0 24px;">' + escapeHtml(intro) + '</p>');
+    html = html.replace(/<h1[^>]*id="pageTitle"[^>]*>.*?<\/h1>/, '<h1 style="margin:6px 0 10px;font-size:clamp(24px,3.4vw,32px);" id="pageTitle">' + escapeHtml(config.bn) + '</h1>');
+    html = html.replace(/<p id="pageIntro"[^>]*>.*?<\/p>/, '<p id="pageIntro" style="max-width:62ch;color:var(--gray-light,#6b7280);font-size:14.5px;line-height:1.6;margin:0 0 24px;">' + escapeHtml(intro) + '</p>');
     html = html.replace('<div class="product-grid" id="shopGrid" style="margin-bottom:64px;"></div>', '<div class="product-grid" id="shopGrid" style="margin-bottom:64px;">' + cards + '</div>');
     const schema = { "@context": "https://schema.org", "@type": "CollectionPage", name: title, url: canonical, description: config.descBn, isPartOf: { "@type": "WebSite", name: "StrDust", url: SITE_URL + "/" } };
     html = html.replace("</head>", '<script type="application/ld+json">' + JSON.stringify(schema).replace(/</g, "\\u003c") + '</script><script>window.__STRDUST_CATEGORY__=' + JSON.stringify(category) + ';</script></head>');
