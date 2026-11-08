@@ -45,7 +45,22 @@ function money(value) {
   return "৳" + Number(value || 0).toLocaleString("en-US");
 }
 module.exports = async (req, res) => {
-  const category = String(req.query.category || "").toLowerCase();
+  // Vercel rewrites can expose the route parameter either as a query value
+  // or retain the original clean path. Support both forms so /category/watch
+  // does not fail with "Category not found" when the query is omitted.
+  let categoryValue = req.query && req.query.category;
+  if (Array.isArray(categoryValue)) categoryValue = categoryValue[0];
+  if (!categoryValue && req.url) {
+    try {
+      const parsedUrl = new URL(req.url, "https://strdustshop.vercel.app");
+      categoryValue = parsedUrl.searchParams.get("category");
+      if (!categoryValue) {
+        const match = parsedUrl.pathname.match(/^\\/category\\/([^/]+)/i);
+        if (match) categoryValue = decodeURIComponent(match[1]);
+      }
+    } catch (_) {}
+  }
+  const category = String(categoryValue || "").trim().toLowerCase();
   const config = CATEGORIES[category];
   if (!config) return res.status(404).send("Category not found");
   try {
