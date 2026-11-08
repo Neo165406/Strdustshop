@@ -28,8 +28,8 @@ function getFirestore() {
       credential: admin.credential.cert({
         projectId,
         clientEmail,
-        // Vercel env vars may store newline characters as literal \\n.
-        privateKey: privateKey.replace(/\\\\n/g, "\\n"),
+        // Vercel env vars may store newline characters as literal \n.
+        privateKey: privateKey.replace(/\\n/g, "\n"),
       }),
     });
   }
@@ -52,13 +52,13 @@ function slugify(str) {
   return String(str || "")
     .trim()
     .toLowerCase()
-    .replace(/[^\\p{L}\\p{N}]+/gu, "-")
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
 }
 
 function urlEntry(loc, changefreq, priority) {
-  return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  return \`  <url>\n    <loc>\${escapeXml(loc)}</loc>\n    <changefreq>\${changefreq}</changefreq>\n    <priority>\${priority}</priority>\n  </url>\`;
 }
 
 module.exports = async (req, res) => {
@@ -72,15 +72,15 @@ module.exports = async (req, res) => {
     const productEntries = snapshot.docs.map((doc) => {
       const data = doc.data() || {};
       const slug = slugify(data.name);
-      const loc = `${SITE_URL}/product/${doc.id}${slug ? "/" + encodeURIComponent(slug) : ""}`;
+      const loc = \`\${SITE_URL}/product/\${doc.id}\${slug ? "/" + encodeURIComponent(slug) : ""}\`;
       return urlEntry(loc, "weekly", "0.8");
     });
 
     const staticEntries = STATIC_PAGES.map((page) =>
-      urlEntry(`${SITE_URL}${page.loc}`, page.changefreq, page.priority)
+      urlEntry(\`\${SITE_URL}\${page.loc}\`, page.changefreq, page.priority)
     );
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticEntries.concat(productEntries).join("\n")}\n</urlset>`;
+    const xml = \`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\${staticEntries.concat(productEntries).join("\n")}\n</urlset>\`;
 
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
