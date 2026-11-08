@@ -69,17 +69,27 @@ function productKeywords(p) {
   return [p.name, ...en.slice(0, 4), ...bn.slice(0, 2), "StrDust"];
 }
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      // Vercel env vars store \n as literal characters, so convert back to real newlines
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    }),
-  });
-}
+function getFirestore() {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
+  if (!projectId || !clientEmail || !privateKey) {
+    throw new Error("Firebase Admin environment variables are not configured");
+  }
+
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey: privateKey.replace(/\\n/g, "\n"),
+      }),
+    });
+  }
+
+  return admin.firestore();
+}
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -126,16 +136,17 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // No id in the query string — just serve the static template as-is,
-  // client-side JS will show its own "product not found" state.
+  // A product detail URL without an id is not a valid product page.
+  // Return a real 404 so the generic template cannot be indexed as a product.
   if (!id) {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.status(200).send(html);
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.status(404).send(html);
     return;
   }
 
   try {
-    const db = admin.firestore();
+    const db = getFirestore();
     const doc = await db.collection("products").doc(id).get();
 
     if (!doc.exists) {
@@ -211,10 +222,11 @@ module.exports = async (req, res) => {
     res.status(200).send(html);
   } catch (err) {
     console.error("Product meta render failed:", err);
-    // Fail open: serve the static template so the page still works.
-    // Client-side updateSeoTags() will still fill in the real tags for
-    // human visitors even if this server-side step failed.
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.status(200).send(html);
+    // Do not return a generic product template with HTTP 200 on a backend
+    // failure: that can create soft-404/duplicate-indexing signals.
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.setHeader("Cache-Control", "no-store");
+    res.status(503).send("Product data is temporarily unavailable.");
   }
 };
