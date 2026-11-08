@@ -55,8 +55,10 @@ module.exports = async (req, res) => {
       const parsedUrl = new URL(req.url, "https://strdustshop.vercel.app");
       categoryValue = parsedUrl.searchParams.get("category");
       if (!categoryValue) {
-        const match = parsedUrl.pathname.match(/^\\/category\\/([^/]+)/i);
-        if (match) categoryValue = decodeURIComponent(match[1]);
+        const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+        if (pathParts[0] && pathParts[0].toLowerCase() === "category" && pathParts[1]) {
+          categoryValue = decodeURIComponent(pathParts[1]);
+        }
       }
     } catch (_) {}
   }
