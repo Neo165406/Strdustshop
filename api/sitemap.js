@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
     });
 
     const categoryIds = ["tshirt", "gadget", "perfume", "pant", "watch", "jewelry", "footwear"];
-    const availableCategories = new Set(snapshot.docs.map((doc) => (doc.data() || {}).category).filter(Boolean));
+    const availableCategories = new Set(snapshot.docs.map((doc) => String((doc.data() || {}).category || "").trim().toLowerCase()).filter(Boolean));
     const categoryEntries = categoryIds
       .filter((category) => availableCategories.has(category))
       .map((category) => urlEntry(SITE_URL + "/category/" + category, "weekly", "0.7"));
