@@ -94,9 +94,9 @@
     <nav class="main-nav">
       <a href="index.html" class="active" data-bn="হোম" data-en="Home">হোম</a>
       <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
-      <a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
-      <a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
-      <a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
+      <a href="/category/tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
+      <a href="/category/gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
+      <a href="/category/jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
       <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
     </nav>
     <div class="header-actions">
@@ -149,21 +149,21 @@
   <div class="mm-sub" id="mm-perfume">
     <button class="mm-back">‹ Back</button>
     <h3>PERFUME</h3>
-    <a href="shop.html?category=perfume">All Perfume</a>
-    <a href="shop.html?category=perfume&tag=men">Men's Perfume</a>
-    <a href="shop.html?category=perfume&tag=women">Women's Perfume</a>
+    <a href="/category/perfume">All Perfume</a>
+    <a href="/category/perfume&tag=men">Men's Perfume</a>
+    <a href="/category/perfume&tag=women">Women's Perfume</a>
   </div>
 
   <div class="mm-sub" id="mm-gadgets">
     <button class="mm-back">‹ Back</button>
     <h3>GADGETS</h3>
-    <a href="shop.html?category=gadget">All Gadgets</a>
+    <a href="/category/gadget">All Gadgets</a>
   </div>
 
   <div class="mm-sub" id="mm-jewelry">
     <button class="mm-back">‹ Back</button>
     <h3>JEWELRY</h3>
-    <a href="shop.html?category=jewelry">All Jewelry</a>
+    <a href="/category/jewelry">All Jewelry</a>
   </div>
 
   <div class="mm-footer">
@@ -249,12 +249,12 @@
       <div>
         <h4 data-bn="ক্যাটাগরি" data-en="Categories">ক্যাটাগরি</h4>
         <ul>
-          <li><a href="shop.html?category=tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a></li>
-          <li><a href="shop.html?category=gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a></li>
-          <li><a href="shop.html?category=perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a></li>
-          <li><a href="shop.html?category=pant" data-bn="প্যান্ট" data-en="Pants">প্যান্ট</a></li>
-          <li><a href="shop.html?category=watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a></li>
-          <li><a href="shop.html?category=jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a></li>
+          <li><a href="/category/tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a></li>
+          <li><a href="/category/gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a></li>
+          <li><a href="/category/perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a></li>
+          <li><a href="/category/pant" data-bn="প্যান্ট" data-en="Pants">প্যান্ট</a></li>
+          <li><a href="/category/watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a></li>
+          <li><a href="/category/jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a></li>
         </ul>
       </div>
       <div>
@@ -295,7 +295,7 @@
     field.querySelectorAll(".node").forEach(n => n.remove());
     CATEGORIES.forEach(cat => {
       const a = document.createElement("a");
-      a.href = `shop.html?category=${cat.id}`;
+      a.href = `/category/${cat.id}`;
       a.className = "node";
       const label = lang === "en" ? cat.label : cat.bn;
       a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${label}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
@@ -413,7 +413,7 @@
       const lang = currentLang();
       grid.innerHTML = CATEGORIES.map(cat => {
         const label = lang === "en" ? cat.label : cat.bn;
-        return `<a href="shop.html?category=${cat.id}" class="cat-grid-item">
+        return `<a href="/category/${cat.id}" class="cat-grid-item">
           <span class="cat-grid-icon">${cat.icon}</span>
           <span>${label}</span>
         </a>`;
