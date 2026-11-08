@@ -2,18 +2,14 @@ const admin = require("firebase-admin");
 
 const SITE_URL = "https://strdustshop.vercel.app";
 
-// Only include canonical, indexable landing pages here.
-// Category filters currently live at /shop.html?category=... and the
-// shop page canonicalizes those variants to /shop.html, so listing them
-// separately would create duplicate canonical URLs.
-// Order tracking is a utility page, not a search landing page.
+// Only canonical, indexable landing pages belong in the sitemap.
+// Category query variants canonicalize to /shop.html; order tracking is
+// a utility page rather than a search landing page.
 const STATIC_PAGES = [
   { loc: "/", changefreq: "daily", priority: "1.0" },
   { loc: "/shop.html", changefreq: "daily", priority: "0.9" },
 ];
 
-// Initialize Firebase Admin lazily so missing Vercel environment variables
-// produce a controlled 500 response instead of a module-load crash.
 function getFirestore() {
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
@@ -46,8 +42,6 @@ function escapeXml(str) {
     .replace(/'/g, "&apos;");
 }
 
-// Keeps Bengali, English, and mixed product names URL-safe.
-// The product id remains authoritative; the slug is descriptive only.
 function slugify(str) {
   return String(str || "")
     .trim()
@@ -58,7 +52,11 @@ function slugify(str) {
 }
 
 function urlEntry(loc, changefreq, priority) {
-  return \`  <url>\n    <loc>\${escapeXml(loc)}</loc>\n    <changefreq>\${changefreq}</changefreq>\n    <priority>\${priority}</priority>\n  </url>\`;
+  return "  <url>\n" +
+    "    <loc>" + escapeXml(loc) + "</loc>\n" +
+    "    <changefreq>" + changefreq + "</changefreq>\n" +
+    "    <priority>" + priority + "</priority>\n" +
+    "  </url>";
 }
 
 module.exports = async (req, res) => {
@@ -66,21 +64,25 @@ module.exports = async (req, res) => {
     const db = getFirestore();
     const snapshot = await db.collection("products").get();
 
-    // The storefront currently renders every document in the products
-    // collection, so include every product document rather than guessing
-    // at an unpublished/active field that the app does not consistently use.
+    // The storefront currently renders every document in this collection.
+    // Do not guess at an active/published field that the app does not use
+    // consistently; include the same product records the shop can display.
     const productEntries = snapshot.docs.map((doc) => {
       const data = doc.data() || {};
       const slug = slugify(data.name);
-      const loc = \`\${SITE_URL}/product/\${doc.id}\${slug ? "/" + encodeURIComponent(slug) : ""}\`;
+      const loc = SITE_URL + "/product/" + doc.id +
+        (slug ? "/" + encodeURIComponent(slug) : "");
       return urlEntry(loc, "weekly", "0.8");
     });
 
     const staticEntries = STATIC_PAGES.map((page) =>
-      urlEntry(\`\${SITE_URL}\${page.loc}\`, page.changefreq, page.priority)
+      urlEntry(SITE_URL + page.loc, page.changefreq, page.priority)
     );
 
-    const xml = \`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\${staticEntries.concat(productEntries).join("\n")}\n</urlset>\`;
+    const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      staticEntries.concat(productEntries).join("\n") +
+      "\n</urlset>";
 
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
