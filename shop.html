@@ -100,7 +100,7 @@
 <script src="products.js"></script>
 <script>
   const params = new URLSearchParams(location.search);
-  let activeCategory = params.get("category") || "";
+  let activeCategory = window.__STRDUST_CATEGORY__ || params.get("category") || "";
   let activeSort = params.get("sort") || "new";
 
   const filterBar = document.getElementById("filterBar");
