@@ -6,6 +6,7 @@
       "has": [{ "type": "query", "key": "id" }],
       "destination": "/api/product"
     },
+    { "source": "/product.html", "destination": "/api/product" },
     { "source": "/product/:id/:slug", "destination": "/api/product?id=:id" },
     { "source": "/product/:id", "destination": "/api/product?id=:id" }
   ],
