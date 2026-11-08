@@ -51,12 +51,13 @@ module.exports = async (req, res) => {
   try {
     const template = fs.readFileSync(path.join(process.cwd(), "shop.html"), "utf8");
     const db = getFirestore();
-    const snap = await db.collection("products").where("category", "==", category).get();
-    if (snap.empty) {
+    const snap = await db.collection("products").get();
+    const matchingDocs = snap.docs.filter((doc) => String((doc.data() || {}).category || "").trim().toLowerCase() === category);
+    if (!matchingDocs.length) {
       res.setHeader("X-Robots-Tag", "noindex, follow");
       return res.status(404).send("This category currently has no products.");
     }
-    const products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const products = matchingDocs.map(doc => ({ id: doc.id, ...doc.data() }));
     const cards = products.map(p => {
       const image = p.images && p.images[0] ? '<img src="' + escapeHtml(p.images[0]) + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' : "";
       const url = SITE_URL + "/product/" + encodeURIComponent(p.id) + (slugify(p.name) ? "/" + encodeURIComponent(slugify(p.name)) : "");
