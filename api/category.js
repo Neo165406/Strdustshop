@@ -39,7 +39,7 @@ function escapeHtml(value) {
   return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 function slugify(value) {
-  return String(value || "").trim().toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+  return String(value || "").trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").slice(0, 60);
 }
 function money(value) {
   return "৳" + Number(value || 0).toLocaleString("en-US");
