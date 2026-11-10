@@ -89,9 +89,9 @@ module.exports = async (req, res) => {
     const title = config.titleBn;
     const canonical = SITE_URL + "/category/" + category;
     const intro = config.descBn;
+    let html = template.replace("<head>", '<head>\n<base href="/">').replace("<body>", '<body class="category-page">');
     const breadcrumbHtml = '<nav aria-label="Breadcrumb" style="font-size:12px;color:#647184;margin:0 0 16px;display:flex;gap:8px;flex-wrap:wrap;"><a href="/" style="color:inherit;text-decoration:none;">হোম</a><span aria-hidden="true">›</span><a href="/shop.html" style="color:inherit;text-decoration:none;">সব প্রোডাক্ট</a><span aria-hidden="true">›</span><span aria-current="page">' + escapeHtml(config.bn) + '</span></nav>';
     html = html.replace('<span class="eyebrow" id="pageEyebrow">', breadcrumbHtml + '<span class="eyebrow" id="pageEyebrow">');
-    let html = template.replace("<head>", '<head>\n<base href="/">').replace("<body>", '<body class="category-page">');
     html = html.replace(/<title>.*?<\/title>/, "<title>" + escapeHtml(title) + "</title>");
     html = html.replace(/<meta name="description" content=".*?">/, '<meta name="description" content="' + escapeHtml(config.descBn) + '">');
     html = html.replace(/<link rel="canonical" href=".*?">/, '<link rel="canonical" href="' + canonical + '">');
