@@ -86,7 +86,7 @@ module.exports = async (req, res) => {
         '</span><div class="card-price-row"><span class="card-price">' + money(p.price) +
         '</span></div></div></a>';
     }).join("");
-    const title = config.titleBn;
+    // Put the English category keyword first while retaining the Bengali category name.\n    const title = config.titleEn + " | " + config.titleBn;
     const canonical = SITE_URL + "/category/" + category;
     const intro = config.descBn;
     let html = template.replace("<head>", '<head>\n<base href="/">').replace("<body>", '<body class="category-page">');
