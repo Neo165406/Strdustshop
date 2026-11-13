@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, গ্যাজেট, জুয়েলারি</title>
-<meta name="description" content="StrDust-এ টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও অন্যান্য ক্যাটাগরির পণ্য দেখুন। পণ্যের বিবরণ ও বর্তমান দাম জেনে অনলাইনে অর্ডার করুন।">
+<title>সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, জুয়েলারি</title>
+<meta name="description" content="StrDust-এ টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতার পণ্য দেখুন। পণ্যের বিবরণ ও বর্তমান দাম জেনে অনলাইনে অর্ডার করুন।">
 <meta name="keywords" id="metaKeywordsTag" content="StrDust shop, online shop Bangladesh, T-shirt, gadgets, perfume, pants, watches, jewelry, footwear">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://strdustshop.vercel.app/shop.html">
@@ -15,7 +15,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="সব প্রোডাক্ট — StrDust">
-<meta property="og:description" content="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও অন্যান্য ক্যাটাগরির পণ্য এক জায়গায় দেখুন। পণ্যের বিবরণ ও দাম জেনে অর্ডার করুন।">
+<meta property="og:description" content="টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতার পণ্য এক জায়গায় দেখুন। পণ্যের বিবরণ ও দাম জেনে অর্ডার করুন।">
 <meta property="og:url" content="https://strdustshop.vercel.app/shop.html">
 <meta property="og:image" content="https://strdustshop.vercel.app/og-image.jpg">
 <meta property="og:image:alt" content="StrDust — বাংলাদেশের অনলাইন শপ">
@@ -24,7 +24,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="সব প্রোডাক্ট — StrDust">
-<meta name="twitter:description" content="টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও অন্যান্য ক্যাটাগরির পণ্য এক জায়গায় দেখুন।">
+<meta name="twitter:description" content="টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতার পণ্য এক জায়গায় দেখুন।">
 <meta name="twitter:image" content="https://strdustshop.vercel.app/og-image.jpg">
 <meta name="twitter:image:alt" content="StrDust — বাংলাদেশের অনলাইন শপ">
 
@@ -34,7 +34,7 @@
   "@type": "CollectionPage",
   "name": "সব প্রোডাক্ট — StrDust",
   "url": "https://strdustshop.vercel.app/shop.html",
-  "description": "টি-শার্ট, গ্যাজেট, পারফিউম, প্যান্ট, ঘড়ি ও জুয়েলারি — ক্যাটাগরি অনুযায়ী দেখুন।",
+  "description": "টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতা — ক্যাটাগরি অনুযায়ী দেখুন।",
   "isPartOf": { "@type": "WebSite", "name": "StrDust", "url": "https://strdustshop.vercel.app/" }
 }
 </script>
@@ -49,7 +49,6 @@
       <a href="index.html" data-bn="হোম" data-en="Home">হোম</a>
       <a href="shop.html" class="active" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
       <a href="/category/tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
-      <a href="/category/gadget" data-bn="গ্যাজেট" data-en="Gadgets">গ্যাজেট</a>
       <a href="/category/perfume" data-bn="পারফিউম" data-en="Perfume">পারফিউম</a>
       <a href="/category/pant" data-bn="প্যান্ট" data-en="Pants">প্যান্ট</a>
       <a href="/category/watch" data-bn="ঘড়ি" data-en="Watches">ঘড়ি</a>
@@ -108,7 +107,7 @@
   let activeSort = params.get("sort") || "new";
 
   const filterBar = document.getElementById("filterBar");
-  CATEGORIES.forEach(cat => {
+  CATEGORIES.filter(cat => cat.id !== "gadget").forEach(cat => {
     const btn = document.createElement("button");
     btn.className = "chip";
     btn.dataset.cat = cat.id;
@@ -158,11 +157,11 @@
       document.querySelector('meta[name="description"]').setAttribute("content", desc);
       metaKeywords.setAttribute("content", categoryKeywords(activeCategory).join(", "));
     } else {
-      document.title = "সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, গ্যাজেট, জুয়েলারি";
+      document.title = "সব প্রোডাক্ট — StrDust | টি-শার্ট, পারফিউম, জুয়েলারি";
       document.querySelector('meta[name="description"]').setAttribute("content",
-        "StrDust-এ টি-শার্ট, গ্যাজেট, অরিজিনাল পারফিউম, প্যান্ট, ঘড়ি আর জুয়েলারি — ক্যাটাগরি অনুযায়ী ফিল্টার করে দেখুন। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।");
+        "StrDust-এ টি-শার্ট, অরিজিনাল পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতা — ক্যাটাগরি অনুযায়ী দেখুন। ঢাকায় ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।");
       metaKeywords.setAttribute("content",
-        "StrDust shop, online shop bangladesh, buy premium mens shoes online bangladesh, mens luxury footwear and fragrance BD, টি-শার্ট বাংলাদেশ, পারফিউম অনলাইন, গ্যাজেট শপ ঢাকা, জুয়েলারি অনলাইন BD");
+        "StrDust shop, online shop bangladesh, buy premium mens shoes online bangladesh, mens luxury footwear and fragrance BD, টি-শার্ট বাংলাদেশ, পারফিউম অনলাইন, জুয়েলারি অনলাইন BD");
     }
     updatePageIntro();
   }
