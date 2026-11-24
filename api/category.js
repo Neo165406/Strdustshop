@@ -71,6 +71,16 @@ module.exports = async (req, res) => {
     const snap = await db.collection("products").get();
     const matchingDocs = snap.docs.filter((doc) => String((doc.data() || {}).category || "").trim().toLowerCase() === category);
     if (!matchingDocs.length) {
+      // Keep the public response generic, but log the actual category values
+      // present in Firestore so route/config mismatches can be diagnosed
+      // without exposing product names or changing inventory.
+      const observedCategories = [...new Set(snap.docs
+        .map((doc) => String((doc.data() || {}).category || "").trim())
+        .filter(Boolean))].sort();
+      console.warn("Category has no matching products:", {
+        requestedCategory: category,
+        observedCategories
+      });
       res.setHeader("X-Robots-Tag", "noindex, follow");
       return res.status(404).send("This category currently has no products.");
     }
