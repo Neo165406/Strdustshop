@@ -1,0 +1,231 @@
+/* StrDust editorial shop — Chrome Hearts-inspired product presentation.
+   Scoped to shop.html only; product data, links, filters and cart remain unchanged. */
+
+.shop-page {
+  --editorial-ink: #171717;
+  --editorial-muted: #777;
+  background: transparent;
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+}
+.shop-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #e9e8e5;
+  background-image:
+    radial-gradient(ellipse at 18% 22%, rgba(255,255,255,.78) 0 2%, transparent 42%),
+    radial-gradient(ellipse at 82% 68%, rgba(255,255,255,.56) 0 1%, transparent 46%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.2), rgba(120,120,120,.10));
+  background-attachment: fixed;
+}
+.shop-page .site-header {
+  position: relative;
+  z-index: 10;
+  background: rgba(12,15,24,.96);
+}
+.shop-page .container {
+  max-width: 1120px;
+}
+.shop-page .shop-intro {
+  text-align: center;
+  padding-top: clamp(26px,5vw,58px) !important;
+}
+.shop-page #pageEyebrow {
+  color: #777;
+  font-size: 10px;
+  letter-spacing: .18em;
+}
+.shop-page #pageTitle {
+  color: var(--editorial-ink);
+  font-family: var(--font-display);
+  font-size: clamp(27px,4vw,38px) !important;
+  font-weight: 800;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+  margin: 8px 0 9px !important;
+}
+.shop-page #pageIntro {
+  color: #686868 !important;
+  margin: 0 auto 26px !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+.shop-page .filter-bar {
+  justify-content: center;
+  border: 0;
+  padding: 0 0 22px;
+  margin: 0 auto 16px;
+  gap: 8px;
+}
+.shop-page .filter-bar .chip {
+  border: 1px solid rgba(30,30,30,.18);
+  background: rgba(255,255,255,.28);
+  color: #333;
+  border-radius: 0;
+  padding: 8px 13px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.shop-page .filter-bar .chip.active {
+  background: #171717;
+  color: #fff;
+  border-color: #171717;
+}
+.shop-page .filter-right {
+  margin-left: 0;
+}
+.shop-page .select {
+  border: 1px solid rgba(30,30,30,.2);
+  border-radius: 0;
+  background: rgba(255,255,255,.35);
+  color: #333;
+  font-size: 11px;
+  padding: 8px 11px;
+}
+.shop-page #shopGrid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  align-items: start;
+  gap: clamp(36px,5vw,70px) 30px;
+  margin: 0 auto 80px !important;
+}
+.shop-page #shopGrid .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  overflow: visible;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  text-align: center;
+}
+.shop-page #shopGrid .card:hover {
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.shop-page #shopGrid .card-media {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: transparent !important;
+  border: 0 !important;
+}
+.shop-page #shopGrid .card-media img {
+  width: 100%;
+  height: 100%;
+  padding: 9%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: transform .35s ease;
+}
+.shop-page #shopGrid .card:hover .card-media img {
+  transform: scale(1.025);
+}
+.shop-page #shopGrid .card-body {
+  width: 100%;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 8px 0 !important;
+  background: transparent !important;
+}
+.shop-page #shopGrid .card-cat {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: .13em;
+}
+.shop-page #shopGrid .card-title {
+  color: #171717;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-transform: uppercase;
+  min-height: 0;
+}
+.shop-page #shopGrid .card-price-row {
+  justify-content: center;
+  margin-top: 3px;
+}
+.shop-page #shopGrid .card-price {
+  color: #777;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+.shop-page #shopGrid .card-price-old {
+  font-size: 11px;
+}
+.shop-page #shopGrid .badge {
+  top: 8px;
+  left: 8px;
+  border-radius: 0;
+}
+.shop-page #shopGrid .card-quickadd {
+  display: none;
+}
+.shop-page .empty-state {
+  grid-column: 1 / -1;
+  background: transparent;
+  color: #555;
+}
+.shop-page .site-footer {
+  margin-top: 0;
+  background: #0a0e1a;
+}
+@media (max-width: 760px) {
+  .shop-page .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .shop-page .shop-intro {
+    padding-top: 22px !important;
+  }
+  .shop-page #pageIntro {
+    max-width: 34ch !important;
+    margin-bottom: 20px !important;
+  }
+  .shop-page .filter-bar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 0 14px;
+    margin-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .shop-page .filter-bar::-webkit-scrollbar { display: none; }
+  .shop-page .filter-bar .chip { flex: 0 0 auto; }
+  .shop-page .filter-right { flex: 0 0 130px; }
+  .shop-page .select { width: 100%; }
+  .shop-page #shopGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 48px !important;
+  }
+  .shop-page #shopGrid .card-media {
+    width: min(72vw, 310px);
+    aspect-ratio: 1 / 1;
+  }
+  .shop-page #shopGrid .card-media img {
+    padding: 8%;
+  }
+  .shop-page #shopGrid .card-body {
+    padding-top: 8px !important;
+  }
+  .shop-page #shopGrid .card-title {
+    font-size: 13px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1050px) {
+  .shop-page #shopGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-page #shopGrid .card-media img { transition: none; }
+}
