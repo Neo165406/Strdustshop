@@ -1086,7 +1086,10 @@ body.mobile-menu-open { overflow: hidden; }
   color: #111;
   text-align: left;
   text-decoration: none;
-  font: 700 14px/1.4 inherit;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
 }
 .mobile-menu .mm-item:hover { background: #f6f6f6; }
 .mobile-menu .mm-close {
