@@ -152,15 +152,7 @@ function renderSkeletons(container, count = 8) {
 /* -------------------------------------------------------------------------
    Mobile nav toggle — shared across every storefront page
    ------------------------------------------------------------------------- */
-function initNav() {
-  const toggle = document.querySelector(".nav-toggle");
-  const nav = document.querySelector(".main-nav");
-  if (toggle && nav) {
-    toggle.addEventListener("click", () => nav.classList.toggle("open"));
-  }
-}
-document.addEventListener("DOMContentLoaded", initNav);
-
+// Navigation is initialized by the shared mobile-menu.js on every page.
 /* -------------------------------------------------------------------------
    Hero slider — homepage only. Reads slides from Firestore "slides"
    collection if present, otherwise falls back to defaults below.

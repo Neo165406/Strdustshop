@@ -214,12 +214,6 @@
 
 <section class="section">
   <div class="container">
-    <div class="category-grid" id="categoryGrid"></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
     <div class="section-head">
       <div>
         <span class="eyebrow" data-bn="নতুন এসেছে" data-en="New Arrivals">নতুন এসেছে</span>
@@ -412,40 +406,6 @@
     };
   }
 
-  // Self-contained fallback: wires up the ☰ button and mobile menu directly
-  // here, so it works even if products.js never got this code pasted in.
-  // Guarded with a flag so it can't double-bind if products.js *does* have it.
-  if (!window.__strdustMobileMenuBound) {
-    window.__strdustMobileMenuBound = true;
-    document.addEventListener("DOMContentLoaded", () => {
-      const menu = document.getElementById("mobileMenu");
-      const overlay = document.getElementById("mobileMenuOverlay");
-      const toggle = document.querySelector(".nav-toggle");
-      const closeBtn = document.getElementById("mmClose");
-      if (!menu || !overlay || !toggle) return;
-
-      function openMenu() { menu.classList.add("open"); overlay.classList.add("open"); }
-      function closeMenu() {
-        menu.classList.remove("open"); overlay.classList.remove("open");
-        document.querySelectorAll(".mm-sub").forEach(s => s.classList.remove("open"));
-      }
-
-      toggle.addEventListener("click", openMenu);
-      closeBtn?.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", closeMenu);
-
-      document.querySelectorAll(".mm-item[data-target]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.getElementById(btn.dataset.target)?.classList.add("open");
-        });
-      });
-
-      document.querySelectorAll(".mm-back").forEach(btn => {
-        btn.addEventListener("click", () => btn.closest(".mm-sub")?.classList.remove("open"));
-      });
-    });
-  }
-
   document.addEventListener("languagechange", () => {
     buildNodeField();
     loadBestSellers();
@@ -458,5 +418,6 @@
   loadBestSellers();
   loadHeroBackground();
 </script>
+<script src="mobile-menu.js"></script>
 </body>
 </html>
