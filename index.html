@@ -84,7 +84,7 @@
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261127">
 </head>
 <body>
 
@@ -97,7 +97,7 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <a href="index.html" class="logo" aria-label="StrDust home"><span class="logo-wordmark" aria-hidden="true"><span class="logo-str">Str</span><span class="logo-dust">Dust</span></span></a>
+    <a href="index.html" class="logo" aria-label="StrDust home"><img class="brand-logo-img" src="/strdust-logo.svg" alt="StrDust" width="180" height="45"></a>
     <nav class="main-nav" aria-label="Main navigation">
       <a href="index.html" class="active">Home</a>
       <a href="shop.html">Shop</a>
@@ -121,7 +121,7 @@
 <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
-    <span class="mm-logo"><span class="logo-wordmark" aria-hidden="true"><span class="logo-str">Str</span><span class="logo-dust">Dust</span></span></span>
+    <span class="mm-logo"><img class="brand-logo-img" src="/strdust-logo.svg" alt="StrDust" width="180" height="45"></span>
     <button class="mm-close" id="mmClose">✕</button>
   </div>
 
@@ -240,7 +240,7 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo"><span class="logo-wordmark" aria-hidden="true"><span class="logo-str">Str</span><span class="logo-dust">Dust</span></span></div>
+        <div class="footer-logo"><img class="brand-logo-img" src="/strdust-logo.svg" alt="StrDust" width="180" height="45"></div>
         <p style="color:rgba(255,255,255,0.6);font-size:14px;max-width:32ch;" data-bn="একই জায়গায় ফ্যাশন ও লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="Fashion and lifestyle products in one place — fast delivery inside Dhaka, with cash on delivery.">একই জায়গায় ফ্যাশন ও লাইফস্টাইল প্রোডাক্ট — ঢাকার ভেতরে ফাস্ট ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
       </div>
       <div>
@@ -381,15 +381,28 @@
 
   // Load the editable hero image and copy from the authenticated theme settings page.
   async function loadHeroBackground() {
+    const image = document.getElementById("heroVisualImage");
+    const visual = document.getElementById("heroVisual");
+    const caption = visual?.querySelector(".hero-image-caption");
     try {
       const snap = await db.collection("siteSettings").doc("homepage").get();
-      if (!snap.exists) return;
-      const settings = snap.data() || {};
-      const image = document.getElementById("heroVisualImage");
-      const visual = document.getElementById("heroVisual");
+      const settings = snap.exists ? (snap.data() || {}) : {};
       if (settings.heroImageUrl && image && visual) {
         image.src = settings.heroImageUrl;
+        image.alt = settings.heroImageAlt || "StrDust featured fashion collection";
         visual.classList.add("has-image");
+      } else if (image && visual) {
+        // Use a real store product image as a fallback so the hero never looks empty
+        // before the admin uploads a dedicated campaign banner.
+        const products = await fetchProducts({ max: 24 });
+        const candidate = products.find(p => Array.isArray(p.images) && p.images.some(Boolean));
+        const fallbackImage = candidate?.images?.find(Boolean);
+        if (fallbackImage) {
+          image.src = fallbackImage;
+          image.alt = candidate.name ? candidate.name + " — StrDust featured product" : "StrDust featured product";
+          visual.classList.add("has-image", "hero-auto-image");
+          if (caption) caption.textContent = "STRDUST / FEATURED";
+        }
       }
       if (settings.heroTitle) document.getElementById("heroTitle").textContent = settings.heroTitle;
       if (settings.heroSubtitle) document.getElementById("heroSubtitle").textContent = settings.heroSubtitle;
@@ -398,7 +411,10 @@
         cta.firstChild.textContent = settings.heroCtaText + " ";
       }
       if (settings.heroCtaLink) document.getElementById("heroCta").href = settings.heroCtaLink;
-    } catch (e) { /* keep the built-in hero defaults when settings are unavailable */ }
+    } catch (e) {
+      // The CSS brand graphic remains visible if Firebase or product data is unavailable.
+      console.warn("Hero settings unavailable; using the built-in StrDust fallback.", e);
+    }
   }
 
   // Self-contained fallback: only defines buildCategoryGrid if products.js
