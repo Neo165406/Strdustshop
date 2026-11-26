@@ -391,7 +391,7 @@
         image.src = settings.heroImageUrl;
         visual.classList.add("has-image");
       }
-      if (settings.heroTitle) document.getElementById("heroTitle").innerHTML = settings.heroTitle;
+      if (settings.heroTitle) document.getElementById("heroTitle").textContent = settings.heroTitle;
       if (settings.heroSubtitle) document.getElementById("heroSubtitle").textContent = settings.heroSubtitle;
       if (settings.heroCtaText) {
         const cta = document.getElementById("heroCta");
@@ -420,7 +420,7 @@
   }
 
   document.addEventListener("languagechange", () => {
-    buildNodeField();
+    buildCategoryTiles();
     loadBestSellers();
   });
 
