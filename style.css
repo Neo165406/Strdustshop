@@ -1304,3 +1304,7 @@ a { color: inherit; }
   .shop-categories { padding:32px 0 40px; }
   .section { padding:38px 0; }
 }
+
+.bestseller-banner { background:#050607; border-top:1px solid #242529; border-bottom:1px solid #242529; }
+.bs-item { color:#f2f0eb; }
+.bs-item .bs-tag { color:#d2d0ca; }
