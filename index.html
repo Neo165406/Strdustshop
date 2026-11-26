@@ -88,23 +88,32 @@
 </head>
 <body>
 
+<div class="announcement-bar">
+  <div class="announcement-inner">
+    <span>✧ Free Delivery on orders over ৳2000 <i>|</i> COD Available in Bangladesh</span>
+    <nav><a href="track-order.html">Track Order</a><i>|</i><a href="contact.html">Help</a><i>|</i><a href="contact.html">Contact</a></nav>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="header-inner">
     <a href="index.html" class="logo" aria-label="StrDust home"><img src="/strdust-logo.webp" alt="StrDust"></a>
-    <nav class="main-nav">
-      <a href="index.html" class="active" data-bn="হোম" data-en="Home">হোম</a>
-      <a href="shop.html" data-bn="সব প্রোডাক্ট" data-en="All Products">সব প্রোডাক্ট</a>
-      <a href="/category/tshirt" data-bn="টি-শার্ট" data-en="T-Shirts">টি-শার্ট</a>
-      <a href="/category/jewelry" data-bn="জুয়েলারি" data-en="Jewelry">জুয়েলারি</a>
-      <a href="track-order.html" data-bn="অর্ডার ট্র্যাক" data-en="Track Order">অর্ডার ট্র্যাক</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html" class="active">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="/category/tshirt">T-Shirts</a>
+      <a href="/category/jewelry">Accessories</a>
+      <a href="/category/perfume">Perfume</a>
+      <a href="contact.html">About</a>
     </nav>
+    <form class="header-search" action="shop.html" method="get" role="search">
+      <span aria-hidden="true">⌕</span><input type="search" name="q" placeholder="Search products..." aria-label="Search products">
+    </form>
     <div class="header-actions">
       <button class="lang-toggle" id="langToggle" aria-label="Language">EN</button>
-      <a href="cart.html" class="icon-btn" aria-label="কার্ট">
-        🛒
-        <span class="cart-badge" data-cart-count style="display:none;">0</span>
-      </a>
-      <button class="nav-toggle" aria-label="মেনু">☰</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">🛒<span class="cart-badge" data-cart-count style="display:none;">0</span></a>
+      <a href="login.html" class="icon-btn account-link" aria-label="Account">♙</a>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
     </div>
   </div>
 </header>
@@ -168,34 +177,36 @@
   <div class="bs-track" id="bsTrack"></div>
 </div>
 
-<section class="hero">
-  <div class="hero-bg-collage" id="heroBgCollage"></div>
-  <div class="hero-dust"></div>
+<section class="hero hero-editorial" aria-label="StrDust featured collection">
+  <div class="hero-backdrop"></div>
   <div class="hero-inner">
-    <span class="hero-badge" id="heroBadge" data-bn="🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়" data-en="🔥 Up to 30% off new collection">🔥 নতুন কালেকশনে ৩০% পর্যন্ত ছাড়</span>
-    <span class="eyebrow anim-1" data-bn="৬টি ক্যাটাগরি, এক ঠিকানা" data-en="6 categories, one address">৭টি ক্যাটাগরি, এক ঠিকানা</span>
-    <h1 class="anim-2"><span data-bn="৬টা ক্যাটাগরি," data-en="6 Categories,">৬টা ক্যাটাগরি,</span><br><em data-bn="একটাই কার্ট" data-en="One Cart">একটাই কার্ট</em></h1>
-    <p class="hero-sub anim-3" id="heroSubText" data-bn="টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতা — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।" data-en="T-shirts, perfume, pants, watches, jewelry and footwear — all in one checkout. 1-3 day delivery inside Dhaka, with cash on delivery.">টি-শার্ট, পারফিউম, প্যান্ট, ঘড়ি, জুয়েলারি ও জুতা — সব একই চেকআউটে। ঢাকার ভেতরে ১-৩ দিনে ডেলিভারি, ক্যাশ অন ডেলিভারি সুবিধাসহ।</p>
-    <div class="hero-actions anim-4">
-      <a href="shop.html" class="btn btn-aqua" data-bn="এখনই কেনাকাটা করুন" data-en="Shop Now">এখনই কেনাকাটা করুন</a>
-      <a href="track-order.html" class="btn btn-outline" data-bn="অর্ডার ট্র্যাক করুন" data-en="Track Order">অর্ডার ট্র্যাক করুন</a>
+    <div class="hero-copy">
+      <span class="hero-welcome"><span>✦</span> Welcome to StrDust</span>
+      <p class="hero-kicker">STREET STYLE <b>•</b> Y2K VIBES <b>•</b> TIMELESS FASHION</p>
+      <h1 id="heroTitle">Wear the<br><em>Difference</em></h1>
+      <p class="hero-sub" id="heroSubtitle">Stand out with pieces made for your own kind of style.</p>
+      <div class="hero-actions"><a href="shop.html" class="btn btn-hero" id="heroCta">Shop Now <span>→</span></a></div>
     </div>
-
-    <div class="slider anim-5">
-      <div id="sliderTrack"></div>
-      <div class="slider-dots" id="sliderDots"></div>
+    <div class="hero-visual" id="heroVisual">
+      <div class="hero-star" aria-hidden="true">✦</div>
+      <img id="heroVisualImage" alt="StrDust featured fashion collection" fetchpriority="high">
+      <span class="hero-image-caption">STRDUST / NEW SEASON</span>
     </div>
+    <div class="hero-pagination" aria-hidden="true"><span class="active"></span><span></span><span></span></div>
   </div>
 </section>
-
-<section class="constellation">
-  <div class="constellation-head">
-    <span class="eyebrow" data-bn="ক্যাটাগরি ঘুরে দেখুন" data-en="Browse Categories">ক্যাটাগরি ঘুরে দেখুন</span>
-    <h2 data-bn="ছড়ানো সব পছন্দ, একসাথে" data-en="Everything scattered, together">ছড়ানো সব পছন্দ, একসাথে</h2>
-  </div>
-  <div class="node-field" id="nodeField">
-    <svg class="links" id="nodeLinks"></svg>
-    <!-- nodes injected by JS from CATEGORIES so it stays in sync everywhere -->
+<section class="benefit-strip" aria-label="Store benefits">
+  <div class="benefit"><span class="benefit-icon">♧</span><div><strong>Free Delivery</strong><small>On orders over ৳2000</small></div></div>
+  <div class="benefit"><span class="benefit-icon">◇</span><div><strong>Secure Payment</strong><small>100% Secure Checkout</small></div></div>
+  <div class="benefit"><span class="benefit-icon">↻</span><div><strong>Easy Returns</strong><small>Hassle-Free Returns</small></div></div>
+  <div class="benefit"><span class="benefit-icon">♧</span><div><strong>24/7 Support</strong><small>We're here to help</small></div></div>
+</section><section class="shop-categories">
+  <div class="container">
+    <div class="section-head category-section-head">
+      <div><span class="eyebrow">FIND YOUR STYLE</span><h2>Shop by Category</h2></div>
+      <a href="shop.html">View All <span>→</span></a>
+    </div>
+    <div class="category-image-grid" id="categoryImageGrid"></div>
   </div>
 </section>
 
@@ -273,36 +284,41 @@
 <script src="cart.js"></script>
 <script src="products.js"></script>
 <script>
-  function buildNodeField() {
-    const field = document.getElementById("nodeField");
-    const svg = document.getElementById("nodeLinks");
-    const lang = currentLang();
-    field.querySelectorAll(".node").forEach(n => n.remove());
+  async function buildCategoryTiles() {
+    const grid = document.getElementById("categoryImageGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    let products = [];
+    try { products = await fetchProducts({ max: 120 }); } catch (e) {}
     CATEGORIES.forEach(cat => {
-      const a = document.createElement("a");
-      a.href = `/category/${cat.id}`;
-      a.className = "node";
-      const label = lang === "en" ? cat.label : cat.bn;
-      a.innerHTML = `<span class="node-dot">${cat.icon}</span><span class="node-label">${label}</span><span class="node-count" data-node-count="${cat.id}">…</span>`;
-      field.appendChild(a);
+      const product = products.find(p => p.category === cat.id && p.images && p.images[0]);
+      const tile = document.createElement("a");
+      tile.className = "category-image-tile";
+      tile.href = `/category/${encodeURIComponent(cat.id)}`;
+      if (product) {
+        const img = document.createElement("img");
+        img.src = product.images[0];
+        img.alt = `${cat.label} at StrDust`;
+        img.loading = "lazy";
+        tile.appendChild(img);
+      } else {
+        const fallback = document.createElement("span");
+        fallback.className = "category-fallback";
+        fallback.textContent = cat.icon;
+        tile.appendChild(fallback);
+      }
+      const shade = document.createElement("span");
+      shade.className = "category-tile-shade";
+      const label = document.createElement("span");
+      label.className = "category-tile-label";
+      label.textContent = currentLang() === "en" ? cat.label : cat.bn;
+      const arrow = document.createElement("span");
+      arrow.className = "category-tile-arrow";
+      arrow.textContent = "↗";
+      shade.append(label, arrow);
+      tile.appendChild(shade);
+      grid.appendChild(tile);
     });
-
-    // draw faint dashed connectors between adjacent nodes once laid out
-    requestAnimationFrame(() => {
-      const nodes = [...field.querySelectorAll(".node")];
-      const fieldRect = field.getBoundingClientRect();
-      let d = "";
-      nodes.forEach((n, i) => {
-        if (i === 0) return;
-        const a = nodes[i - 1].querySelector(".node-dot").getBoundingClientRect();
-        const b = n.querySelector(".node-dot").getBoundingClientRect();
-        const ax = a.left + a.width / 2 - fieldRect.left, ay = a.top + a.height / 2 - fieldRect.top;
-        const bx = b.left + b.width / 2 - fieldRect.left, by = b.top + b.height / 2 - fieldRect.top;
-        d += `M${ax},${ay} Q${(ax + bx) / 2},${Math.min(ay, by) - 30} ${bx},${by} `;
-      });
-      svg.innerHTML = `<path d="${d}"></path>`;
-    });
-    loadCounts();
   }
 
   async function loadCounts() {
@@ -363,29 +379,26 @@
     } catch (e) { /* firebase not configured yet, or no bestsellers marked */ }
   }
 
-  // Hero background — always shows the newest products (not tied to bestSeller
-  // flag) so the hero never looks empty, even before anything is marked "best seller".
+  // Load the editable hero image and copy from the authenticated theme settings page.
   async function loadHeroBackground() {
-    const bgCollage = document.getElementById("heroBgCollage");
     try {
-      const items = await fetchProducts({ sort: "new", max: 8 });
-      const withImages = items.filter(p => p.images && p.images[0]);
-      if (!withImages.length) { bgCollage.innerHTML = ""; return; }
-
-      bgCollage.innerHTML = withImages.map((p, i) =>
-        `<div class="bg-slide ${i === 0 ? "active" : ""}" style="background-image:url('${p.images[0]}')"></div>`
-      ).join("");
-
-      if (withImages.length > 1) {
-        let bgCurrent = 0;
-        const bgEls = bgCollage.querySelectorAll(".bg-slide");
-        setInterval(() => {
-          bgEls[bgCurrent].classList.remove("active");
-          bgCurrent = (bgCurrent + 1) % bgEls.length;
-          bgEls[bgCurrent].classList.add("active");
-        }, 4000);
+      const snap = await db.collection("siteSettings").doc("homepage").get();
+      if (!snap.exists) return;
+      const settings = snap.data() || {};
+      const image = document.getElementById("heroVisualImage");
+      const visual = document.getElementById("heroVisual");
+      if (settings.heroImageUrl && image && visual) {
+        image.src = settings.heroImageUrl;
+        visual.classList.add("has-image");
       }
-    } catch (e) { /* firebase not configured yet, or no products yet */ }
+      if (settings.heroTitle) document.getElementById("heroTitle").innerHTML = settings.heroTitle;
+      if (settings.heroSubtitle) document.getElementById("heroSubtitle").textContent = settings.heroSubtitle;
+      if (settings.heroCtaText) {
+        const cta = document.getElementById("heroCta");
+        cta.firstChild.textContent = settings.heroCtaText + " ";
+      }
+      if (settings.heroCtaLink) document.getElementById("heroCta").href = settings.heroCtaLink;
+    } catch (e) { /* keep the built-in hero defaults when settings are unavailable */ }
   }
 
   // Self-contained fallback: only defines buildCategoryGrid if products.js
@@ -411,9 +424,7 @@
     loadBestSellers();
   });
 
-  buildNodeField();
-  buildCategoryGrid();
-  initHeroSlider();
+  buildCategoryTiles();
   loadHomeGrids();
   loadBestSellers();
   loadHeroBackground();
