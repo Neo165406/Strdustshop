@@ -229,3 +229,41 @@
 @media (prefers-reduced-motion: reduce) {
   .shop-page #shopGrid .card-media img { transition: none; }
 }
+
+
+/* Black / graphite editorial shop theme — overrides the legacy light palette. */
+.shop-page,.shop-page::before { background:#090a0c !important; }
+.shop-page::before {
+  background-image:
+    radial-gradient(ellipse at 16% 12%,rgba(210,208,202,.07),transparent 38%),
+    radial-gradient(ellipse at 84% 72%,rgba(125,126,130,.08),transparent 42%),
+    linear-gradient(145deg,#0b0c0e,#090a0c 65%,#111214) !important;
+}
+.shop-page .site-header { background:rgba(7,8,10,.97); border-bottom:1px solid #292a2e; }
+.shop-page .shop-intro,.shop-page #pageTitle { color:#f2f0eb !important; }
+.shop-page #pageEyebrow { color:#bdbab2 !important; }
+.shop-page #pageIntro { color:#aaa9a6 !important; }
+.shop-page .filter-bar { border-color:#303136; }
+.shop-page .filter-bar .chip {
+  background:#151619; color:#d8d6d0; border-color:#3a3b40;
+}
+.shop-page .filter-bar .chip:hover { background:#222327; border-color:#c9c6be; color:#fff; }
+.shop-page .filter-bar .chip.active { background:#d2d0ca; color:#111214; border-color:#d2d0ca; }
+.shop-page .select { background:#151619; color:#f2f0eb; border-color:#414247; }
+.shop-page #shopGrid .card { background:transparent !important; color:#f2f0eb; }
+.shop-page #shopGrid .card-media { background:#17181b !important; border-radius:14px; }
+.shop-page #shopGrid .card-media img { mix-blend-mode:normal; }
+.shop-page #shopGrid .card-cat { color:#aaa9a6; }
+.shop-page #shopGrid .card-title { color:#f2f0eb; }
+.shop-page #shopGrid .card-price { color:#f2f0eb; }
+.shop-page #shopGrid .card-price-old { color:#8e8f93; }
+.shop-page .empty-state { background:#151619; color:#f2f0eb; }
+.shop-page .site-footer { background:#050607; }
+@media(max-width:760px) {
+  .shop-page #shopGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px; }
+  .shop-page #shopGrid .card-media { width:100%; aspect-ratio:1/1; border-radius:10px; }
+  .shop-page #shopGrid .card-media img { padding:4%; object-fit:contain; }
+  .shop-page #shopGrid .card-body { align-items:flex-start; text-align:left; padding:9px 3px 0 !important; }
+  .shop-page #shopGrid .card-title { font-size:12px; }
+  .shop-page #shopGrid .card-price-row { justify-content:flex-start; }
+}
