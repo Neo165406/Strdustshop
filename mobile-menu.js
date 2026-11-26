@@ -36,7 +36,7 @@
       menu.setAttribute("aria-hidden", "true");
       menu.innerHTML = `
         <div class="mm-top">
-          <span class="mm-logo">Str<span class="dot">•</span>Dust</span>
+          <span class="mm-logo"><img src="/strdust-logo.webp" alt="StrDust"></span>
           <button class="mm-close" type="button" aria-label="Close menu">✕</button>
         </div>
         <nav class="mm-list"></nav>
