@@ -267,3 +267,5 @@
   .shop-page #shopGrid .card-title { font-size:12px; }
   .shop-page #shopGrid .card-price-row { justify-content:flex-start; }
 }
+
+.shop-page .site-header { position:sticky; top:0; z-index:100; }
