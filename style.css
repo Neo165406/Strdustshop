@@ -1562,3 +1562,45 @@ input:focus,select:focus,textarea:focus { border-color:#c9c6be; outline-color:#c
   .product-grid .card-price { font-size:12px; }
   .product-grid .card-quickadd { width:32px; height:32px; }
 }
+
+
+/* Category/product detail and utility form dark states. */
+.category-page { background:#090a0c; color:#f2f0eb; }
+.category-page #pageTitle { color:#f2f0eb !important; }
+.category-page #pageIntro { color:#aaa9a6 !important; }
+.category-page #pageEyebrow { color:#c4c1b9 !important; background:#17181b !important; border-color:#393a3f !important; }
+.category-page .filter-bar { border-color:#303136 !important; }
+.category-page .filter-bar .chip { color:#dedbd4 !important; background:#151619 !important; border-color:#414247 !important; }
+.category-page .filter-bar .chip.active { color:#111214 !important; background:#d2d0ca !important; border-color:#d2d0ca !important; }
+.category-page .select { color:#f2f0eb !important; background:#151619 !important; border-color:#414247 !important; }
+.category-page #shopGrid .card { color:#f2f0eb !important; background:#151619 !important; border-color:#303136 !important; }
+.category-page #shopGrid .card-media { background:#202125 !important; }
+.category-page #shopGrid .card-title,.category-page #shopGrid .card-price { color:#f2f0eb !important; }
+.category-page #shopGrid .card-cat { color:#aaa9a6 !important; }
+.category-page #shopGrid .card-body { background:#151619 !important; }
+.pd-title,.pd-price,.pd-variant-label { color:#f2f0eb !important; }
+.pd-desc { color:#aaa9a6 !important; }
+.pd-chip,.size-chip { color:#e8e6e0 !important; background:#202125 !important; border-color:#414247 !important; }
+.pd-chip.active,.size-chip.active { color:#111214 !important; background:#d2d0ca !important; border-color:#d2d0ca !important; }
+.pd-stock.in { color:#c8c5bc !important; }
+.pd-variant-block select,.pd-variant-block input { color:#f2f0eb !important; background:#151619 !important; }
+.field-error { background:#321b1b !important; color:#ffb6ad !important; }
+.pay-option { color:#e8e6e0 !important; background:#151619 !important; border-color:#414247 !important; }
+.pay-option.selected { border-color:#d2d0ca !important; background:#202125 !important; }
+.track-box { background:#151619 !important; border:1px solid #303136 !important; }
+.track-box h1,.track-box h2 { color:#f2f0eb !important; }
+.track-box p { color:#aaa9a6 !important; }
+.contact-card a,.contact-card strong { color:#f2f0eb; }
+.modal-backdrop { background:rgba(0,0,0,.72) !important; }
+.modal,.modal-content { background:#151619 !important; color:#f2f0eb !important; border-color:#303136 !important; }
+.table-card table th { background:#202125 !important; color:#e8e6e0 !important; }
+.table-card table td { border-color:#303136 !important; color:#d7d5d0 !important; }
+@media(max-width:700px) {
+  .product-layout { padding:24px 0 48px !important; gap:20px !important; }
+  .gallery-main { border-radius:14px !important; }
+  .pd-title { font-size:clamp(22px,6vw,30px) !important; }
+  .pd-price { font-size:23px !important; }
+  .two-col { grid-template-columns:1fr !important; gap:18px !important; }
+  .field-row { grid-template-columns:1fr !important; }
+  .summary-card { position:static !important; }
+}
