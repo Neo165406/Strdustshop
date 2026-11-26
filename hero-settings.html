@@ -133,7 +133,8 @@
       const ctaText = document.getElementById("heroCtaText").value.trim() || "Shop Now";
       const ctaLink = document.getElementById("heroCtaLink").value.trim() || "shop.html";
       if (!title || !subtitle) throw new Error("Headline and supporting text are required.");
-      if (!/^(https:\/\/|\/|[a-zA-Z0-9_-])/.test(ctaLink)) throw new Error("Enter a valid button destination.");
+      const safeLink = ctaLink.startsWith("https://") || ctaLink.startsWith("http://") || (ctaLink.startsWith("/") && !ctaLink.startsWith("//")) || /^[A-Za-z0-9_-][A-Za-z0-9_./?&=#%-]*$/.test(ctaLink);
+      if (!safeLink) throw new Error("Enter a valid button destination.");
       await db.collection("siteSettings").doc("homepage").set({
         heroImageUrl, heroTitle:title, heroSubtitle:subtitle, heroCtaText:ctaText,
         heroCtaLink:ctaLink, updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
