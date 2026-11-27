@@ -1154,8 +1154,9 @@ a { color: inherit; }
   border-bottom: 1px solid #292a2e;
   backdrop-filter: blur(16px);
 }
-.header-inner { max-width: 1540px; min-height: 88px; padding: 12px clamp(18px,4vw,64px); gap: clamp(12px,2vw,30px); }
-.site-header .logo img { width: clamp(160px,21vw,280px); height: auto; max-height: 68px; object-fit: contain; }
+.header-inner { max-width: 1540px; min-height: 88px; padding: 12px clamp(6px,1vw,14px); gap: clamp(12px,2vw,30px); }
+.site-header .logo { margin-left: -2px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.site-header .logo img { display: block; width: clamp(160px,21vw,280px); height: auto; max-height: 68px; object-fit: contain; background: transparent; border: 0; border-radius: 0; box-shadow: none; mix-blend-mode: screen; filter: none; }
 .main-nav { gap: clamp(12px,2vw,30px); color: #e6e4df; font-size: 14px; }
 .main-nav a.active, .main-nav a:hover { color: #fff; }
 .main-nav a::after { background: #d4d0c7; }
