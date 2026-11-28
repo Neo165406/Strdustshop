@@ -1792,3 +1792,13 @@ input:focus,select:focus,textarea:focus { border-color:#c8c5bd !important; }
   .status-step span.label { font-size:10px; }
   .admin-main { padding:14px 12px 26px; }
 }
+
+
+/* Homepage header alignment and welcome line refinement */
+.hero-welcome { gap:0 !important; }
+.hero-welcome > span { display:none !important; }
+@media (max-width:600px) {
+  .header-inner { padding-left:8px !important; padding-right:12px !important; }
+  .site-header .logo { margin-left:-2px; margin-right:auto; }
+  .brand-logo-img { width:124px; max-height:44px; }
+}

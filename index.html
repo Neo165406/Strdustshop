@@ -182,10 +182,10 @@
   <div class="hero-backdrop"></div>
   <div class="hero-inner">
     <div class="hero-copy">
-      <span class="hero-welcome"><span>✦</span> Welcome to StrDust</span>
+      <span class="hero-welcome">Welcome to StrDust</span>
       <p class="hero-kicker">STREET STYLE <b>•</b> Y2K VIBES <b>•</b> TIMELESS FASHION</p>
       <h1 id="heroTitle">Wear the<br><em>Difference</em></h1>
-      <p class="hero-sub" id="heroSubtitle">Stand out with pieces made for your own kind of style.</p>
+      <p class="hero-sub" id="heroSubtitle">Explore clothing, gadgets, fragrance, watches, jewellery and everyday essentials — all in one place.</p>
       <div class="hero-actions"><a href="shop.html" class="btn btn-hero" id="heroCta">Shop Now <span>→</span></a></div>
     </div>
     <div class="hero-visual" id="heroVisual">
@@ -406,7 +406,7 @@
         }
       }
       if (settings.heroTitle) document.getElementById("heroTitle").textContent = settings.heroTitle;
-      if (settings.heroSubtitle) document.getElementById("heroSubtitle").textContent = settings.heroSubtitle;
+      if (settings.heroSubtitle && settings.heroSubtitle !== "Stand out with pieces made for your own kind of style.") document.getElementById("heroSubtitle").textContent = settings.heroSubtitle;
       if (settings.heroCtaText) {
         const cta = document.getElementById("heroCta");
         cta.firstChild.textContent = settings.heroCtaText + " ";
