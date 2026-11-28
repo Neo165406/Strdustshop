@@ -37,7 +37,7 @@
       <img id="heroPreview" class="preview" alt="Hero image preview">
     </div>
     <div class="field"><label for="heroTitle">Headline</label><input id="heroTitle" maxlength="90" value="Wear the Difference" required></div>
-    <div class="field"><label for="heroSubtitle">Supporting text</label><textarea id="heroSubtitle" maxlength="220">Stand out with pieces made for your own kind of style.</textarea></div>
+    <div class="field"><label for="heroSubtitle">Supporting text</label><textarea id="heroSubtitle" maxlength="220">Explore clothing, gadgets, fragrance, watches, jewellery and everyday essentials — all in one place.</textarea></div>
     <div class="field"><label for="heroCtaText">Button label</label><input id="heroCtaText" maxlength="30" value="Shop Now"></div>
     <div class="field"><label for="heroCtaLink">Button destination</label><input id="heroCtaLink" maxlength="180" value="shop.html"></div>
     <div class="actions">
@@ -76,7 +76,7 @@
         const data = snap.data() || {};
         heroImageUrl = data.heroImageUrl || "";
         document.getElementById("heroTitle").value = data.heroTitle || "Wear the Difference";
-        document.getElementById("heroSubtitle").value = data.heroSubtitle || "Stand out with pieces made for your own kind of style.";
+        document.getElementById("heroSubtitle").value = data.heroSubtitle || "Explore clothing, gadgets, fragrance, watches, jewellery and everyday essentials — all in one place.";
         document.getElementById("heroCtaText").value = data.heroCtaText || "Shop Now";
         document.getElementById("heroCtaLink").value = data.heroCtaLink || "shop.html";
         showPreview(heroImageUrl);
